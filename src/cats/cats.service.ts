@@ -3,7 +3,7 @@ import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cat } from './entities/cat.entity';
-import { Model, Document, Query, UpdateQuery, UpdateWriteOpResult } from 'mongoose';
+import { Model, Document, UpdateWriteOpResult } from 'mongoose';
 
 @Injectable()
 export class CatsService {
