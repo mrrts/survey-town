@@ -1,19 +1,33 @@
-import * as mongoose from 'mongoose';
+import { Schema, SchemaOptions, Model, model, Document } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-const options: mongoose.SchemaOptions = {
+const options: SchemaOptions = {
   collection: 'surveys'
 };
 
-export const surveySchema = new mongoose.Schema({
-  uuid: { type: String, default: () => uuidv4(), index: true },
-  createdAt: { type: Date, index: true, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-  author: { type: String, index: true },
-  title: String,
-  description: String,
-  responsesPublic: Boolean,
-  surveyItems: [String]
+export interface ISurvey {
+  uuid: string;
+  createdAt: Date;
+  updatedAt: Date;
+  author: string;
+  title: string;
+  description: string;
+  responsesPublic: boolean;
+  surveyItems: string[];
+}
+
+
+export const surveySchema = new Schema({
+  uuid: { type: String, default: () => uuidv4(), index: true, required: true, unique: true },
+  createdAt: { type: Date, index: true, default: Date.now, required: true },
+  updatedAt: { type: Date, default: Date.now, required: true },
+  author: { type: String, index: true, required: true },
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  responsesPublic: { type: Boolean, required: true, default: () => true },
+  surveyItems: { type: [String], required: true, default: () => [] }
 }, options);
 
-export const Survey = mongoose.model('Survey', surveySchema);
+export const Survey: Model<ISurvey> = model('Survey', surveySchema);
+
+export type SurveyDocument = ISurvey & Document;
