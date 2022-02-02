@@ -7,16 +7,21 @@ import { orderBy } from 'lodash';
 import { SurveyRepository } from './repositories/survey.repository';
 import { SurveyItemRepository } from './repositories/survey-item.repository';
 import { CreateSurveyItemDto } from './dto/create-survey-item.dto';
+import { ResponseRepository } from './repositories/response.repository';
 
 @Injectable()
 export class SurveysService {
   constructor(
     private surveyRepository: SurveyRepository,
-    private surveyItemRepository: SurveyItemRepository
+    private surveyItemRepository: SurveyItemRepository,
+    private responseRepository: ResponseRepository
   ) {}
 
   async getSurveyDto(uuid: string): Promise<SurveyDto> {
     const survey: ISurvey = await this.surveyRepository.findOne(uuid);
+
+    if (!survey) { return null; }
+
     const items: ISurveyItem[] = await this.surveyItemRepository.findMultiple(survey.surveyItems);
     const dto: SurveyDto = new SurveyDto();
     dto.survey = survey;

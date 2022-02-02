@@ -4,6 +4,7 @@ import { CreateSurveyDto } from './dto/create-survey.dto';
 import { SurveyDto } from './dto/survey.dto';
 import { ISurveyItem, SurveyItemType } from './entities/survey-item.entity';
 import { ISurvey } from './entities/survey.entity';
+import { ResponseRepository } from './repositories/response.repository';
 import { SurveyItemRepository } from './repositories/survey-item.repository';
 import { SurveyRepository } from './repositories/survey.repository';
 import { SurveysService } from './surveys.service';
@@ -12,6 +13,7 @@ describe('SurveysService', () => {
   let service: SurveysService;
   let mockSurveyRepo: any;
   let mockSurveyItemRepo: any;
+  let mockResponseRepo: any;
   let mockSurvey: ISurvey;
   let mockSurveyItem1: ISurveyItem;
   let mockSurveyItem2: ISurveyItem;
@@ -78,11 +80,14 @@ describe('SurveysService', () => {
       createWithAuthor: jest.fn().mockReturnValue(mockSurveyItem1)
     };
 
+    mockResponseRepo = {};
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         SurveysService,
         { provide: SurveyRepository, useValue: mockSurveyRepo },
-        { provide: SurveyItemRepository, useValue: mockSurveyItemRepo }
+        { provide: SurveyItemRepository, useValue: mockSurveyItemRepo },
+        { provide: ResponseRepository, useValue: mockResponseRepo }
       ],
     }).compile();
 
