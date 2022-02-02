@@ -56,12 +56,24 @@ export const multipleSelectItemSchema = new Schema({
 export const SurveyItem: Model<ISurveyItem> = model('SurveyItem', surveyItemSchema);
 
 // These models "extend" the base SurveyItem model
-export const ContentInterludeItem: Model<ISurveyItem> = SurveyItem.discriminator(SurveyItemType.CONTENT_INTERLUDE, contentInterludeItemSchema);
+export const ContentInterludeItem: Model<ISurveyItem> = SurveyItem.discriminator(
+  SurveyItemType.CONTENT_INTERLUDE,
+  contentInterludeItemSchema
+);
 
-export const FreeResponseItem: Model<ISurveyItem> = SurveyItem.discriminator(SurveyItemType.FREE_RESPONSE, freeResponseItemSchema);
+export const FreeResponseItem: Model<ISurveyItem> = SurveyItem.discriminator(
+  SurveyItemType.FREE_RESPONSE,
+  freeResponseItemSchema
+);
 
-export const MultipleChoiceItem: Model<ISurveyItem> = SurveyItem.discriminator(SurveyItemType.MULTIPLE_CHOICE, multipleChoiceItemSchema);
+export const MultipleChoiceItem: Model<ISurveyItem> = SurveyItem.discriminator(
+  SurveyItemType.MULTIPLE_CHOICE,
+  multipleChoiceItemSchema
+);
 
-export const MultipleSelectItem: Model<ISurveyItem> = SurveyItem.discriminator(SurveyItemType.MULTIPLE_SELECT, multipleSelectItemSchema);
+export const MultipleSelectItem: Model<ISurveyItem> = SurveyItem.discriminator(
+  SurveyItemType.MULTIPLE_SELECT,
+  multipleSelectItemSchema
+);
 
 export type SurveyItemDocument = ISurveyItem & Document;

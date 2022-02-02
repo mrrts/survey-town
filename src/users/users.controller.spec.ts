@@ -6,10 +6,15 @@ import { UsersService } from './users.service';
 describe('UsersController', () => {
   let controller: UsersController;
   let mockUsersService: any;
+  let mockUser: any;
 
   beforeEach(async () => {
+    mockUser = {
+      safe: jest.fn()
+    };
+
     mockUsersService = {
-      create: jest.fn()
+      create: jest.fn().mockReturnValue(mockUser)
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -33,5 +38,6 @@ describe('UsersController', () => {
     };
     await controller.create(dto);
     expect(mockUsersService.create).toHaveBeenCalledWith(dto);
+    expect(mockUser.safe).toHaveBeenCalled();
   });
 });

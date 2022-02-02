@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Request } from 'express';
-import { PasswordService } from 'src/password/password.service';
-import { IUser } from 'src/users/entities/user.entity';
-import { UsersService } from 'src/users/users.service';
+import { PasswordService } from '../password/password.service';
+import { IUser } from '../users/entities/user.entity';
+import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/login.dto';
 
 @Injectable()
