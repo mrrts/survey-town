@@ -1,10 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Session } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Session } from '@nestjs/common';
 import { SurveysService } from './surveys.service';
 import { CreateSurveyDto } from './dto/create-survey.dto';
-import { UpdateSurveyDto } from './dto/update-survey.dto';
 import { SurveyDto } from './dto/survey.dto';
-import { Request } from 'express';
 import { IAppSession } from 'src/auth/entities/session.entity';
+import { CreateSurveyItemDto } from './dto/create-survey-item.dto';
 
 @Controller('surveys')
 export class SurveysController {
@@ -12,26 +11,35 @@ export class SurveysController {
 
   @Post()
   create(@Body() createSurveyDto: CreateSurveyDto, @Session() session: IAppSession) {
-    return this.surveysService.create(createSurveyDto, session);
+    return this.surveysService.create(createSurveyDto, session._user.uuid);
   }
 
   @Get()
-  findAll(@Req() req: Request): Promise<SurveyDto[]> {
+  findAll(): Promise<SurveyDto[]> {
     return this.surveysService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<SurveyDto> {
-    return this.surveysService.findOne(id);
+  @Get(':surveyId')
+  findOne(@Param('surveyId') surveyId: string): Promise<SurveyDto> {
+    return this.surveysService.findOne(surveyId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSurveyDto: UpdateSurveyDto) {
-    return this.surveysService.update(id, updateSurveyDto);
+  @Post(':surveyId/items')
+  createSurveyItem(
+    @Param('surveyId') surveyId: string,
+    @Body() createSurveyItemDto: CreateSurveyItemDto,
+    @Session() session: IAppSession
+  ) {
+    return this.surveysService.createSurveyItem(createSurveyItemDto, surveyId, session._user.uuid);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.surveysService.remove(id);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateSurveyDto: UpdateSurveyDto) {
+  //   return this.surveysService.update(id, updateSurveyDto);
+  // }
+
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.surveysService.remove(id);
+  // }
 }

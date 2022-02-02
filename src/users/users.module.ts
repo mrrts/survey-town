@@ -4,6 +4,7 @@ import { UsersController } from './users.controller';
 import { PasswordModule } from 'src/password/password.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, userSchema } from './entities/user.entity';
+import { UserRepository } from './repositories/user.repository';
 
 const userModelModule = MongooseModule.forFeature([
   { name: User.modelName, schema: userSchema }
@@ -15,9 +16,10 @@ const userModelModule = MongooseModule.forFeature([
     userModelModule
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, UserRepository],
   exports: [
     UsersService,
+    UserRepository,
     userModelModule
   ]
 })

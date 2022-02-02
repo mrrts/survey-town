@@ -14,6 +14,7 @@ export interface IUser {
   emailAddress: string;
   passwordHash: string;
   roles: USER_ROLES[];
+  safe: () => IUser;
 }
 
 const options: SchemaOptions = {
@@ -28,6 +29,11 @@ export const userSchema = new Schema<IUser>({
   passwordHash: { type: String, required: true },
   roles: { type: [String], required: true, default: () => [USER_ROLES.USER] }
 }, options);
+
+userSchema.methods.safe = function () {
+  this.passwordHash = null;
+  return this;
+}
 
 export const User: Model<IUser> = model('User', userSchema);
 

@@ -17,11 +17,10 @@ export class AuthService {
     const user: IUser = await this.usersService.findByEmailAddress(emailAddress);
     const correctPassword = await this.passwordService.validatePassword(plaintextPassword, user.passwordHash);
     if (correctPassword) {
-      (req.session as any)._user = user;
+      (req.session as any)._user = user.safe();
       return (req.session as any)._user;
-    } else {
-      return null;
-    }
+    } 
+    return null;
   }
 
   logout(req: Request) {

@@ -1,45 +1,46 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 import { CreateSurveyDto } from './dto/create-survey.dto';
 import { SurveyDto } from './dto/survey.dto';
-import { UpdateSurveyDto } from './dto/update-survey.dto';
-import { SurveyItem, SurveyItemDocument } from './entities/survey-item.entity';
-import { Survey, SurveyDocument } from './entities/survey.entity';
+import { ISurveyItem } from './entities/survey-item.entity';
+import { ISurvey } from './entities/survey.entity';
 import { orderBy } from 'lodash';
-import { IAppSession } from 'src/auth/entities/session.entity';
+import { SurveyRepository } from './repositories/survey.repository';
+import { SurveyItemRepository } from './repositories/survey-item.repository';
+import { CreateSurveyItemDto } from './dto/create-survey-item.dto';
 
 @Injectable()
 export class SurveysService {
   constructor(
-    @InjectModel(Survey.modelName) private surveyModel: Model<SurveyDocument>,
-    @InjectModel(SurveyItem.modelName) private surveyItemModel: Model<SurveyItemDocument>
+    private surveyRepository: SurveyRepository,
+    private surveyItemRepository: SurveyItemRepository
   ) {}
 
-  private async getSurveyDto(id: string): Promise<SurveyDto> {
-    const survey: SurveyDocument = await this.surveyModel.findOne({ uuid: id }).exec();
-    const items: SurveyItemDocument[] = await this.surveyItemModel.find({ uuid: { $in: survey.surveyItems }}).exec();
+  async getSurveyDto(uuid: string): Promise<SurveyDto> {
+    const survey: ISurvey = await this.surveyRepository.findOne(uuid);
+    const items: ISurveyItem[] = await this.surveyItemRepository.findMultiple(survey.surveyItems);
     const dto: SurveyDto = new SurveyDto();
     dto.survey = survey;
-    dto.expandedItems = orderBy(items, ((item: SurveyItemDocument) => {
+    dto.expandedItems = orderBy(items, ((item: ISurveyItem) => {
       return survey.surveyItems.indexOf(item.uuid);
     }));
     return dto;
   }
 
-  async create(createSurveyDto: CreateSurveyDto, session: IAppSession): Promise<SurveyDto> {
-    const survey = new this.surveyModel({
-      ...createSurveyDto,
-      author: session._user.uuid
-    });
-    const savedSurvey = await survey.save();
-    return this.findOne(savedSurvey.uuid);
+  async create(createSurveyDto: CreateSurveyDto, authorId: string): Promise<SurveyDto> {
+    const savedSurvey = await this.surveyRepository.createWithAuthor(createSurveyDto, authorId);
+    return this.getSurveyDto(savedSurvey.uuid);
+  }
+
+  async createSurveyItem(dto: CreateSurveyItemDto, surveyId: string, authorId: string): Promise<SurveyDto> {
+    const item: ISurveyItem = await this.surveyItemRepository.createWithAuthor(dto, authorId);
+    await this.surveyRepository.addItem(surveyId, item.uuid);
+    return this.getSurveyDto(surveyId);
   }
 
   async findAll(): Promise<SurveyDto[]> {
-    const allSurveys: SurveyDocument[] = await this.surveyModel.find().exec();
-    const dtos: Promise<SurveyDto>[] = allSurveys.map((surveyDoc: SurveyDocument) => {
-      return this.getSurveyDto(surveyDoc.uuid);
+    const allSurveys: ISurvey[] = await this.surveyRepository.findAll();
+    const dtos: Promise<SurveyDto>[] = allSurveys.map((survey: ISurvey) => {
+      return this.getSurveyDto(survey.uuid);
     });
     return Promise.all(dtos);
   }
@@ -48,11 +49,11 @@ export class SurveysService {
     return this.getSurveyDto(id);
   }
 
-  update(id: string, updateSurveyDto: UpdateSurveyDto) {
-    return `This action updates a #${id} survey`;
-  }
+  // update(id: string, updateSurveyDto: UpdateSurveyDto) {
+  //   return `This action updates a #${id} survey`;
+  // }
 
-  remove(id: string) {
-    return `This action removes a #${id} survey`;
-  }
+  // remove(id: string) {
+  //   return `This action removes a #${id} survey`;
+  // }
 }

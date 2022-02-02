@@ -16,6 +16,7 @@ const options: SchemaOptions = {
 };
 
 export interface ISurveyItem {
+  itemType: SurveyItemType;
   uuid: string;
   createdAt: Date;
   updatedAt: Date;
@@ -27,10 +28,10 @@ export interface ISurveyItem {
 
 // Base SurveyItem schema for polymorphic collection.
 export const surveyItemSchema = new Schema<ISurveyItem>({
-  uuid: { type: String, default: () => uuidv4(), index: true },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-  author: String
+  uuid: { type: String, default: () => uuidv4(), index: true, required: true },
+  createdAt: { type: Date, default: Date.now, required: true },
+  updatedAt: { type: Date, default: Date.now, required: true },
+  author: { type: String, required: true }
 }, options);
 
 export const contentInterludeItemSchema = new Schema({
