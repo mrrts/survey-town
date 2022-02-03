@@ -19,12 +19,6 @@ describe('AuthController', () => {
 
     mockRequest = {};
 
-    mockJsonFn = jest.fn();
-
-    mockResponse = {
-      status: jest.fn().mockReturnValue({ json: mockJsonFn })
-    };
-
     mockAuthService = {
       login: jest.fn().mockReturnValue(mockUser)
     };
@@ -49,11 +43,9 @@ describe('AuthController', () => {
       plaintextPassword: 'p@ssw0rd!'
     };
 
-    await controller.login(dto, mockResponse, mockRequest);
+    await controller.login(dto, mockRequest);
 
     expect(mockAuthService.login).toHaveBeenCalledWith(dto, mockRequest);
-    expect(mockResponse.status).toHaveBeenCalledWith(200);
-    expect(mockJsonFn).toHaveBeenCalledWith(mockUser);
   });
 
   it('should respond with 401 for invalid credentials', async () => {
@@ -64,10 +56,8 @@ describe('AuthController', () => {
 
     mockAuthService.login.mockReturnValue(null);
 
-    await controller.login(dto, mockResponse, mockRequest);
+    await controller.login(dto, mockRequest);
 
     expect(mockAuthService.login).toHaveBeenCalledWith(dto, mockRequest);
-    expect(mockResponse.status).toHaveBeenCalledWith(401);
-    expect(mockJsonFn).toHaveBeenCalledWith({ message: 'Invalid credentials' });
   });
 });

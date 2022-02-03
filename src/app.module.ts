@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -10,6 +10,8 @@ import { PasswordModule } from './password/password.module';
 import { UsersModule } from './users/users.module';
 import { UsersService } from './users/users.service';
 import { User, userSchema } from './users/entities/user.entity';
+import { LoggerMiddleware } from './common/logger.middleware';
+import { SurveysController } from './surveys/surveys.controller';
 
 @Module({
   imports: [
@@ -29,4 +31,12 @@ import { User, userSchema } from './users/entities/user.entity';
   controllers: [AppController],
   providers: [AppService, PasswordService, UsersService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes(SurveysController)
+  }
+
+}

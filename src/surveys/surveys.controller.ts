@@ -1,36 +1,90 @@
-import { Controller, Get, Post, Body, Param, Session } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards } from '@nestjs/common';
 import { SurveysService } from './surveys.service';
 import { CreateSurveyDto } from './dto/create-survey.dto';
 import { SurveyDto } from './dto/survey.dto';
-import { IAppSession } from 'src/auth/entities/session.entity';
 import { CreateSurveyItemDto } from './dto/create-survey-item.dto';
+import { CreateResponseDto } from './dto/create-response.dto';
+import { RolesGuard } from '../common/roles.guard';
+import { Roles } from '../common/roles.decorator';
+import { USER_ROLES } from '../users/entities/user.entity';
+import { User } from '../common/user.decorator';
 
 @Controller('surveys')
+@UseGuards(RolesGuard)
 export class SurveysController {
   constructor(private readonly surveysService: SurveysService) {}
 
   @Post()
-  create(@Body() createSurveyDto: CreateSurveyDto, @Session() session: IAppSession) {
-    return this.surveysService.create(createSurveyDto, session._user.uuid);
+  @Roles({ requireAll: [ USER_ROLES.USER ] })
+  create(@Body() createSurveyDto: CreateSurveyDto, @User('uuid') userId: string) {
+    return this.surveysService.create(createSurveyDto, userId);
   }
 
   @Get()
+  @Roles({ requireAll: [ USER_ROLES.USER ] })
   findAll(): Promise<SurveyDto[]> {
     return this.surveysService.findAll();
   }
 
   @Get(':surveyId')
+  @Roles({ requireAll: [ USER_ROLES.USER ] })
   findOne(@Param('surveyId') surveyId: string): Promise<SurveyDto> {
     return this.surveysService.findOne(surveyId);
   }
 
+  @Delete(':surveyId')
+  @Roles({ requireAll: [ USER_ROLES.USER ] })
+  remove(
+    @Param('surveyId') surveyId: string,
+    @User('uuid') userId: string
+  ): Promise<boolean> {
+    return this.surveysService.remove(surveyId, userId);
+  }
+
   @Post(':surveyId/items')
+  @Roles({ requireAll: [ USER_ROLES.USER ] })
   createSurveyItem(
     @Param('surveyId') surveyId: string,
     @Body() createSurveyItemDto: CreateSurveyItemDto,
-    @Session() session: IAppSession
+    @User('uuid') userId: string
   ) {
-    return this.surveysService.createSurveyItem(createSurveyItemDto, surveyId, session._user.uuid);
+    return this.surveysService.createSurveyItem(createSurveyItemDto, surveyId, userId);
+  }
+
+  @Delete(':surveyId/items/:itemId')
+  @Roles({ requireAll: [ USER_ROLES.USER ] })
+  removeSurveyItem(
+    @Param('surveyId') surveyId: string,
+    @Param('itemId') itemId: string,
+    @User('uuid') userId: string
+  ) {
+    return this.surveysService.removeSurveyItem(surveyId, itemId, userId);
+  }
+
+  @Get(':surveyId/responses')
+  @Roles({ requireAll: [ USER_ROLES.USER ] })
+  getSurveyResponses(@Param('surveyId') surveyId: string) {
+    return this.surveysService.findAllResponsesForSurvey(surveyId);
+  }
+
+  @Post(':surveyId/items/:itemId/responses')
+  @Roles({ requireAll: [ USER_ROLES.USER ] })
+  createResponse(
+    @Body() dto: CreateResponseDto,
+    @Param('surveyId') surveyId: string,
+    @Param('itemId') itemId: string,
+    @User('uuid') userId: string
+  ) {
+    return this.surveysService.createResponse(dto, surveyId, itemId, userId);
+  }
+
+  @Delete(':surveyId/own-responses')
+  @Roles({ requireAll: [ USER_ROLES.USER ]})
+  removeOwnResponsesForSurvey(
+    @Param('surveyId') surveyId: string,
+    @User('uuid') userId: string
+  ) {
+    return this.surveysService.removeAllResponsesForUserAndSurvey(surveyId, userId);
   }
 
   // @Patch(':id')

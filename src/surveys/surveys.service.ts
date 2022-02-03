@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSurveyDto } from './dto/create-survey.dto';
 import { SurveyDto } from './dto/survey.dto';
 import { ISurveyItem } from './entities/survey-item.entity';
@@ -8,6 +8,8 @@ import { SurveyRepository } from './repositories/survey.repository';
 import { SurveyItemRepository } from './repositories/survey-item.repository';
 import { CreateSurveyItemDto } from './dto/create-survey-item.dto';
 import { ResponseRepository } from './repositories/response.repository';
+import { CreateResponseDto } from './dto/create-response.dto';
+import { IResponse } from './entities/response.entity';
 
 @Injectable()
 export class SurveysService {
@@ -19,9 +21,6 @@ export class SurveysService {
 
   async getSurveyDto(uuid: string): Promise<SurveyDto> {
     const survey: ISurvey = await this.surveyRepository.findOne(uuid);
-
-    if (!survey) { return null; }
-
     const items: ISurveyItem[] = await this.surveyItemRepository.findMultiple(survey.surveyItems);
     const dto: SurveyDto = new SurveyDto();
     dto.survey = survey;
@@ -36,10 +35,43 @@ export class SurveysService {
     return this.getSurveyDto(savedSurvey.uuid);
   }
 
-  async createSurveyItem(dto: CreateSurveyItemDto, surveyId: string, authorId: string): Promise<SurveyDto> {
-    const item: ISurveyItem = await this.surveyItemRepository.createWithAuthor(dto, authorId);
+  async remove(surveyId: string, userId: string): Promise<boolean> {
+    const survey = await this.surveyRepository.findOne(surveyId);
+
+    if (!survey) {
+      throw new NotFoundException();
+    }
+
+    if (survey?.author !== userId) {
+      throw new ForbiddenException();
+    }
+    
+    return this.surveyRepository.remove(surveyId);
+  }
+
+  async createSurveyItem(dto: CreateSurveyItemDto, surveyId: string, userId: string): Promise<SurveyDto> {
+    const survey = await this.surveyRepository.findOne(surveyId);
+
+    if (!survey) { throw new NotFoundException(); }
+
+    if (survey?.author !== userId) {
+      throw new ForbiddenException();
+    }
+
+    const item: ISurveyItem = await this.surveyItemRepository.createWithAuthor(dto, userId);
     await this.surveyRepository.addItem(surveyId, item.uuid);
     return this.getSurveyDto(surveyId);
+  }
+
+  async removeSurveyItem(surveyId: string, itemId: string, userId: string): Promise<boolean> {
+    const survey = await this.surveyRepository.findOne(surveyId);
+    
+    if (survey?.author !== userId) {
+      throw new ForbiddenException();
+    }
+
+    await this.surveyRepository.removeItem(surveyId, itemId);
+    return this.surveyItemRepository.removeOne(itemId);
   }
 
   async findAll(): Promise<SurveyDto[]> {
@@ -50,8 +82,43 @@ export class SurveysService {
     return Promise.all(dtos);
   }
 
-  findOne(id: string): Promise<SurveyDto> {
+  async findOne(id: string): Promise<SurveyDto> {
     return this.getSurveyDto(id);
+  }
+
+  findAllResponsesForSurvey(surveyId: string): Promise<IResponse[]> {
+    return this.responseRepository.findAllForSurvey(surveyId);
+  }
+
+  async createResponse(
+    dto: CreateResponseDto,
+    surveyId: string,
+    surveyItemId: string,
+    userId: string
+  ) {
+    const survey = await this.surveyRepository.findOne(surveyId);
+    const surveyItem = await this.surveyItemRepository.findOne(surveyItemId);
+    const responsesForUser = await this.responseRepository.findForItemAndUser(surveyItemId, userId);
+
+    if (!survey || !surveyItem) {
+      throw new NotFoundException();
+    }
+
+    if (responsesForUser?.length) {
+      throw new ConflictException('User has already submitted a response for this survey item');
+    }
+
+    return this.responseRepository.create(dto, surveyId, surveyItemId, userId);
+  }
+
+  async removeAllResponsesForUserAndSurvey(surveyId: string, userId: string) {
+    const survey = await this.surveyRepository.findOne(surveyId);
+
+    if (!survey) {
+      throw new NotFoundException();
+    }
+
+    return this.responseRepository.removeAllForUserAndSurvey(surveyId, userId);
   }
 
   // update(id: string, updateSurveyDto: UpdateSurveyDto) {

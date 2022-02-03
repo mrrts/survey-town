@@ -3,7 +3,6 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class PasswordService {
-  private secret: string = process.env.AUTH_SECRET;
   private saltRounds: number = 10;
 
   async generateHash(plaintextPassword: string): Promise<string> {

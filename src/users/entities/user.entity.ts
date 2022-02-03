@@ -12,6 +12,7 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
   emailAddress: string;
+  handle: string;
   passwordHash: string;
   roles: USER_ROLES[];
   safe: () => IUser;
@@ -22,14 +23,16 @@ const options: SchemaOptions = {
 };
 
 export const userSchema = new Schema<IUser>({
-  uuid: { type: String, required: true, default: () => uuidv4(), unique: true, index: true },
+  uuid: { type: String, required: true, default: uuidv4, unique: true, index: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
   emailAddress: { type: String, required: true, unique: true, index: true },
+  handle: { type: String, required: true, unique: true, index: true },
   passwordHash: { type: String, required: true },
   roles: { type: [String], required: true, default: () => [USER_ROLES.USER] }
 }, options);
 
+// Use when returning a user document to the client to keep pw hashes private
 userSchema.methods.safe = function () {
   this.passwordHash = null;
   return this;

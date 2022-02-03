@@ -31,13 +31,4 @@ describe('UsersController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should create a user', async () => {
-    const dto: CreateUserDto = {
-      emailAddress: 'joe@fake.com',
-      plaintextPassword: 'p@ssw0rd!'
-    };
-    await controller.create(dto);
-    expect(mockUsersService.create).toHaveBeenCalledWith(dto);
-    expect(mockUser.safe).toHaveBeenCalled();
-  });
 });

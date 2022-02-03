@@ -1,7 +1,9 @@
 import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { IUser } from '../users/entities/user.entity';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -11,18 +13,18 @@ export class AuthController {
   ) {}
   
   @Post('login')
-  async login(@Body() loginDto: LoginDto, @Res() res: Response, @Req() req: Request) {
-    const authenticatedUser = await this.authService.login(loginDto, req);
-    if (authenticatedUser && authenticatedUser.emailAddress) {
-      authenticatedUser.passwordHash = null;
-      return res.status(200).json(authenticatedUser);
-    } else {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
+  async login(@Body() loginDto: LoginDto, @Req() req: Request): Promise<IUser> {
+    return this.authService.login(loginDto, req);
+  }
+
+  @Post('register')
+  register(@Body() registerDto: RegisterDto, @Req() req: Request): Promise<IUser> {
+    return this.authService.register(registerDto, req);
   }
 
   @Get('logout')
-  async logout(@Req() req: Request) {
+  async logout(@Req() req: Request, @Res() res: Response) {
     this.authService.logout(req);
+    res.status(200).clearCookie(process.env.SESSION_COOKIE_NAME).send();
   }
 }

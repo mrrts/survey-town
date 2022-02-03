@@ -7,14 +7,15 @@ async function bootstrap() {
 
   app.use(
     session({
+      name: process.env.SESSION_COOKIE_NAME,
       secret: process.env.AUTH_SECRET,
       resave: false,
       saveUninitialized: false,
       cookie: {
         secure: process.env.USE_SECURE_SESSION === 'true',
         maxAge: /* 2 weeks in millis */ 1209600000
-      }
-    } as (session.SessionOptions & { secure: boolean }))
+      },
+    } as (session.SessionOptions))
   );
 
   await app.listen(process.env.PORT || 3000);

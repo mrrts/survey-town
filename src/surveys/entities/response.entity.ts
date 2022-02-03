@@ -1,4 +1,5 @@
 import { Document, Schema, model, Model, SchemaOptions } from "mongoose";
+import { v4 as uuidv4 } from 'uuid';
 
 export enum ResponseType {
   FREE_RESPONSE = 'FREE_RESPONSE_RESPONSE',
@@ -7,6 +8,7 @@ export enum ResponseType {
 }
 
 export interface IResponse {
+  uuid: string;
   survey: string;
   surveyItem: string;
   responseType: ResponseType;
@@ -24,6 +26,7 @@ const options: SchemaOptions = {
 
 // base shared schema for all polymorphic response types
 export const responseSchema = new Schema({
+  uuid: { type: String, required: true, index: true, default: uuidv4 },
   survey: { type: String, required: true, index: true },
   surveyItem: { type: String, required: true, index: true },
   responseType: { type: String, required: true },
