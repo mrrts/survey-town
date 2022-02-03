@@ -46,7 +46,7 @@ describe('SurveysController', () => {
       responsesPublic: true
     };
 
-    await controller.create(dto, mockSession);
+    await controller.create(dto, mockSession._user.uuid);
 
     expect(mockSurveysService.create).toHaveBeenCalledWith(dto, mockSession._user.uuid);
   });
@@ -75,7 +75,7 @@ describe('SurveysController', () => {
       _user: { uuid: 'user1234' }
     };
 
-    await controller.createSurveyItem(surveyId, dto, session);
+    await controller.createSurveyItem(surveyId, dto, session._user.uuid);
 
     expect(mockSurveysService.createSurveyItem).toHaveBeenCalledWith(dto, surveyId, session._user.uuid);
   });

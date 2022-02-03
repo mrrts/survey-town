@@ -12,9 +12,14 @@ import { UsersService } from './users/users.service';
 import { User, userSchema } from './users/entities/user.entity';
 import { LoggerMiddleware } from './common/logger.middleware';
 import { SurveysController } from './surveys/surveys.controller';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client/build'),
+    }),
     ConfigModule.forRoot({
       envFilePath: ['.env.development'],
       isGlobal: true
