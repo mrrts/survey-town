@@ -4,6 +4,8 @@ import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import { authReducer } from "./auth/slice";
 import { createLogger } from 'redux-logger';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
+import * as authEpics from './auth/epics';
+import { values } from 'lodash';
 
 const epicMiddleware = createEpicMiddleware();
 
@@ -25,7 +27,9 @@ export const store = configureStore({
   }
 });
 
-const rootEpic = combineEpics();
+const rootEpic = combineEpics(
+  ...values(authEpics),
+);
 epicMiddleware.run(rootEpic);
 
 export type AppState = ReturnType<typeof store.getState>;

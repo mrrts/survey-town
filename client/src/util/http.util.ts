@@ -1,11 +1,30 @@
-const baseUrl = process.env.REACT_APP_BASE_API_URL;
+export const baseUrl = process.env.REACT_APP_BASE_API_URL;
 
-export async function post<T>(urlPath: string, body: any): Promise<T> {
+const baseConfig: Partial<RequestInit> = {
+  mode: 'cors',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  cache: 'no-cache'
+};
+
+export async function get<RespType>(urlPath: string): Promise<RespType> {
+  const response = await fetch(
+    `${baseUrl}${urlPath}`,
+    {
+      ...baseConfig,
+      method: 'GET'
+    }
+  );
+  return response.json();
+}
+
+export async function post<BodyType, RespType>(urlPath: string, body: BodyType): Promise<RespType> {
   const response: Response = await fetch(
     `${baseUrl}${urlPath}`,
     {
+      ...baseConfig,
       method: 'POST',
-      mode: 'cors',
       body: JSON.stringify(body)
     }
   );
