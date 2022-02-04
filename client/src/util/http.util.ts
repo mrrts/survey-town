@@ -1,32 +1,17 @@
-export const baseUrl = process.env.REACT_APP_BASE_API_URL;
+import axios, { AxiosError } from 'axios';
 
-const baseConfig: Partial<RequestInit> = {
-  mode: 'cors',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  cache: 'no-cache'
-};
+const instance = axios.create({
+  baseURL: process.env.REACT_APP_BASE_API_URL,
+  timeout: 1000,
+  headers: {'Content-Type': 'application/json'}
+});
 
 export async function get<RespType>(urlPath: string): Promise<RespType> {
-  const response = await fetch(
-    `${baseUrl}${urlPath}`,
-    {
-      ...baseConfig,
-      method: 'GET'
-    }
-  );
-  return response.json();
+  const response = await instance.get(urlPath)
+  return response.data;
 }
 
 export async function post<BodyType, RespType>(urlPath: string, body: BodyType): Promise<RespType> {
-  const response: Response = await fetch(
-    `${baseUrl}${urlPath}`,
-    {
-      ...baseConfig,
-      method: 'POST',
-      body: JSON.stringify(body)
-    }
-  );
-  return response.json();
+  const response = await instance.post(urlPath, body)
+  return response.data;
 }

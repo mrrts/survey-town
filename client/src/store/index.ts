@@ -6,19 +6,20 @@ import { createLogger } from 'redux-logger';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import * as authEpics from './auth/epics';
 import { values } from 'lodash';
+import { requestsReducer } from "./requests/slice";
 
+const loggerMiddleware = createLogger({ collapsed: true });
 const epicMiddleware = createEpicMiddleware();
 
 const middlewares: Middleware[] = [
-  createLogger({
-    collapsed: true
-  }),
+  loggerMiddleware,
   epicMiddleware
 ];
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer
+    auth: authReducer,
+    requests: requestsReducer
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware().concat(

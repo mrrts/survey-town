@@ -14,8 +14,11 @@ const slice = createSlice({
   name: 'auth',
   initialState: defaultAuthState,
   reducers: {
-    login(state: IAuthState, action: PayloadAction<{ dto: LoginDto }>) {
-      // only triggers epic
+    loginUser(state: IAuthState, action: PayloadAction<{ dto: LoginDto }>) {
+      // triggers epic
+    },
+    logoutUser() {
+      // triggers epic
     },
     setUser(state: IAuthState, action: PayloadAction<{ user: User }>) {
       state.user = action.payload.user;
@@ -27,7 +30,8 @@ const slice = createSlice({
 });
 
 export const {
-  login,
+  loginUser,
+  logoutUser,
   setUser,
   unsetUser
 } = slice.actions;
