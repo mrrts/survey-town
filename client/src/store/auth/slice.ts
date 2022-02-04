@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AppState } from '..';
 import { LoginDto } from '../../entities/dtos/login.dto';
 import { User } from '../../entities/user.model';
 
@@ -37,3 +38,11 @@ export const {
 } = slice.actions;
 
 export const authReducer = slice.reducer;
+
+/* Selectors*/
+export const getAuth = (state: AppState) => state.auth;
+
+export const getUser = createSelector(
+  getAuth,
+  (auth: IAuthState) => auth.user
+);

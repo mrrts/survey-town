@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { Action } from "rxjs/internal/scheduler/Action"
 
 export enum RequestState {
   PENDING = 'PENDING',
