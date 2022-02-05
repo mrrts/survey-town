@@ -22,7 +22,9 @@ export const store = configureStore({
     requests: requestsReducer
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(
+    return getDefaultMiddleware({
+      serializableCheck: false
+    }).concat(
       middlewares as ReturnType<typeof getDefaultMiddleware>
     );
   }

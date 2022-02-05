@@ -1,4 +1,4 @@
-import { catchError, concat, from, Observable, of, switchMap } from "rxjs";
+import { catchError, concat, from, Observable, of, switchMap, tap } from "rxjs";
 import { Action } from 'redux';
 import { AppState } from "..";
 import { ofType } from "redux-observable";
@@ -8,6 +8,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { LoginDto } from "../../entities/dtos/login.dto";
 import { requestError, requestStart, requestSuccess } from "../requests/slice";
 import { User } from "../../entities/user.model";
+import { navigate } from '@reach/router';
 
 export const loginEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
@@ -20,7 +21,7 @@ export const loginEpic = (action$: Observable<Action>, state$: Observable<AppSta
           switchMap((user: User) => {
             return concat(
               of(requestSuccess({ key })),
-              of(setUser({ user }))
+              of(setUser({ user })),
             );
           }),
           catchError((err: any) => {
