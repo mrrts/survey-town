@@ -1,17 +1,23 @@
+@import "~bootswatch/dist/yeti/variables";
 @import "~bootstrap/scss/bootstrap";
+@import "~bootswatch/dist/yeti/bootswatch";
+
 $border-radius: 15px;
-$alice-blue: #f0f8ff;
+$lightGray: #f7f7f7;
 
 .app-container {
   height: 100vh;
   width: 100vw;
-  background: $alice-blue;
+  background: $lightGray;
 }
 
 .navbar-wrapper {
-  background: #e9eef5;
+  background: #fff;
   .navbar {
     .brand {
+      border: 0;
+      padding: 0;
+      background: transparent;
       .brand-icon {
         font-size: 1em;
         color: $primary;
@@ -20,6 +26,9 @@ $alice-blue: #f0f8ff;
     }
     .logout-button {
       cursor: pointer;
+      border: 0;
+      padding: 0;
+      background: transparent;
     }
   }
 }

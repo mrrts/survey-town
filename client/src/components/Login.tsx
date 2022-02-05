@@ -1,5 +1,5 @@
 import { RouteComponentProps, navigate } from '@reach/router';
-import React, { FC, MouseEvent, useState, useEffect } from 'react';
+import React, { FC, MouseEvent, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useAppDispatch, useAppSelector } from '../store';
@@ -12,13 +12,13 @@ export interface ILoginProps extends RouteComponentProps {
 
 export const Login: FC<ILoginProps> = () => {
   const dispatch = useAppDispatch();
-  const [email, setEmail] = useState('');
-  const [pw, setPw] = useState('');
+  const { register, getValues } = useForm();
   const user = useAppSelector(getUser);
 
   const handleLoginClick = (e: MouseEvent) => {
     e.preventDefault();
-    dispatch(loginUser({ dto: { emailAddress: email, plaintextPassword: pw }}));
+    const { emailAddress, plaintextPassword } = getValues();
+    dispatch(loginUser({ dto: { emailAddress, plaintextPassword }}));
   }
 
   useEffect(() => {
@@ -34,12 +34,12 @@ export const Login: FC<ILoginProps> = () => {
       <Form>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" value={email} onChange={e => setEmail(e.target.value)} />
+          <Form.Control type="email" placeholder="Enter email" { ...register('emailAddress') } />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" value={pw} onChange={e => setPw(e.target.value)} />
+          <Form.Control type="password" placeholder="Password" { ...register('plaintextPassword') } />
         </Form.Group>
         
         <Button variant="primary" type="submit" onClick={handleLoginClick}>

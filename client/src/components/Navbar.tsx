@@ -2,11 +2,9 @@ import React, { FC } from 'react';
 import BSNavbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
-import Button from 'react-bootstrap/Button';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCity } from '@fortawesome/free-solid-svg-icons';
-import { Link } from '@reach/router';
+import { faPoll } from '@fortawesome/free-solid-svg-icons';
+import { Link, navigate } from '@reach/router';
 import { useAppDispatch, useAppSelector } from '../store';
 import { getUser, logoutUser } from '../store/auth/slice';
 
@@ -21,17 +19,14 @@ export const Navbar: FC<INavbarProps> = () => {
     <div className='navbar-wrapper'>
       <BSNavbar className='navbar'>
         <Container>
-          <BSNavbar.Brand href="/" className='brand'>
-            <FontAwesomeIcon icon={faCity} className='brand-icon' />
+          <BSNavbar.Brand as='button' onClick={() => navigate('/')} className='brand'>
+            <FontAwesomeIcon icon={faPoll} className='brand-icon' />
             Survey Town
           </BSNavbar.Brand>
           <BSNavbar.Toggle aria-controls="basic-navbar-nav" />
           <BSNavbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link as={Link} to='/surveys'>Surveys</Nav.Link>
-              {!user && (
-                <Nav.Link as={Link} to='/login'>Login</Nav.Link>
-              )}
               {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
@@ -44,7 +39,7 @@ export const Navbar: FC<INavbarProps> = () => {
               <BSNavbar.Collapse className="justify-content-end">
                 <BSNavbar.Text>
                   {user.handle} | &nbsp;
-                  <a className='btn-link logout-button' onClick={() => dispatch(logoutUser())}>Logout</a>
+                  <button className='btn-link logout-button' onClick={() => dispatch(logoutUser())}>Logout</button>
                 </BSNavbar.Text>
               </BSNavbar.Collapse>
             }
