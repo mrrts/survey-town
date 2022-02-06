@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
 
   constructor(
@@ -28,4 +28,5 @@ export class AuthController {
     this.authService.logout(req);
     res.status(200).clearCookie(process.env.SESSION_COOKIE_NAME).send();
   }
+
 }

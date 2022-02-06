@@ -1,4 +1,5 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { IAppSession } from '../auth/entities/session.entity';
 import { PasswordService } from '../password/password.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -58,6 +59,14 @@ export class UsersService {
 
   findByHandle(handle: string): Promise<IUser> {
     return this.userRepository.findByHandle(handle);
+  }
+
+  async getSelfFromSession(session: IAppSession): Promise<IUser> {
+    const freshUserLookup = await this.userRepository.findById(session?._user?.uuid);
+    if (!freshUserLookup) {
+      throw new UnauthorizedException('No active session');
+    }
+    return freshUserLookup;
   }
 
 }

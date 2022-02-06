@@ -21,7 +21,10 @@ const slice = createSlice({
     logoutUser() {
       // triggers epic
     },
-    setUser(state: IAuthState, action: PayloadAction<{ user: User }>) {
+    restoreSession() {
+      // triggers epic
+    },
+    setUser(state: IAuthState, action: PayloadAction<{ user: User|null }>) {
       state.user = action.payload.user;
     },
     unsetUser(state: IAuthState) {
@@ -33,6 +36,7 @@ const slice = createSlice({
 export const {
   loginUser,
   logoutUser,
+  restoreSession,
   setUser,
   unsetUser
 } = slice.actions;

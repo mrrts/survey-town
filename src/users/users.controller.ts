@@ -3,13 +3,15 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { RolesGuard } from '../common/roles.guard';
 import { Roles } from '../common/roles.decorator';
-import { USER_ROLES } from './entities/user.entity';
+import { IUser, USER_ROLES } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Session as ExpressSession } from 'express-session';
 import { get } from 'lodash';
 import { UpdateSelfDto } from './dto/update-self.dto';
+import { User } from '../common/user.decorator';
+import { IAppSession } from '../auth/entities/session.entity';
 
-@Controller('users')
+@Controller('api/users')
 @UseGuards(RolesGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -24,6 +26,13 @@ export class UsersController {
   @Roles({ requireAll: [ USER_ROLES.ADMIN ]})
   async create(@Body() dto: CreateUserDto) {
     const user = await this.usersService.create(dto);
+    return user.safe();
+  }
+
+  // Used to restore session on client when refreshing browser
+  @Get('self')
+  async getSelfFromSession(@Session() session: IAppSession) {
+    const user = await this.usersService.getSelfFromSession(session);
     return user.safe();
   }
 

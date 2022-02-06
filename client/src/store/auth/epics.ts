@@ -1,14 +1,13 @@
-import { catchError, concat, from, Observable, of, switchMap, tap } from "rxjs";
+import { catchError, concat, from, Observable, of, switchMap } from "rxjs";
 import { Action } from 'redux';
 import { AppState } from "..";
 import { ofType } from "redux-observable";
 import { setUser, unsetUser } from './slice';
-import { login, logout } from './http';
+import { getSelf, login, logout } from './http';
 import { PayloadAction } from "@reduxjs/toolkit";
 import { LoginDto } from "../../entities/dtos/login.dto";
 import { requestError, requestStart, requestSuccess } from "../requests/slice";
 import { User } from "../../entities/user.model";
-import { navigate } from '@reach/router';
 
 export const loginEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
@@ -18,7 +17,7 @@ export const loginEpic = (action$: Observable<Action>, state$: Observable<AppSta
       return concat(
         of(requestStart({ key })),
         from(login(action.payload.dto)).pipe(
-          switchMap((user: User) => {
+          switchMap((user: User|null) => {
             return concat(
               of(requestSuccess({ key })),
               of(setUser({ user })),
@@ -48,6 +47,28 @@ export const logoutEpic = (action$: Observable<Action>, state$: Observable<AppSt
           }),
           catchError((err: any) => {
             return of(requestError({ key, error: err.message }));
+          })
+        )
+      );
+    })
+  );
+
+export const restoreSessionEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
+  action$.pipe(
+    ofType('auth/restoreSession') as any,
+    switchMap(action => {
+      const key = 'restore_session';
+      return concat(
+        of(requestStart({ key })),
+        from(getSelf()).pipe(
+          switchMap((user: User|null) => {
+            return concat(
+              of(requestSuccess({ key })),
+              of(setUser({ user }))
+            );
+          }),
+          catchError((err: any) => {
+            return of(requestError({ key, error: err.message }))
           })
         )
       );

@@ -4,11 +4,16 @@ import * as httpUtil from '../../util/http.util';
 
 export const login = async (dto: LoginDto) => {
   const json = await httpUtil.post<LoginDto, IUser>('/auth/login', dto);
-  return new User(json);
+  return json ? new User(json) : null;
 };
 
 export const logout = async () => {
-  const resp = await httpUtil.get('/auth/logout');
+  const resp = await httpUtil.get<void>('/auth/logout');
   return resp;
+}
+
+export const getSelf = async (): Promise<User|null> => {
+  const json = await httpUtil.get<IUser>('users/self');
+  return json ? new User(json) : null;
 }
   

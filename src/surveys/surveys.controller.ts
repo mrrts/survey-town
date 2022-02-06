@@ -9,7 +9,7 @@ import { Roles } from '../common/roles.decorator';
 import { USER_ROLES } from '../users/entities/user.entity';
 import { User } from '../common/user.decorator';
 
-@Controller('surveys')
+@Controller('api/surveys')
 @UseGuards(RolesGuard)
 export class SurveysController {
   constructor(private readonly surveysService: SurveysService) {}
