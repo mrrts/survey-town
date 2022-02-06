@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { useAppDispatch, useAppSelector } from '../store';
 import { useForm } from 'react-hook-form';
 import { loginUser, getUser } from '../store/auth/slice';
+import { RequestInfo } from './RequestInfo';
 
 export interface ILoginProps extends RouteComponentProps {
 
@@ -12,8 +13,9 @@ export interface ILoginProps extends RouteComponentProps {
 
 export const Login: FC<ILoginProps> = () => {
   const dispatch = useAppDispatch();
-  const { register, getValues } = useForm();
+  const { register, getValues, watch } = useForm();
   const user = useAppSelector(getUser);
+  const currentEmailAddress = watch('emailAddress');
 
   const handleLoginClick = (e: MouseEvent) => {
     e.preventDefault();
@@ -41,6 +43,8 @@ export const Login: FC<ILoginProps> = () => {
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" placeholder="Password" { ...register('plaintextPassword') } />
         </Form.Group>
+
+        <RequestInfo requestKey={`login_${currentEmailAddress}`} />
         
         <Button variant="primary" type="submit" onClick={handleLoginClick}>
           Login

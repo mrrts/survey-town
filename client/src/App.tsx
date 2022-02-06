@@ -7,6 +7,8 @@ import { Survey } from './components/Survey';
 import { Navbar } from './components/Navbar';
 import { useAppDispatch } from './store';
 import { restoreSession } from './store/auth/slice';
+import Container from 'react-bootstrap/Container';
+import { SurveyRoute } from './components/SurveyRoute';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -21,14 +23,16 @@ function App() {
         <Navbar />
       </header>
       <main className='main-container'>
-        <Router>
-          <Login path='login' />
-          <ProtectedRoute path='surveys'>
-            <Surveys path='/'>
-              <Survey path=':surveyId' />
-            </Surveys>
-          </ProtectedRoute>
-        </Router>
+        <Container>
+          <Router>
+            <Login path='login' />
+            <ProtectedRoute path='surveys'>
+              <Surveys path='/'>
+                <SurveyRoute path=':surveyId' />
+              </Surveys>
+            </ProtectedRoute>
+          </Router>
+        </Container>
       </main>
     </div>
   );

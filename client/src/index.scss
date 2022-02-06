@@ -19,6 +19,17 @@ $lightGray: #f7f7f7;
   cursor: pointer;
 }
 
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  .spinner-icon {
+    color: $primary;
+    animation: spin 3s infinite;
+  }
+}
+
 .navbar-wrapper {
   background: #fff;
   .navbar {
@@ -35,6 +46,10 @@ $lightGray: #f7f7f7;
   }
 }
 
+.main-container {
+  padding: 15px;
+}
+
 .login {
   background: #fff;
   border-radius: $border-radius;
@@ -43,4 +58,12 @@ $lightGray: #f7f7f7;
   max-width: 100vw;
   margin: 50px auto 50px;
   padding: 20px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  } to {
+    transform: rotate(360deg);
+  }
 }

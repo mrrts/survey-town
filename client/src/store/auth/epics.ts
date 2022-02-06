@@ -3,7 +3,7 @@ import { Action } from 'redux';
 import { AppState } from "..";
 import { ofType } from "redux-observable";
 import { setUser, unsetUser } from './slice';
-import { getSelf, login, logout } from './http';
+import { getSelf, login, logout } from './api';
 import { PayloadAction } from "@reduxjs/toolkit";
 import { LoginDto } from "../../entities/dtos/login.dto";
 import { requestError, requestStart, requestSuccess } from "../requests/slice";

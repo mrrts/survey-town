@@ -1,5 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
+axios.defaults.withCredentials = true;
+
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_API_URL,
   timeout: 1000,
