@@ -15,7 +15,7 @@ export class RequestError extends Error {
 }
 
 export interface IRequestErrorData {
-  status: number;
+  statusCode: number;
   message?: string;
   error?: string;
 }
