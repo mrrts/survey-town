@@ -8,6 +8,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { LoginDto } from "../../entities/dtos/login.dto";
 import { requestError, requestStart, requestSuccess } from "../requests/slice";
 import { User } from "../../entities/user.model";
+import { RequestError } from "../../util/http.util";
 
 export const loginEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
@@ -23,8 +24,8 @@ export const loginEpic = (action$: Observable<Action>, state$: Observable<AppSta
               of(setUser({ user })),
             );
           }),
-          catchError((err: any) => {
-            return of(requestError({ key, error: err.message }))
+          catchError((error: RequestError) => {
+            return of(requestError({ key, error: error.data }))
           })
         )
       )
@@ -45,8 +46,8 @@ export const logoutEpic = (action$: Observable<Action>, state$: Observable<AppSt
               of(unsetUser())
             );
           }),
-          catchError((err: any) => {
-            return of(requestError({ key, error: err.message }));
+          catchError((error: RequestError) => {
+            return of(requestError({ key, error: error.data }));
           })
         )
       );
@@ -67,8 +68,8 @@ export const restoreSessionEpic = (action$: Observable<Action>, state$: Observab
               of(setUser({ user }))
             );
           }),
-          catchError((err: any) => {
-            return of(requestError({ key, error: err.message }))
+          catchError((error: RequestError) => {
+            return of(requestError({ key, error: error.data }))
           })
         )
       );

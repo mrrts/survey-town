@@ -11,6 +11,13 @@ $lightGray: #f7f7f7;
   background: $lightGray;
 }
 
+.btn-link {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
 .navbar-wrapper {
   background: #fff;
   .navbar {
@@ -23,12 +30,6 @@ $lightGray: #f7f7f7;
         color: $primary;
         margin: 0 20px 0 0;
       }
-    }
-    .logout-button {
-      cursor: pointer;
-      border: 0;
-      padding: 0;
-      background: transparent;
     }
   }
 }
