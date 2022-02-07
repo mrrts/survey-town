@@ -78,7 +78,7 @@ export const getSurveyById = (surveyId: string) => createSelector(
 
 export const getSurveyItemsBySurveyId = (surveyId: string) => createSelector(
   getSurveysState,
-  (surveysState: ISurveysState) => {
+  (surveysState: ISurveysState): ISurveyItem[] => {
     const surveyItemIds = surveysState.surveys?.[surveyId]?.surveyItems || [];
     const surveyItems = surveyItemIds.map((surveyItemId: string) => {
       return surveysState.surveyItems?.[surveyItemId];
