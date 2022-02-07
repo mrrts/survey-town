@@ -2,9 +2,9 @@ import { catchError, concat, from, Observable, of, switchMap } from "rxjs";
 import { Action } from 'redux';
 import { AppState } from "..";
 import { ofType } from "redux-observable";
-import { setUser, unsetUser } from './slice';
+import { loginUser, logoutUser, restoreSession, setUser, unsetUser } from './slice';
 import { getSelf, login, logout } from './api';
-import { PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction, getType } from "@reduxjs/toolkit";
 import { LoginDto } from "../../entities/dtos/login.dto";
 import { requestError, requestStart, requestSuccess } from "../requests/slice";
 import { User } from "../../entities/user.model";
@@ -13,7 +13,7 @@ import { fetchUserHandles } from "../users/slice";
 
 export const loginEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
-    ofType('auth/loginUser') as any,
+    ofType(getType(loginUser)) as any,
     switchMap((action: PayloadAction<{ dto: LoginDto }>) => {
       const key = 'login';
       return concat(
@@ -36,7 +36,7 @@ export const loginEpic = (action$: Observable<Action>, state$: Observable<AppSta
 
 export const logoutEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
-    ofType('auth/logoutUser') as any,
+    ofType(getType(logoutUser)),
     switchMap((action: Action) => {
       const key = 'logout';
       return concat(
@@ -58,7 +58,7 @@ export const logoutEpic = (action$: Observable<Action>, state$: Observable<AppSt
 
 export const restoreSessionEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
-    ofType('auth/restoreSession') as any,
+    ofType(getType(restoreSession)),
     switchMap(action => {
       const key = 'restore_session';
       return concat(

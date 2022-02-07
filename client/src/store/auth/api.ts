@@ -8,12 +8,11 @@ export const login = async (dto: LoginDto) => {
 };
 
 export const logout = async () => {
-  const resp = await httpUtil.get<void>('/auth/logout');
-  return resp;
-}
+  return httpUtil.get<void>('/auth/logout');
+};
 
 export const getSelf = async (): Promise<User|null> => {
   const json = await httpUtil.get<IUser>('users/self');
   return json ? new User(json) : null;
-}
+};
   

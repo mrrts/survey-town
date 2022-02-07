@@ -1,3 +1,4 @@
+import { getType } from "@reduxjs/toolkit";
 import { Action } from "redux";
 import { ofType } from "redux-observable";
 import { concat, mergeMap, Observable, of, from, switchMap, catchError } from "rxjs";
@@ -6,11 +7,11 @@ import { IUser } from "../../entities/user.model";
 import { RequestError } from "../../util/http.util";
 import { requestError, requestStart, requestSuccess } from "../requests/slice";
 import { fetchUserHandles } from "./api";
-import { receiveHandles } from "./slice";
+import { receiveHandles, fetchUserHandles as fetchUserHandlesAction } from "./slice";
 
 export const fetchAllHandlesEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
-    ofType('users/fetchUserHandles') as any,
+    ofType(getType(fetchUserHandlesAction)) as any,
     mergeMap((action: Action) => {
       const key = 'fetch_all_handles';
       return concat(
