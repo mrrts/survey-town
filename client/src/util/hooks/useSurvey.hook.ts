@@ -12,7 +12,7 @@ export const useSurvey = (surveyId: string) => {
   const userHandles = useAppSelector(getUserHandles);
 
   const authorHandle = userHandles[survey?.author]?.handle;
-  const numberOfResponses = survey?.numberOfResponses;
+  const numberOfResponses = survey?.numberOfResponses || 0;
 
   return {
     survey,
