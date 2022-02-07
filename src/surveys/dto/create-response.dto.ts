@@ -1,4 +1,4 @@
-import { ResponseType } from "../entities/response.entity";
+import { ResponseType } from '../entities/response.entity';
 
 export class CreateResponseDto {
   responseType: ResponseType;

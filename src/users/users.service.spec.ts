@@ -19,24 +19,23 @@ describe('UsersService', () => {
       emailAddress: 'joe@fake.com',
       handle: 'Mr. Joe',
       roles: [USER_ROLES.USER],
-      safe: jest.fn()
+      safe: jest.fn(),
     };
     mockUsersRepo = {
       create: jest.fn().mockReturnValue(mockUser),
-      findByEmailAddress: jest.fn().mockReturnValue(mockUser)
+      findByEmailAddress: jest.fn().mockReturnValue(mockUser),
     };
     mockPasswordService = {
-      generateHash: jest.fn().mockReturnValue(mockHash)
+      generateHash: jest.fn().mockReturnValue(mockHash),
     };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsersService,
         { provide: PasswordService, useValue: mockPasswordService },
-        { provide: UserRepository, useValue: mockUsersRepo }
+        { provide: UserRepository, useValue: mockUsersRepo },
       ],
-    })
-    .compile();
+    }).compile();
 
     service = module.get<UsersService>(UsersService);
   });
@@ -49,18 +48,20 @@ describe('UsersService', () => {
     const dto: CreateUserDto = {
       emailAddress: 'bob@fake.com',
       plaintextPassword: 'p@ssw0rd!',
-      handle: 'handle1', 
-      roles: [USER_ROLES.USER]
+      handle: 'handle1',
+      roles: [USER_ROLES.USER],
     };
 
     await service.create(dto);
 
-    expect(mockPasswordService.generateHash).toHaveBeenCalledWith(dto.plaintextPassword);
+    expect(mockPasswordService.generateHash).toHaveBeenCalledWith(
+      dto.plaintextPassword,
+    );
     expect(mockUsersRepo.create).toHaveBeenCalledWith({
       emailAddress: dto.emailAddress,
       passwordHash: mockHash,
       handle: 'handle1',
-      roles: [USER_ROLES.USER]
+      roles: [USER_ROLES.USER],
     });
   });
 

@@ -1,4 +1,4 @@
-import { USER_ROLES } from "../entities/user.entity";
+import { USER_ROLES } from '../entities/user.entity';
 
 export class CreateUserDto {
   emailAddress: string;

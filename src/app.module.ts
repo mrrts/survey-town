@@ -21,9 +21,9 @@ import { join } from 'path';
     }),
     ConfigModule.forRoot({
       envFilePath: ['.env.development'],
-      isGlobal: true
+      isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.DB_URL, { 
+    MongooseModule.forRoot(process.env.DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }),
@@ -36,11 +36,7 @@ import { join } from 'path';
   providers: [AppService, PasswordService, UsersService],
 })
 export class AppModule implements NestModule {
-  
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoggerMiddleware)
-      .forRoutes(SurveysController)
+    consumer.apply(LoggerMiddleware).forRoutes(SurveysController);
   }
-
 }

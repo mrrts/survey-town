@@ -1,15 +1,18 @@
-import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
-import { CreateResponseDto } from "../dto/create-response.dto";
-import { IResponse, Response, ResponseDocument } from "../entities/response.entity";
-
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { CreateResponseDto } from '../dto/create-response.dto';
+import {
+  IResponse,
+  Response,
+  ResponseDocument,
+} from '../entities/response.entity';
 
 @Injectable()
 export class ResponseRepository {
-
   constructor(
-    @InjectModel(Response.modelName) private responseModel: Model<ResponseDocument>
+    @InjectModel(Response.modelName)
+    private responseModel: Model<ResponseDocument>,
   ) {}
 
   findAll(): Promise<IResponse[]> {
@@ -24,28 +27,34 @@ export class ResponseRepository {
     return this.responseModel.find({ surveyItem: surveyItemId }).exec();
   }
 
-  findForItemAndUser(surveyItemId: string, userId: string): Promise<IResponse[]> {
-    return this.responseModel.find({ surveyItem: surveyItemId, user: userId }).exec();
+  findForItemAndUser(
+    surveyItemId: string,
+    userId: string,
+  ): Promise<IResponse[]> {
+    return this.responseModel
+      .find({ surveyItem: surveyItemId, user: userId })
+      .exec();
   }
 
   // Clear the responses for one user for one survey
   removeAllForUserAndSurvey(surveyId: string, userId: string) {
-    return this.responseModel.deleteMany({ survey: surveyId, user: userId }).exec();
+    return this.responseModel
+      .deleteMany({ survey: surveyId, user: userId })
+      .exec();
   }
 
   create(
     dto: CreateResponseDto,
     surveyId: string,
     surveyItemId: string,
-    userId: string
+    userId: string,
   ) {
     const response: ResponseDocument = new this.responseModel({
       ...dto,
       survey: surveyId,
       user: userId,
-      surveyItem: surveyItemId
+      surveyItem: surveyItemId,
     });
     return response.save();
   }
-
 }

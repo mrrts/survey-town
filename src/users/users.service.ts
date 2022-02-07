@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { IAppSession } from '../auth/entities/session.entity';
 import { PasswordService } from '../password/password.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -10,16 +14,18 @@ import { UserRepository } from './repositories/user.repository';
 export class UsersService {
   constructor(
     private userRepository: UserRepository,
-    private passwordService: PasswordService
+    private passwordService: PasswordService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<IUser> {
-    const passwordHash = await this.passwordService.generateHash(createUserDto.plaintextPassword);
+    const passwordHash = await this.passwordService.generateHash(
+      createUserDto.plaintextPassword,
+    );
     return this.userRepository.create({
       emailAddress: createUserDto.emailAddress,
       handle: createUserDto.handle,
       passwordHash,
-      roles: createUserDto.roles
+      roles: createUserDto.roles,
     });
   }
 
@@ -30,20 +36,20 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    const passwordHash = dto.plaintextPassword 
+    const passwordHash = dto.plaintextPassword
       ? await this.passwordService.generateHash(dto.plaintextPassword)
       : null;
-  
+
     const data = {
       ...dto,
       passwordHash,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     if (!dto.plaintextPassword) {
       delete data.passwordHash;
     }
-    
+
     await this.userRepository.updateOne(id, data);
 
     return this.userRepository.findById(id);
@@ -62,7 +68,9 @@ export class UsersService {
   }
 
   async getSelfFromSession(session: IAppSession): Promise<IUser> {
-    const freshUserLookup = await this.userRepository.findById(session?._user?.uuid);
+    const freshUserLookup = await this.userRepository.findById(
+      session?._user?.uuid,
+    );
     if (!freshUserLookup) {
       throw new UnauthorizedException('No active session');
     }
@@ -73,8 +81,7 @@ export class UsersService {
     const allUsers = await this.findAll();
     return allUsers.map((user: IUser) => ({
       uuid: user.uuid,
-      handle: user.handle
+      handle: user.handle,
     }));
-  } 
-
+  }
 }

@@ -14,22 +14,20 @@ describe('SurveysController', () => {
     mockSession = {
       _user: {
         uuid: 'uuid1',
-        emailAddress: 'joe@fake.com'
-      }
+        emailAddress: 'joe@fake.com',
+      },
     };
 
     mockSurveysService = {
       create: jest.fn(),
       findAll: jest.fn(),
       findOne: jest.fn(),
-      createSurveyItem: jest.fn()
+      createSurveyItem: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [SurveysController],
-      providers: [
-        { provide: SurveysService, useValue: mockSurveysService }        
-      ],
+      providers: [{ provide: SurveysService, useValue: mockSurveysService }],
     }).compile();
 
     controller = module.get<SurveysController>(SurveysController);
@@ -43,12 +41,15 @@ describe('SurveysController', () => {
     const dto: CreateSurveyDto = {
       title: 'title1',
       description: 'desc1',
-      responsesPublic: true
+      responsesPublic: true,
     };
 
     await controller.create(dto, mockSession._user.uuid);
 
-    expect(mockSurveysService.create).toHaveBeenCalledWith(dto, mockSession._user.uuid);
+    expect(mockSurveysService.create).toHaveBeenCalledWith(
+      dto,
+      mockSession._user.uuid,
+    );
   });
 
   it('finds all surveys', async () => {
@@ -69,14 +70,18 @@ describe('SurveysController', () => {
     const surveyId = 'uuid1234';
     const dto: CreateSurveyItemDto = {
       itemType: SurveyItemType.CONTENT_INTERLUDE,
-      content: 'content1'
+      content: 'content1',
     };
     const session: any = {
-      _user: { uuid: 'user1234' }
+      _user: { uuid: 'user1234' },
     };
 
     await controller.createSurveyItem(surveyId, dto, session._user.uuid);
 
-    expect(mockSurveysService.createSurveyItem).toHaveBeenCalledWith(dto, surveyId, session._user.uuid);
+    expect(mockSurveysService.createSurveyItem).toHaveBeenCalledWith(
+      dto,
+      surveyId,
+      session._user.uuid,
+    );
   });
 });

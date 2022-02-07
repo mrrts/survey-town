@@ -1,4 +1,4 @@
-import { SurveyItemType } from "../entities/survey-item.entity";
+import { SurveyItemType } from '../entities/survey-item.entity';
 
 export class CreateSurveyItemDto {
   itemType: SurveyItemType;

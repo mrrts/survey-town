@@ -14,20 +14,18 @@ describe('AuthController', () => {
   beforeEach(async () => {
     mockUser = {
       emailAddress: 'joe@fake.com',
-      uuid: 'uuid1'
+      uuid: 'uuid1',
     };
 
     mockRequest = {};
 
     mockAuthService = {
-      login: jest.fn().mockReturnValue(mockUser)
+      login: jest.fn().mockReturnValue(mockUser),
     };
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
-      providers: [
-        { provide: AuthService, useValue: mockAuthService }
-      ]
+      providers: [{ provide: AuthService, useValue: mockAuthService }],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
@@ -40,7 +38,7 @@ describe('AuthController', () => {
   it('should login', async () => {
     const dto: LoginDto = {
       emailAddress: 'joe@fake.com',
-      plaintextPassword: 'p@ssw0rd!'
+      plaintextPassword: 'p@ssw0rd!',
     };
 
     await controller.login(dto, mockRequest);
@@ -51,7 +49,7 @@ describe('AuthController', () => {
   it('should respond with 401 for invalid credentials', async () => {
     const dto: LoginDto = {
       emailAddress: 'joe@fake.com',
-      plaintextPassword: 'p@ssw0rd!'
+      plaintextPassword: 'p@ssw0rd!',
     };
 
     mockAuthService.login.mockReturnValue(null);

@@ -2,7 +2,7 @@ import { Schema, SchemaOptions, Model, model, Document } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 const options: SchemaOptions = {
-  collection: 'surveys'
+  collection: 'surveys',
 };
 
 export interface ISurvey {
@@ -16,17 +16,25 @@ export interface ISurvey {
   surveyItems: string[];
 }
 
-
-export const surveySchema = new Schema({
-  uuid: { type: String, default: () => uuidv4(), index: true, required: true, unique: true },
-  createdAt: { type: Date, index: true, default: Date.now, required: true },
-  updatedAt: { type: Date, default: Date.now, required: true },
-  author: { type: String, index: true, required: true },
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  responsesPublic: { type: Boolean, required: true, default: () => true },
-  surveyItems: { type: [String], required: true, default: () => [] }
-}, options);
+export const surveySchema = new Schema(
+  {
+    uuid: {
+      type: String,
+      default: () => uuidv4(),
+      index: true,
+      required: true,
+      unique: true,
+    },
+    createdAt: { type: Date, index: true, default: Date.now, required: true },
+    updatedAt: { type: Date, default: Date.now, required: true },
+    author: { type: String, index: true, required: true },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    responsesPublic: { type: Boolean, required: true, default: () => true },
+    surveyItems: { type: [String], required: true, default: () => [] },
+  },
+  options,
+);
 
 export const Survey: Model<ISurvey> = model('Survey', surveySchema);
 

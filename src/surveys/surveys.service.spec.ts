@@ -28,11 +28,7 @@ describe('SurveysService', () => {
       updatedAt: new Date(),
       description: 'description1',
       responsesPublic: true,
-      surveyItems: [
-        'item-uuid-1',
-        'item-uuid-2',
-        'item-uuid-3'
-      ]
+      surveyItems: ['item-uuid-1', 'item-uuid-2', 'item-uuid-3'],
     };
 
     mockSurveyItem1 = {
@@ -41,9 +37,9 @@ describe('SurveysService', () => {
       content: 'content1',
       author: 'author1',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
-    
+
     mockSurveyItem2 = {
       uuid: 'item-uuid-2',
       itemType: SurveyItemType.MULTIPLE_CHOICE,
@@ -51,7 +47,7 @@ describe('SurveysService', () => {
       choices: ['blue', 'red', 'green'],
       author: 'author1',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     mockSurveyItem3 = {
@@ -61,23 +57,23 @@ describe('SurveysService', () => {
       choices: ['blue', 'red', 'green'],
       author: 'author1',
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
-    
+
     mockSurveyRepo = {
       createWithAuthor: jest.fn().mockReturnValue(mockSurvey),
       findOne: jest.fn().mockReturnValue(mockSurvey),
       addItem: jest.fn(),
-      findAll: jest.fn().mockReturnValue([ mockSurvey ])
+      findAll: jest.fn().mockReturnValue([mockSurvey]),
     };
 
     mockSurveyItemRepo = {
       findMultiple: jest.fn().mockReturnValue([
         mockSurveyItem2, // return out of order to test proper sorting
         mockSurveyItem3,
-        mockSurveyItem1
+        mockSurveyItem1,
       ]),
-      createWithAuthor: jest.fn().mockReturnValue(mockSurveyItem1)
+      createWithAuthor: jest.fn().mockReturnValue(mockSurveyItem1),
     };
 
     mockResponseRepo = {};
@@ -87,7 +83,7 @@ describe('SurveysService', () => {
         SurveysService,
         { provide: SurveyRepository, useValue: mockSurveyRepo },
         { provide: SurveyItemRepository, useValue: mockSurveyItemRepo },
-        { provide: ResponseRepository, useValue: mockResponseRepo }
+        { provide: ResponseRepository, useValue: mockResponseRepo },
       ],
     }).compile();
 
@@ -102,7 +98,9 @@ describe('SurveysService', () => {
     const resultDto: SurveyDto = await service.getSurveyDto(mockSurvey.uuid);
 
     expect(mockSurveyRepo.findOne).toHaveBeenCalledWith(mockSurvey.uuid);
-    expect(mockSurveyItemRepo.findMultiple).toHaveBeenCalledWith(mockSurvey.surveyItems);
+    expect(mockSurveyItemRepo.findMultiple).toHaveBeenCalledWith(
+      mockSurvey.surveyItems,
+    );
     expect(resultDto).toBeInstanceOf(SurveyDto);
     expect(resultDto.survey).toMatchObject(mockSurvey);
     expect(resultDto.expandedItems).toHaveLength(3);
@@ -116,29 +114,42 @@ describe('SurveysService', () => {
     const createDto: CreateSurveyDto = {
       title: 'title1',
       description: 'description1',
-      responsesPublic: true
+      responsesPublic: true,
     };
 
     const authorId = 'author1';
 
     const resultDto: SurveyDto = await service.create(createDto, authorId);
 
-    expect(mockSurveyRepo.createWithAuthor).toHaveBeenCalledWith(createDto, authorId);
+    expect(mockSurveyRepo.createWithAuthor).toHaveBeenCalledWith(
+      createDto,
+      authorId,
+    );
     expect(resultDto).toBeInstanceOf(SurveyDto);
   });
 
   it('creates a survey item', async () => {
     const dto: CreateSurveyItemDto = {
       itemType: SurveyItemType.CONTENT_INTERLUDE,
-      content: 'content1'
+      content: 'content1',
     };
     const surveyId = mockSurvey.uuid;
     const authorId = mockSurvey.author;
 
-    const result: SurveyDto = await service.createSurveyItem(dto, surveyId, authorId);
+    const result: SurveyDto = await service.createSurveyItem(
+      dto,
+      surveyId,
+      authorId,
+    );
 
-    expect(mockSurveyItemRepo.createWithAuthor).toHaveBeenCalledWith(dto, authorId);
-    expect(mockSurveyRepo.addItem).toHaveBeenCalledWith(surveyId, mockSurveyItem1.uuid);
+    expect(mockSurveyItemRepo.createWithAuthor).toHaveBeenCalledWith(
+      dto,
+      authorId,
+    );
+    expect(mockSurveyRepo.addItem).toHaveBeenCalledWith(
+      surveyId,
+      mockSurveyItem1.uuid,
+    );
     expect(result).toBeInstanceOf(SurveyDto);
   });
 
@@ -153,5 +164,5 @@ describe('SurveysService', () => {
     const result = await service.findOne(mockSurvey.uuid);
     expect(result).toBeInstanceOf(SurveyDto);
     expect(result.survey.uuid).toBe(mockSurvey.uuid);
-  })
+  });
 });

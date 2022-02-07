@@ -1,4 +1,4 @@
-import { createParamDecorator, ExecutionContext } from "@nestjs/common";
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { get } from 'lodash';
 
 export const User = createParamDecorator(
@@ -6,8 +6,10 @@ export const User = createParamDecorator(
     const request = ctx.switchToHttp().getRequest();
     const user = get(request, 'session._user');
 
-    if (!user) { return null; }
+    if (!user) {
+      return null;
+    }
 
     return data ? get(user, data) : user;
-  }
+  },
 );

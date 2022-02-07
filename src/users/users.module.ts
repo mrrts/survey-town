@@ -7,20 +7,13 @@ import { User, userSchema } from './entities/user.entity';
 import { UserRepository } from './repositories/user.repository';
 
 const userModelModule = MongooseModule.forFeature([
-  { name: User.modelName, schema: userSchema }
+  { name: User.modelName, schema: userSchema },
 ]);
 
 @Module({
-  imports: [
-    PasswordModule,
-    userModelModule
-  ],
+  imports: [PasswordModule, userModelModule],
   controllers: [UsersController],
   providers: [UsersService, UserRepository],
-  exports: [
-    UsersService,
-    UserRepository,
-    userModelModule
-  ]
+  exports: [UsersService, UserRepository, userModelModule],
 })
 export class UsersModule {}

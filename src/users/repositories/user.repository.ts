@@ -1,13 +1,13 @@
-import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
-import { UpdateUserDto } from "../dto/update-user.dto";
-import { IUser, User, UserDocument } from "../entities/user.entity";
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { UpdateUserDto } from '../dto/update-user.dto';
+import { IUser, User, UserDocument } from '../entities/user.entity';
 
 @Injectable()
 export class UserRepository {
   constructor(
-    @InjectModel(User.modelName) private userModel: Model<UserDocument>
+    @InjectModel(User.modelName) private userModel: Model<UserDocument>,
   ) {}
 
   create(data: Partial<IUser>): Promise<IUser> {
@@ -35,5 +35,4 @@ export class UserRepository {
   findByHandle(handle: string): Promise<IUser> {
     return this.userModel.findOne({ handle }).exec();
   }
-
 }

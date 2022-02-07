@@ -5,14 +5,14 @@ export enum SurveyItemType {
   CONTENT_INTERLUDE = 'CONTENT_INTERLUDE',
   FREE_RESPONSE = 'FREE_RESPONSE',
   MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',
-  MULTIPLE_SELECT = 'MULTIPLE_SELECT'
+  MULTIPLE_SELECT = 'MULTIPLE_SELECT',
 }
 
 // Different item types with own fields are stored in same collection,
 // and type is signaled by the configured discriminatorKey: 'itemType'
 const options: SchemaOptions = {
   collection: 'surveyItems',
-  discriminatorKey: 'itemType'
+  discriminatorKey: 'itemType',
 };
 
 export interface ISurveyItem {
@@ -27,53 +27,77 @@ export interface ISurveyItem {
 }
 
 // Base SurveyItem schema for polymorphic collection.
-export const surveyItemSchema = new Schema<ISurveyItem>({
-  uuid: { type: String, default: () => uuidv4(), index: true, required: true },
-  createdAt: { type: Date, default: Date.now, required: true },
-  updatedAt: { type: Date, default: Date.now, required: true },
-  author: { type: String, required: true }
-}, options);
+export const surveyItemSchema = new Schema<ISurveyItem>(
+  {
+    uuid: {
+      type: String,
+      default: () => uuidv4(),
+      index: true,
+      required: true,
+    },
+    createdAt: { type: Date, default: Date.now, required: true },
+    updatedAt: { type: Date, default: Date.now, required: true },
+    author: { type: String, required: true },
+  },
+  options,
+);
 
-export const contentInterludeItemSchema = new Schema({
-  content: String
-}, options);
+export const contentInterludeItemSchema = new Schema(
+  {
+    content: String,
+  },
+  options,
+);
 
-export const freeResponseItemSchema = new Schema({
-  prompt: String
-}, options);
+export const freeResponseItemSchema = new Schema(
+  {
+    prompt: String,
+  },
+  options,
+);
 
-export const multipleChoiceItemSchema = new Schema({
-  prompt: String,
-  choices: [String]
-}, options);
+export const multipleChoiceItemSchema = new Schema(
+  {
+    prompt: String,
+    choices: [String],
+  },
+  options,
+);
 
-export const multipleSelectItemSchema = new Schema({
-  prompt: String,
-  choices: [String]
-}, options);
+export const multipleSelectItemSchema = new Schema(
+  {
+    prompt: String,
+    choices: [String],
+  },
+  options,
+);
 
 // Base model for polymorphic collection
-export const SurveyItem: Model<ISurveyItem> = model('SurveyItem', surveyItemSchema);
+export const SurveyItem: Model<ISurveyItem> = model(
+  'SurveyItem',
+  surveyItemSchema,
+);
 
 // These models "extend" the base SurveyItem model
-export const ContentInterludeItem: Model<ISurveyItem> = SurveyItem.discriminator(
-  SurveyItemType.CONTENT_INTERLUDE,
-  contentInterludeItemSchema
-);
+export const ContentInterludeItem: Model<ISurveyItem> =
+  SurveyItem.discriminator(
+    SurveyItemType.CONTENT_INTERLUDE,
+    contentInterludeItemSchema,
+  );
 
 export const FreeResponseItem: Model<ISurveyItem> = SurveyItem.discriminator(
   SurveyItemType.FREE_RESPONSE,
-  freeResponseItemSchema
+  freeResponseItemSchema,
 );
 
 export const MultipleChoiceItem: Model<ISurveyItem> = SurveyItem.discriminator(
   SurveyItemType.MULTIPLE_CHOICE,
-  multipleChoiceItemSchema
+  multipleChoiceItemSchema,
 );
 
 export const MultipleSelectItem: Model<ISurveyItem> = SurveyItem.discriminator(
   SurveyItemType.MULTIPLE_SELECT,
-  multipleSelectItemSchema
+  multipleSelectItemSchema,
 );
 
 export type SurveyItemDocument = ISurveyItem & Document;

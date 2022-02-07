@@ -10,18 +10,16 @@ describe('UsersController', () => {
 
   beforeEach(async () => {
     mockUser = {
-      safe: jest.fn()
+      safe: jest.fn(),
     };
 
     mockUsersService = {
-      create: jest.fn().mockReturnValue(mockUser)
+      create: jest.fn().mockReturnValue(mockUser),
     };
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
-      providers: [
-        { provide: UsersService, useValue: mockUsersService }
-      ],
+      providers: [{ provide: UsersService, useValue: mockUsersService }],
     }).compile();
 
     controller = module.get<UsersController>(UsersController);
@@ -30,5 +28,4 @@ describe('UsersController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-
 });

@@ -9,7 +9,10 @@ export class PasswordService {
     return bcrypt.hash(plaintextPassword, this.saltRounds);
   }
 
-  async validatePassword(plaintextPassword: string, passwordHash: string): Promise<boolean> {
+  async validatePassword(
+    plaintextPassword: string,
+    passwordHash: string,
+  ): Promise<boolean> {
     return bcrypt.compare(plaintextPassword, passwordHash);
   }
 }

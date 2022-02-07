@@ -7,19 +7,19 @@ import { RegisterDto } from './dto/register.dto';
 
 @Controller('api/auth')
 export class AuthController {
+  constructor(private authService: AuthService) {}
 
-  constructor(
-    private authService: AuthService
-  ) {}
-  
   @Post('login')
   async login(@Body() loginDto: LoginDto, @Req() req: Request): Promise<IUser> {
-    await new Promise(res => setTimeout(res, 500)); // delay attempts
+    await new Promise((res) => setTimeout(res, 500)); // delay attempts
     return this.authService.login(loginDto, req);
   }
 
   @Post('register')
-  register(@Body() registerDto: RegisterDto, @Req() req: Request): Promise<IUser> {
+  register(
+    @Body() registerDto: RegisterDto,
+    @Req() req: Request,
+  ): Promise<IUser> {
     return this.authService.register(registerDto, req);
   }
 
@@ -28,5 +28,4 @@ export class AuthController {
     this.authService.logout(req);
     res.status(200).clearCookie(process.env.SESSION_COOKIE_NAME).send();
   }
-
 }

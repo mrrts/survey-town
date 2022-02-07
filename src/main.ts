@@ -14,9 +14,9 @@ async function bootstrap() {
       saveUninitialized: false,
       cookie: {
         secure: process.env.USE_SECURE_SESSION === 'true',
-        maxAge: /* 2 weeks in millis */ 1209600000
+        maxAge: /* 2 weeks in millis */ 1209600000,
       },
-    } as (session.SessionOptions))
+    } as session.SessionOptions),
   );
 
   app.enableCors();

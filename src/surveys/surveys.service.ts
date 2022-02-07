@@ -1,4 +1,9 @@
-import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateSurveyDto } from './dto/create-survey.dto';
 import { SurveyDto } from './dto/survey.dto';
 import { ISurveyItem } from './entities/survey-item.entity';
@@ -16,24 +21,33 @@ export class SurveysService {
   constructor(
     private surveyRepository: SurveyRepository,
     private surveyItemRepository: SurveyItemRepository,
-    private responseRepository: ResponseRepository
+    private responseRepository: ResponseRepository,
   ) {}
 
   async getSurveyDto(uuid: string): Promise<SurveyDto> {
     const survey: ISurvey = await this.surveyRepository.findOne(uuid);
-    const items: ISurveyItem[] = await this.surveyItemRepository.findMultiple(survey.surveyItems);
-    const responses: IResponse[] = await this.responseRepository.findAllForSurvey(uuid);
+    const items: ISurveyItem[] = await this.surveyItemRepository.findMultiple(
+      survey.surveyItems,
+    );
+    const responses: IResponse[] =
+      await this.responseRepository.findAllForSurvey(uuid);
     const dto: SurveyDto = new SurveyDto();
     dto.survey = survey;
-    dto.expandedItems = orderBy(items, ((item: ISurveyItem) => {
+    dto.expandedItems = orderBy(items, (item: ISurveyItem) => {
       return survey.surveyItems.indexOf(item.uuid);
-    }));
+    });
     dto.numberOfResponses = responses.length;
     return dto;
   }
 
-  async create(createSurveyDto: CreateSurveyDto, authorId: string): Promise<SurveyDto> {
-    const savedSurvey = await this.surveyRepository.createWithAuthor(createSurveyDto, authorId);
+  async create(
+    createSurveyDto: CreateSurveyDto,
+    authorId: string,
+  ): Promise<SurveyDto> {
+    const savedSurvey = await this.surveyRepository.createWithAuthor(
+      createSurveyDto,
+      authorId,
+    );
     return this.getSurveyDto(savedSurvey.uuid);
   }
 
@@ -47,27 +61,40 @@ export class SurveysService {
     if (survey?.author !== userId) {
       throw new ForbiddenException();
     }
-    
+
     return this.surveyRepository.remove(surveyId);
   }
 
-  async createSurveyItem(dto: CreateSurveyItemDto, surveyId: string, userId: string): Promise<SurveyDto> {
+  async createSurveyItem(
+    dto: CreateSurveyItemDto,
+    surveyId: string,
+    userId: string,
+  ): Promise<SurveyDto> {
     const survey = await this.surveyRepository.findOne(surveyId);
 
-    if (!survey) { throw new NotFoundException(); }
+    if (!survey) {
+      throw new NotFoundException();
+    }
 
     if (survey?.author !== userId) {
       throw new ForbiddenException();
     }
 
-    const item: ISurveyItem = await this.surveyItemRepository.createWithAuthor(dto, userId);
+    const item: ISurveyItem = await this.surveyItemRepository.createWithAuthor(
+      dto,
+      userId,
+    );
     await this.surveyRepository.addItem(surveyId, item.uuid);
     return this.getSurveyDto(surveyId);
   }
 
-  async removeSurveyItem(surveyId: string, itemId: string, userId: string): Promise<boolean> {
+  async removeSurveyItem(
+    surveyId: string,
+    itemId: string,
+    userId: string,
+  ): Promise<boolean> {
     const survey = await this.surveyRepository.findOne(surveyId);
-    
+
     if (survey?.author !== userId) {
       throw new ForbiddenException();
     }
@@ -96,18 +123,23 @@ export class SurveysService {
     dto: CreateResponseDto,
     surveyId: string,
     surveyItemId: string,
-    userId: string
+    userId: string,
   ) {
     const survey = await this.surveyRepository.findOne(surveyId);
     const surveyItem = await this.surveyItemRepository.findOne(surveyItemId);
-    const responsesForUser = await this.responseRepository.findForItemAndUser(surveyItemId, userId);
+    const responsesForUser = await this.responseRepository.findForItemAndUser(
+      surveyItemId,
+      userId,
+    );
 
     if (!survey || !surveyItem) {
       throw new NotFoundException();
     }
 
     if (responsesForUser?.length) {
-      throw new ConflictException('User has already submitted a response for this survey item');
+      throw new ConflictException(
+        'User has already submitted a response for this survey item',
+      );
     }
 
     return this.responseRepository.create(dto, surveyId, surveyItemId, userId);
