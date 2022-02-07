@@ -1,9 +1,8 @@
-import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ISurveyItem } from "../../entities/survey-item.model";
 import { ISurveyResponse } from "../../entities/survey-response.model";
 import { ISurvey } from "../../entities/survey.model";
-import { keyBy, orderBy, sortBy, values } from 'lodash';
-import { AppState } from '..';
+import { keyBy } from 'lodash';
 
 export interface ISurveysState {
   surveys: Record<string, ISurvey>;

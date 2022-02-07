@@ -6,7 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPoll } from '@fortawesome/free-solid-svg-icons';
 import { Link, navigate } from '@reach/router';
 import { useAppDispatch, useAppSelector } from '../store';
-import { getUser, logoutUser } from '../store/auth/slice';
+import { logoutUser } from '../store/auth/slice';
+import { getUser } from '../store/auth/selectors';
 
 export interface INavbarProps {
 }

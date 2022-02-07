@@ -1,5 +1,4 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppState } from '..';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { LoginDto } from '../../entities/dtos/login.dto';
 import { User } from '../../entities/user.model';
 
