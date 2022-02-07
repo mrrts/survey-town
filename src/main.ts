@@ -19,8 +19,13 @@ async function bootstrap() {
     } as session.SessionOptions),
   );
 
-  app.enableCors();
   app.use(helmet());
+  app.enableCors({
+    origin: [
+      process.env.FRONT_END_ORIGIN,
+    ],
+    credentials: true
+  });
 
   await app.listen(process.env.PORT || 3000);
 }
