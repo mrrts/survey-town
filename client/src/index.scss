@@ -2,8 +2,10 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~bootswatch/dist/yeti/bootswatch";
 
-$border-radius: 15px;
+$borderRadius: 15px;
 $lightGray: #f7f7f7;
+$cardBoxShadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+$cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 
 .app-container {
   height: 100vh;
@@ -52,12 +54,25 @@ $lightGray: #f7f7f7;
 
 .login {
   background: #fff;
-  border-radius: $border-radius;
+  border-radius: $borderRadius;
   border: 1px solid lightgray;
   width: 500px;
   max-width: 100vw;
   margin: 50px auto 50px;
   padding: 20px;
+}
+
+.survey-list-item {
+  .survey-card {
+    width: 500px;
+    max-width: 99vw;
+    margin: 15px auto;
+    border-radius: $borderRadius;
+
+    .responses-badge {
+      font-size: .6em;
+    }
+  }
 }
 
 @keyframes spin {

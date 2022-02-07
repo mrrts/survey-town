@@ -48,4 +48,10 @@ export class UsersController {
     return this.usersService.update(userId, dto);
   }
 
+  @Get('handles')
+  @Roles({ requireAll: [ USER_ROLES.USER ] })
+  findAllHandles() {
+    return this.usersService.findAllHandles();
+  }
+
 }

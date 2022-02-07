@@ -13,9 +13,8 @@ export interface ILoginProps extends RouteComponentProps {
 
 export const Login: FC<ILoginProps> = () => {
   const dispatch = useAppDispatch();
-  const { register, getValues, watch } = useForm();
+  const { register, getValues } = useForm();
   const user = useAppSelector(getUser);
-  const currentEmailAddress = watch('emailAddress');
 
   const handleLoginClick = (e: MouseEvent) => {
     e.preventDefault();
@@ -44,7 +43,7 @@ export const Login: FC<ILoginProps> = () => {
           <Form.Control type="password" placeholder="Password" { ...register('plaintextPassword') } />
         </Form.Group>
 
-        <RequestInfo requestKey={`login_${currentEmailAddress}`} />
+        <RequestInfo requestKey='login' />
         
         <Button variant="primary" type="submit" onClick={handleLoginClick}>
           Login

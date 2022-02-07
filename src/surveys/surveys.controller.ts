@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, ImATeapotException, UnauthorizedException } from '@nestjs/common';
 import { SurveysService } from './surveys.service';
 import { CreateSurveyDto } from './dto/create-survey.dto';
 import { SurveyDto } from './dto/survey.dto';
@@ -22,8 +22,9 @@ export class SurveysController {
 
   @Get()
   @Roles({ requireAll: [ USER_ROLES.USER ] })
-  findAll(): Promise<SurveyDto[]> {
-    return this.surveysService.findAll();
+  async findAll(): Promise<SurveyDto[]> {
+    const surveys = await this.surveysService.findAll();
+    return surveys;
   }
 
   @Get(':surveyId')

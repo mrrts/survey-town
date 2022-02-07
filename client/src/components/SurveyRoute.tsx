@@ -1,6 +1,5 @@
 import { RouteComponentProps } from "@reach/router";
 import { FC } from "react";
-import { Survey } from "./Survey";
 
 export interface ISurveyRouteProps extends RouteComponentProps {
   surveyId?: string;

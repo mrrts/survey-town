@@ -7,6 +7,7 @@ export interface ISurvey {
   createdAt: Date;
   updatedAt: Date;
   surveyItems: string[];
+  numberOfResponses?: number
 }
 
 export class Survey implements ISurvey {
@@ -18,6 +19,7 @@ export class Survey implements ISurvey {
   createdAt: Date;
   updatedAt: Date;
   surveyItems: string[];
+  numberOfResponses?: number;
 
   constructor(json: ISurvey) {
     this.author = json?.author;
@@ -28,5 +30,6 @@ export class Survey implements ISurvey {
     this.createdAt = new Date(json?.createdAt);
     this.updatedAt = new Date(json?.updatedAt);
     this.surveyItems = json?.surveyItems;
+    this.numberOfResponses = json?.numberOfResponses as number
   };
 }

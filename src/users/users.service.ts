@@ -69,4 +69,12 @@ export class UsersService {
     return freshUserLookup;
   }
 
+  async findAllHandles(): Promise<Partial<IUser>[]> {
+    const allUsers = await this.findAll();
+    return allUsers.map((user: IUser) => ({
+      uuid: user.uuid,
+      handle: user.handle
+    }));
+  } 
+
 }

@@ -6,9 +6,11 @@ import { createLogger } from 'redux-logger';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import * as authEpics from './auth/epics';
 import * as surveyEpics from './surveys/epics';
+import * as userEpics from './users/epics';
 import { values } from 'lodash';
 import { requestsReducer } from "./requests/slice";
 import { surveysReducer } from "./surveys/slice";
+import { usersReducer } from "./users/slice";
 
 const loggerMiddleware = createLogger({ collapsed: true });
 const epicMiddleware = createEpicMiddleware();
@@ -22,7 +24,8 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     requests: requestsReducer,
-    surveys: surveysReducer
+    surveys: surveysReducer,
+    users: usersReducer
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware({
@@ -35,7 +38,8 @@ export const store = configureStore({
 
 const rootEpic = combineEpics(
   ...values(authEpics),
-  ...values(surveyEpics)
+  ...values(surveyEpics),
+  ...values(userEpics)
 );
 epicMiddleware.run(rootEpic);
 

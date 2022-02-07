@@ -9,12 +9,13 @@ import { LoginDto } from "../../entities/dtos/login.dto";
 import { requestError, requestStart, requestSuccess } from "../requests/slice";
 import { User } from "../../entities/user.model";
 import { RequestError } from "../../util/http.util";
+import { fetchUserHandles } from "../users/slice";
 
 export const loginEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
     ofType('auth/loginUser') as any,
     switchMap((action: PayloadAction<{ dto: LoginDto }>) => {
-      const key = `login_${action.payload.dto.emailAddress}`;
+      const key = 'login';
       return concat(
         of(requestStart({ key })),
         from(login(action.payload.dto)).pipe(
@@ -22,6 +23,7 @@ export const loginEpic = (action$: Observable<Action>, state$: Observable<AppSta
             return concat(
               of(requestSuccess({ key })),
               of(setUser({ user })),
+              of(fetchUserHandles())
             );
           }),
           catchError((error: RequestError) => {

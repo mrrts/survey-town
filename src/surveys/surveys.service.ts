@@ -22,11 +22,13 @@ export class SurveysService {
   async getSurveyDto(uuid: string): Promise<SurveyDto> {
     const survey: ISurvey = await this.surveyRepository.findOne(uuid);
     const items: ISurveyItem[] = await this.surveyItemRepository.findMultiple(survey.surveyItems);
+    const responses: IResponse[] = await this.responseRepository.findAllForSurvey(uuid);
     const dto: SurveyDto = new SurveyDto();
     dto.survey = survey;
     dto.expandedItems = orderBy(items, ((item: ISurveyItem) => {
       return survey.surveyItems.indexOf(item.uuid);
     }));
+    dto.numberOfResponses = responses.length;
     return dto;
   }
 

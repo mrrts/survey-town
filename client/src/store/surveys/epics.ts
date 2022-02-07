@@ -9,6 +9,7 @@ import { fetchSurveys } from "./api";
 import { receiveSurveyItems, receiveSurveys } from "./slice";
 import { flatMap } from 'lodash';
 import { RequestError } from "../../util/http.util";
+import { Survey } from "../../entities/survey.model";
 
 export const fetchSurveysEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
@@ -19,7 +20,12 @@ export const fetchSurveysEpic = (action$: Observable<Action>, state$: Observable
         of(requestStart({ key })),
         from(fetchSurveys()).pipe(
           switchMap((dtos: SurveyDto[] = []) => {
-            const surveys = dtos.map(dto => dto.survey);
+            const surveys = dtos.map(dto => {
+              return new Survey({
+                ...dto.survey,
+                numberOfResponses: dto.numberOfResponses
+              });
+            });
             const surveyItems = flatMap(dtos, (dto: ISurveyDto) => dto.expandedItems);
             return concat(
               of(requestSuccess({ key })),

@@ -9,7 +9,6 @@ import { PasswordService } from './password/password.service';
 import { PasswordModule } from './password/password.module';
 import { UsersModule } from './users/users.module';
 import { UsersService } from './users/users.service';
-import { User, userSchema } from './users/entities/user.entity';
 import { LoggerMiddleware } from './common/logger.middleware';
 import { SurveysController } from './surveys/surveys.controller';
 import { ServeStaticModule } from '@nestjs/serve-static';

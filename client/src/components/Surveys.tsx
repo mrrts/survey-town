@@ -4,7 +4,7 @@ import { ISurvey } from '../entities/survey.model';
 import { useAppDispatch, useAppSelector } from '../store';
 import { fetchSurveys, getSurveysByDateDesc } from '../store/surveys/slice';
 import { RequestInfo } from './RequestInfo';
-import { Survey } from './Survey';
+import { SurveyListItem } from './SurveyListItem';
 
 export interface ISurveysProps extends RouteComponentProps {
 }
@@ -23,7 +23,7 @@ export const Surveys: FC<ISurveysProps> = ({ children }) => {
       <RequestInfo requestKey='fetch_surveys' />
       {surveys.map((survey: ISurvey) => {
         return (
-          <Survey key={survey.uuid} surveyId={survey.uuid} />
+          <SurveyListItem key={survey.uuid} surveyId={survey.uuid} />
         );
       })}
 
