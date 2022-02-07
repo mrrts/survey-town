@@ -2,7 +2,8 @@ import { RouteComponentProps } from '@reach/router';
 import React, { FC, useEffect } from 'react';
 import { ISurvey } from '../entities/survey.model';
 import { useAppDispatch, useAppSelector } from '../store';
-import { fetchSurveys, getSurveysByDateDesc } from '../store/surveys/slice';
+import { fetchSurveys } from '../store/surveys/slice';
+import { getSurveysByDateDesc } from '../store/surveys/selectors';
 import { RequestInfo } from './RequestInfo';
 import { SurveyListItem } from './SurveyListItem';
 

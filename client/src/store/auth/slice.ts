@@ -43,10 +43,4 @@ export const {
 
 export const authReducer = slice.reducer;
 
-/* Selectors*/
-export const getAuth = (state: AppState) => state.auth;
 
-export const getUser = createSelector(
-  getAuth,
-  (auth: IAuthState) => auth.user
-);

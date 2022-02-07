@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 import { useAppSelector } from "../../store";
-import { getSurveyById, getSurveyItemsBySurveyId } from "../../store/surveys/slice"
+import { getSurveyById, getSurveyItemsBySurveyId } from "../../store/surveys/selectors";
 import { getUserHandles } from "../../store/users/slice";
 
 export const useSurvey = (surveyId: string) => {

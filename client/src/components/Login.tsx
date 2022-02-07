@@ -4,7 +4,8 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useAppDispatch, useAppSelector } from '../store';
 import { useForm } from 'react-hook-form';
-import { loginUser, getUser } from '../store/auth/slice';
+import { loginUser } from '../store/auth/slice';
+import { getUser } from '../store/auth/selectors';
 import { RequestInfo } from './RequestInfo';
 
 export interface ILoginProps extends RouteComponentProps {
