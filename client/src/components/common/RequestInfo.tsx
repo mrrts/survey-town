@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { useRequest } from '../util/hooks/useRequest.hook';
-import { Spinner } from './Spinner';
+import { useRequest } from '../../util/hooks/useRequest.hook';
 import Alert from 'react-bootstrap/Alert';
+import { Spinner } from './Spinner';
 
 export interface IRequestInfoProps {
   requestKey: string;

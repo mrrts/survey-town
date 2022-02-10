@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { Router } from '@reach/router';
-import { ProtectedRoute } from './components/ProtectedRoute';
-import { Surveys } from './components/Surveys';
-import { Login } from './components/Login';
+import { ProtectedRoute } from './components/common/ProtectedRoute';
+import { Surveys } from './components/surveys/Surveys';
+import { Login } from './components/auth/Login';
 import { Navbar } from './components/Navbar';
 import { useAppDispatch } from './store';
 import { restoreSession } from './store/auth/slice';
 import Container from 'react-bootstrap/Container';
-import { SurveyRoute } from './components/SurveyRoute';
-import { Register } from './components/Register';
+import { SurveyRoute } from './components/surveys/SurveyRoute';
+import { Register } from './components/auth/Register';
 
 function App() {
   const dispatch = useAppDispatch();

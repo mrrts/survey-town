@@ -4,10 +4,10 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { keys } from 'lodash';
 import { RouteComponentProps } from '@reach/router';
-import { useAppDispatch } from '../store';
-import { registerUser } from '../store/auth/slice';
-import { RegisterDto } from '../entities/dtos/register.dto';
-import { RequestInfo } from './RequestInfo';
+import { useAppDispatch } from '../../store';
+import { registerUser } from '../../store/auth/slice';
+import { RegisterDto } from '../../entities/dtos/register.dto';
+import { RequestInfo } from '../common/RequestInfo';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useSurvey } from '../util/hooks/useSurvey.hook';
+import { useSurvey } from '../../util/hooks/useSurvey.hook';
 import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
@@ -30,7 +30,7 @@ export const SurveyListItem: FC<ISurveyListItemProps> = ({ surveyId }) => {
             Description: {survey.description}
           </Card.Text>
           <Button variant='primary'>
-            Take this survey &nbsp;
+            <span>Take this survey</span>
             <FontAwesomeIcon icon={faArrowCircleRight} />
           </Button>
         </Card.Body>

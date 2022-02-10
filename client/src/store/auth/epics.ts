@@ -71,7 +71,8 @@ export const restoreSessionEpic = (action$: Observable<Action>, state$: Observab
           switchMap((user: User|null) => {
             return concat(
               of(requestSuccess({ key })),
-              of(setUser({ user }))
+              of(setUser({ user })),
+              of(fetchUserHandles())
             );
           }),
           catchError((error: RequestError) => {

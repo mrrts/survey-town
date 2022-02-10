@@ -58,6 +58,17 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   padding: 15px;
 }
 
+.btn {
+  svg[data-icon] {
+    &:first-child {
+      margin-right: .5em;
+    }
+    &:last-child {
+      margin-left: .5em;
+    }
+  }
+}
+
 .login, .register {
   background: #fff;
   border-radius: $borderRadius;
@@ -71,6 +82,12 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   }
 }
 
+.surveys {
+  .surveys-header {
+    display: flex;
+    justify-content: space-between;
+  }
+}
 .survey-list-item {
   .survey-card {
     width: 500px;

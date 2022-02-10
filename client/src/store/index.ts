@@ -11,6 +11,7 @@ import { values } from 'lodash';
 import { requestsReducer } from "./requests/slice";
 import { surveysReducer } from "./surveys/slice";
 import { usersReducer } from "./users/slice";
+import { modalsReducer } from "./modals/slice";
 
 const loggerMiddleware = createLogger({ collapsed: true });
 const epicMiddleware = createEpicMiddleware();
@@ -25,7 +26,8 @@ export const store = configureStore({
     auth: authReducer,
     requests: requestsReducer,
     surveys: surveysReducer,
-    users: usersReducer
+    users: usersReducer,
+    modals: modalsReducer
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware({
