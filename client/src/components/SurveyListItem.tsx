@@ -19,12 +19,15 @@ export const SurveyListItem: FC<ISurveyListItemProps> = ({ surveyId }) => {
         <Card.Body>
           <Card.Title>
             {survey?.title}
-            &nbsp; <Badge className='responses-badge' bg='info' pill>{numberOfResponses} responses</Badge>
+            &nbsp; 
+            <Badge className='responses-badge' bg='info' pill>
+              {numberOfResponses} response{numberOfResponses === 1 ? '' : 's'}
+            </Badge>
           </Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">{authorHandle}</Card.Subtitle>
+          <Card.Subtitle className="mb-2 text-muted">by {authorHandle}</Card.Subtitle>
           
           <Card.Text>
-            {survey.description}
+            Description: {survey.description}
           </Card.Text>
           <Button variant='primary'>
             Take this survey &nbsp;

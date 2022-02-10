@@ -15,6 +15,7 @@ import { CreateSurveyItemDto } from './dto/create-survey-item.dto';
 import { ResponseRepository } from './repositories/response.repository';
 import { CreateResponseDto } from './dto/create-response.dto';
 import { IResponse } from './entities/response.entity';
+import { keys, groupBy } from 'lodash';
 
 @Injectable()
 export class SurveysService {
@@ -31,12 +32,14 @@ export class SurveysService {
     );
     const responses: IResponse[] =
       await this.responseRepository.findAllForSurvey(uuid);
+    const responsesByUser: Record<string, IResponse[]> = groupBy(responses, 'user');
+    const numUniqueResponders = keys(responsesByUser).length;
     const dto: SurveyDto = new SurveyDto();
     dto.survey = survey;
     dto.expandedItems = orderBy(items, (item: ISurveyItem) => {
       return survey.surveyItems.indexOf(item.uuid);
     });
-    dto.numberOfResponses = responses.length;
+    dto.numberOfResponses = numUniqueResponders;
     return dto;
   }
 
