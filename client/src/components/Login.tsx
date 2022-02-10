@@ -51,7 +51,7 @@ export const Login: FC<ILoginProps> = () => {
           Login
         </Button>
 
-        <Link className='register-link btn-link' to='/register'>
+        <Link className='register-link btn btn-link' to='/register'>
           Sign Up
         </Link>
       </Form>
