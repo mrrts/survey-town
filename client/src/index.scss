@@ -14,6 +14,12 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   overflow: scroll;
 }
 
+.btn {
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
 .btn-link {
   border: 0;
   padding: 0;
@@ -52,7 +58,7 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   padding: 15px;
 }
 
-.login {
+.login, .register {
   background: #fff;
   border-radius: $borderRadius;
   border: 1px solid lightgray;

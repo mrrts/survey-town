@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { loginUser } from '../store/auth/slice';
 import { getUser } from '../store/auth/selectors';
 import { RequestInfo } from './RequestInfo';
+import { Link } from '@reach/router';
 
 export interface ILoginProps extends RouteComponentProps {
 
@@ -49,6 +50,10 @@ export const Login: FC<ILoginProps> = () => {
         <Button variant="primary" type="submit" onClick={handleLoginClick}>
           Login
         </Button>
+
+        <Link className='register-link btn-link' to='/register'>
+          Sign Up
+        </Link>
       </Form>
     </div>
   );

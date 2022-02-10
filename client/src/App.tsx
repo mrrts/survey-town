@@ -8,6 +8,7 @@ import { useAppDispatch } from './store';
 import { restoreSession } from './store/auth/slice';
 import Container from 'react-bootstrap/Container';
 import { SurveyRoute } from './components/SurveyRoute';
+import { Register } from './components/Register';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -25,6 +26,7 @@ function App() {
         <Container>
           <Router>
             <Login path='login' />
+            <Register path='register' />
             <ProtectedRoute path='surveys'>
               <Surveys path='/'>
                 <SurveyRoute path=':surveyId' />

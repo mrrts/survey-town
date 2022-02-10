@@ -1,15 +1,17 @@
-import { catchError, concat, from, Observable, of, switchMap } from "rxjs";
+import { catchError, concat, from, Observable, of, switchMap, tap } from "rxjs";
 import { Action } from 'redux';
 import { AppState } from "..";
 import { ofType } from "redux-observable";
-import { loginUser, logoutUser, restoreSession, setUser, unsetUser } from './slice';
-import { getSelf, login, logout } from './api';
+import { loginUser, logoutUser, registerUser, restoreSession, setUser, unsetUser } from './slice';
+import { getSelf, login, logout, register } from './api';
 import { PayloadAction, getType } from "@reduxjs/toolkit";
 import { LoginDto } from "../../entities/dtos/login.dto";
 import { requestError, requestStart, requestSuccess } from "../requests/slice";
 import { User } from "../../entities/user.model";
 import { RequestError } from "../../util/http.util";
 import { fetchUserHandles } from "../users/slice";
+import { RegisterDto } from "../../entities/dtos/register.dto";
+import { navigate } from "@reach/router";
 
 export const loginEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
@@ -45,7 +47,9 @@ export const logoutEpic = (action$: Observable<Action>, state$: Observable<AppSt
           switchMap((resp: any) => {
             return concat(
               of(requestSuccess({ key })),
-              of(unsetUser())
+              of(unsetUser()).pipe(
+                tap(() => navigate('/'))
+              )
             );
           }),
           catchError((error: RequestError) => {
@@ -77,3 +81,27 @@ export const restoreSessionEpic = (action$: Observable<Action>, state$: Observab
       );
     })
   );
+
+  export const registerUserEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
+    action$.pipe(
+      ofType(getType(registerUser)) as any,
+      switchMap((action: PayloadAction<{ dto: RegisterDto }>) => {
+        const key = 'register';
+        return concat(
+          of(requestStart({ key })),
+          from(register(action.payload.dto)).pipe(
+            switchMap((user: User|null) => {
+              return concat(
+                of(requestSuccess({ key })),
+                of(setUser({ user })).pipe(
+                  tap(() => navigate('/surveys'))
+                )
+              );
+            }),
+            catchError((error: RequestError) => {
+              return of(requestError({ key, error: error.data }));
+            })
+          )
+        );
+      })
+    );

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { LoginDto } from '../../entities/dtos/login.dto';
+import { RegisterDto } from '../../entities/dtos/register.dto';
 import { User } from '../../entities/user.model';
 
 export interface IAuthState {
@@ -23,6 +24,9 @@ const slice = createSlice({
     restoreSession() {
       // triggers epic
     },
+    registerUser(state: IAuthState, action: PayloadAction<{ dto: RegisterDto }>) {
+      // triggers epic
+    },
     setUser(state: IAuthState, action: PayloadAction<{ user: User|null }>) {
       state.user = action.payload.user;
     },
@@ -36,6 +40,7 @@ export const {
   loginUser,
   logoutUser,
   restoreSession,
+  registerUser,
   setUser,
   unsetUser
 } = slice.actions;
