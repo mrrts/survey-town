@@ -20,7 +20,7 @@ import { join } from 'path';
       rootPath: join(__dirname, '..', 'client/build'),
     }),
     ConfigModule.forRoot({
-      envFilePath: ['.env.development'],
+      envFilePath: ['.env', '.env.development'],
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.DB_URL, {
