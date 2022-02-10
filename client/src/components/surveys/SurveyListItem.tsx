@@ -29,7 +29,7 @@ export const SurveyListItem: FC<ISurveyListItemProps> = ({ surveyId }) => {
           <Card.Text>
             Description: {survey.description}
           </Card.Text>
-          <Button variant='primary'>
+          <Button className='take-survey-button' variant='primary'>
             <span>Take this survey</span>
             <FontAwesomeIcon icon={faArrowCircleRight} />
           </Button>

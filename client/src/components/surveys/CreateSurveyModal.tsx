@@ -9,7 +9,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { keys } from 'lodash';
 import { useAppDispatch } from '../../store';
-import { SurveyDto } from '../../entities/dtos/survey.dto';
 import { CreateSurveyDto } from '../../entities/dtos/create-survey.dto';
 import { createSurvey } from '../../store/surveys/slice';
 
@@ -32,10 +31,8 @@ export const CreateSurveyModal: FC<ICreateSurveyModalProps> = () => {
   const valid = keys(errors).length === 0;
 
   const onSubmit = useCallback((data: any) => {
-    
     if (valid) {
       const values = getValues();
-      console.log(values);
       const dto: CreateSurveyDto = new CreateSurveyDto({
         title: values.title,
         description: values.description
@@ -74,11 +71,11 @@ export const CreateSurveyModal: FC<ICreateSurveyModalProps> = () => {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => modal.closeModal()} disabled={!valid}>
+          <Button variant="secondary" onClick={() => { reset(); modal.closeModal(); }}>
             Close
           </Button>
-          <Button type='submit' variant="primary">
-            Save Changes
+          <Button type='submit' variant="primary" disabled={!valid}>
+            Create
           </Button>
         </Modal.Footer>
       </Form>
