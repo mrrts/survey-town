@@ -11,7 +11,8 @@ export class AuthController {
 
   @Post('login')
   async login(@Body() loginDto: LoginDto, @Req() req: Request): Promise<IUser> {
-    await new Promise((res) => setTimeout(res, 500)); // delay attempts
+    await new Promise((resolve) => setTimeout(resolve, 500)); // delay attempts
+    console.log('request headers', req.headers)
     return this.authService.login(loginDto, req);
   }
 
