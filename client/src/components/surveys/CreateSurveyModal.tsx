@@ -74,7 +74,7 @@ export const CreateSurveyModal: FC<ICreateSurveyModalProps> = () => {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => modal.closeModal()}>
+          <Button variant="secondary" onClick={() => modal.closeModal()} disabled={!valid}>
             Close
           </Button>
           <Button type='submit' variant="primary">
