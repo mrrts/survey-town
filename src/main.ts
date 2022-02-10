@@ -13,7 +13,7 @@ async function bootstrap() {
       resave: false,
       saveUninitialized: false,
       cookie: {
-        secure: process.env.USE_SECURE_SESSION === 'true',
+        secure: process.env.USE_SECURE_SESSION,
         maxAge: /* 2 weeks in millis */ 1209600000,
       },
     } as session.SessionOptions),
