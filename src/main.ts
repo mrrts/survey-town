@@ -14,12 +14,12 @@ async function bootstrap() {
       secret: process.env.AUTH_SECRET,
       resave: false,
       saveUninitialized: false,
-      cookie: {
-        secure: true,
-        sameSite: 'strict',
-        httpOnly: true,
-        maxAge: /* 2 weeks in millis */ 1209600000,
-      },
+      // cookie: {
+      //   secure: true,
+      //   sameSite: 'strict',
+      //   httpOnly: true,
+      //   maxAge: /* 2 weeks in millis */ 1209600000,
+      // },
     } as session.SessionOptions),
   );
 
