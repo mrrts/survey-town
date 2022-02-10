@@ -63,7 +63,7 @@ export const CreateSurveyModal: FC<ICreateSurveyModalProps> = () => {
             <Form.Text className='text-danger'>{errors.title?.message}</Form.Text>
           </Form.Group>
           <Form.Group>
-            <Form.Label>Descriptiion</Form.Label>
+            <Form.Label>Description</Form.Label>
             <Form.Control
               { ...register('description') }
               as='textarea'
