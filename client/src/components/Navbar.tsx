@@ -29,16 +29,21 @@ export const Navbar: FC<INavbarProps> = () => {
             <Nav className="me-auto">
               <Nav.Link as={Link} to='/surveys'>Surveys</Nav.Link>
             </Nav>
-            {user &&
-              <BSNavbar.Collapse className="justify-content-end">
-                <BSNavbar.Text>
-                  {user.handle} | &nbsp;
-                  <button className='btn-link logout-button' onClick={() => dispatch(logoutUser())}>
-                    Logout
-                  </button>
-                </BSNavbar.Text>
-              </BSNavbar.Collapse>
-            }
+            <BSNavbar.Collapse className="justify-content-end">
+              <BSNavbar.Text>
+                {user && (
+                  <>
+                    {user.handle} | &nbsp;
+                    <button className='btn-link logout-button' onClick={() => dispatch(logoutUser())}>
+                      Logout
+                    </button>
+                  </>
+                )}
+                {!user && (
+                  <Link className='btn btn-link' to='/login'>Login</Link>
+                )}
+              </BSNavbar.Text>
+            </BSNavbar.Collapse>
           </BSNavbar.Collapse>
         </Container>
       </BSNavbar>
