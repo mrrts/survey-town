@@ -19,7 +19,7 @@ import { RolesGuard } from '../common/roles.guard';
 import { Roles } from '../common/roles.decorator';
 import { USER_ROLES } from '../users/entities/user.entity';
 import { User } from '../common/user.decorator';
-import { IUpdateSurveyDto } from '../../client/src/entities/dtos/update-survey.dto';
+import { UpdateSurveyDto } from '../surveys/dto/update-survey.dto';
 
 @Controller('api/surveys')
 @UseGuards(RolesGuard)
@@ -38,8 +38,7 @@ export class SurveysController {
   @Get()
   @Roles({ requireAll: [USER_ROLES.USER] })
   async findAll(): Promise<SurveyDto[]> {
-    const surveys = await this.surveysService.findAll();
-    return surveys;
+    return this.surveysService.findAll();
   }
 
   @Get(':surveyId')
@@ -61,7 +60,7 @@ export class SurveysController {
   @Roles({ requireAll: [USER_ROLES.USER] })
   update(
     @Param('surveyId') surveyId: string,
-    @Body() dto: IUpdateSurveyDto,
+    @Body() dto: UpdateSurveyDto,
     @User('uuid') userId: string,
   ): Promise<SurveyDto> {
     return this.surveysService.update(surveyId, dto, userId);
