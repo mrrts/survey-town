@@ -12,6 +12,7 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   width: 100vw;
   background: $lightGray;
   overflow: scroll;
+  padding-top: 60px;
 }
 
 .spinner-wrapper {
@@ -28,6 +29,7 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 .navbar-wrapper {
   background: #fff;
   .navbar {
+    background: #fff;
     .brand {
       border: 0;
       padding: 0;

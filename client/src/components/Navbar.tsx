@@ -8,7 +8,8 @@ import { Link, navigate } from '@reach/router';
 import { useAppDispatch, useAppSelector } from '../store';
 import { logoutUser } from '../store/auth/slice';
 import { getUser } from '../store/auth/selectors';
-import NavDropdown from 'react-bootstrap/NavDropdown'
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 
 export interface INavbarProps {
 }
@@ -19,7 +20,7 @@ export const Navbar: FC<INavbarProps> = () => {
 
   return (
     <div className='navbar-wrapper'>
-      <BSNavbar className='navbar'>
+      <BSNavbar className='navbar' fixed='top'>
         <Container>
           <BSNavbar.Brand as='button' onClick={() => navigate('/')} className='brand'>
             <FontAwesomeIcon icon={faPoll} className='brand-icon' />
@@ -51,9 +52,10 @@ export const Navbar: FC<INavbarProps> = () => {
                   </>
                 )}
                 {!user && (
-                  <BSNavbar.Text>
-                    <Link className='btn btn-link' to='/login'>Login</Link>
-                  </BSNavbar.Text>
+                  <Link className='btn btn-sm btn-primary login-button' to='/login'>
+                    Login
+                    <FontAwesomeIcon icon={faSignInAlt} />
+                  </Link>
                 )}
             </BSNavbar.Collapse>
           </BSNavbar.Collapse>
