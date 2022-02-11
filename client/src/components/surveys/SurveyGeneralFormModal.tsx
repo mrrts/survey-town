@@ -19,7 +19,7 @@ export interface ISurveyGeneralFormModalProps {
 }
 
 export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
-  const modal = useModal(ModalKeys.CREATE_SURVEY);
+  const modal = useModal(ModalKeys.SURVEY_GENERAL);
   const { survey } = useSurvey(modal.data?.surveyId)
   const dispatch = useAppDispatch();
   const schema = yup.object().shape({
@@ -29,10 +29,6 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
 
   const { register, handleSubmit, formState: { errors }, getValues, reset } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      title: survey?.title,
-      description: survey?.description
-    }
   });
 
   const valid = keys(errors).length === 0;
@@ -60,11 +56,15 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
     }
   }, [getValues, valid, reset, dispatch, modal, survey]);
 
+  if (!modal.isOpen) {
+    return null;
+  }
+  
   return (
     <Modal show={modal.isOpen}>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Header>
-          <Modal.Title>New Survey</Modal.Title>
+          <Modal.Title>{survey ? 'Edit' : 'New'} Survey</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group>
@@ -73,6 +73,7 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
               { ...register('title') }
               type='text'
               maxLength={100}
+              defaultValue={survey?.title}
             ></Form.Control>
             <Form.Text className='text-danger'>{errors.title?.message}</Form.Text>
           </Form.Group>
@@ -83,6 +84,7 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
               as='textarea'
               maxLength={500}
               rows={2}
+              defaultValue={survey?.description}
             ></Form.Control>
             <Form.Text className='text-danger'>{errors.description?.message}</Form.Text>
           </Form.Group>
@@ -92,7 +94,7 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
             Close
           </Button>
           <Button type='submit' variant="primary" disabled={!valid}>
-            Create
+            {survey ? 'Update' : 'Create'}
           </Button>
         </Modal.Footer>
       </Form>

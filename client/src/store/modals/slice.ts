@@ -40,6 +40,7 @@ const slice = createSlice({
 
 export const {
   setModalOpen,
+  setModalData
 } = slice.actions;
 
 export const modalsReducer = slice.reducer;

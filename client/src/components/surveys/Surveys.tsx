@@ -18,13 +18,13 @@ export interface ISurveysProps extends RouteComponentProps {
 
 export const Surveys: FC<ISurveysProps> = ({ children }) => {
   const dispatch = useAppDispatch();
-  const surveyFormModal = useModal(ModalKeys.CREATE_SURVEY);
+  const surveyFormModal = useModal(ModalKeys.SURVEY_GENERAL);
   const surveys = useAppSelector(getSurveysByDateDesc);
 
   const handleCreateClick = (e: React.MouseEvent) => {
     e.preventDefault();
     surveyFormModal.openModal();
-    surveyFormModal.setModalData({ surveyId: null });
+    surveyFormModal.setData({ surveyId: null });
   }
 
   useEffect(() => {

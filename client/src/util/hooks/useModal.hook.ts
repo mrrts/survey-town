@@ -3,12 +3,12 @@ import { AnyAction } from "redux";
 import { ModalKeys } from "../../constants/ModalKeys.enum";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { getModalState } from "../../store/modals/selectors";
-import { IModalState, setModalOpen } from "../../store/modals/slice";
+import { IModalState, setModalOpen, setModalData } from "../../store/modals/slice";
 
 export interface ModalOps {
-  openModal: () => AnyAction;
-  closeModal: () => AnyAction;
-  setModalData: (data: any) => AnyAction;
+  openModal: () => void;
+  closeModal: () => void;
+  setData: (data: any) => void;
 }
 
 export const useModal = (modalKey: ModalKeys): IModalState & ModalOps => {
@@ -22,12 +22,12 @@ export const useModal = (modalKey: ModalKeys): IModalState & ModalOps => {
 
   const openModal = () => dispatch(setModalOpen({ key: modalKey, open: true }));
   const closeModal = () => dispatch(setModalOpen({ key: modalKey, open: false }));
-  const setModalData = (data: any): AnyAction => dispatch(setModalData({ key: modalKey, data }));
+  const setData = (data: any) => dispatch(setModalData({ key: modalKey, data }));
 
   return {
     ...modalState,
     openModal,
     closeModal,
-    setModalData
+    setData
   };
 }
