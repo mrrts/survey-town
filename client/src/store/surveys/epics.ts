@@ -5,12 +5,13 @@ import { concat, mergeMap, Observable, of, from, switchMap, catchError } from "r
 import { AppState } from "..";
 import { ISurveyDto, SurveyDto } from "../../entities/dtos/survey.dto";
 import { requestError, requestStart, requestSuccess } from "../requests/slice";
-import { fetchSurveys, postSurvey } from "./api";
-import { receiveSurveyItems, receiveSurveys, fetchSurveys as fetchSurveysAction, createSurvey } from "./slice";
+import * as api from "./api";
+import { receiveSurveyItems, receiveSurveys, fetchSurveys as fetchSurveysAction, createSurvey, updateSurvey } from "./slice";
 import { flatMap } from 'lodash';
 import { RequestError } from "../../util/http.util";
 import { Survey } from "../../entities/survey.model";
 import { CreateSurveyDto } from "../../entities/dtos/create-survey.dto";
+import { UpdateSurveyDto } from "../../entities/dtos/update-survey.dto";
 
 export const fetchSurveysEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
@@ -19,7 +20,7 @@ export const fetchSurveysEpic = (action$: Observable<Action>, state$: Observable
       const key = 'fetch_surveys';
       return concat(
         of(requestStart({ key })),
-        from(fetchSurveys()).pipe(
+        from(api.fetchSurveys()).pipe(
           switchMap((dtos: SurveyDto[] = []) => {
             const surveys = dtos.map(dto => {
               return new Survey({
@@ -49,7 +50,7 @@ export const createSurveyEpic = (action$: Observable<Action>, state$: Observable
       const key = 'create_survey';
       return concat(
         of(requestStart({ key })),
-        from(postSurvey(action.payload.dto)).pipe(
+        from(api.postSurvey(action.payload.dto)).pipe(
           switchMap((dto: SurveyDto) => {
             const survey = new Survey({
               ...dto.survey,
@@ -63,9 +64,37 @@ export const createSurveyEpic = (action$: Observable<Action>, state$: Observable
             );
           }),
           catchError((err: RequestError) => {
-            return of(requestError({ key, error: err.data }))
+            return of(requestError({ key, error: err.data }));
           })
         )
       );
     })
   );
+
+  export const updateSurveyEpic = (action$: Observable<Action>, state$: Observable<AppState>) => 
+    action$.pipe(
+      ofType(getType(updateSurvey)) as any,
+      mergeMap((action: PayloadAction<{ surveyId: string, dto: UpdateSurveyDto }>) => {
+        const key = `update_survey_${action.payload.surveyId}`;
+        return concat(
+          of(requestStart({ key })),
+          from(api.patchSurvey(action.payload.surveyId, action.payload.dto)).pipe(
+            switchMap((dto: SurveyDto) => {
+              const survey = new Survey({
+                ...dto.survey,
+                numberOfResponses: dto.numberOfResponses
+              });
+              const surveyItems = dto.expandedItems;
+              return concat(
+                of(requestSuccess({ key })),
+                of(receiveSurveys({ surveys: [survey] })),
+                of(receiveSurveyItems({ surveyItems }))
+              );
+            }),
+            catchError((err: RequestError) => {
+              return of(requestError({ key, error: err.data }));
+            })
+          )
+        );
+      })
+    );

@@ -23,20 +23,26 @@ export interface IRequestErrorData {
 }
 
 const handleError = (err: AxiosError) => {
-  const error = new RequestError(err.response?.data);
-  throw(error);
+  throw new RequestError(err.response?.data);
 }
 
 export async function get<RespType>(urlPath: string): Promise<RespType> {
   const response = await instance.get(urlPath)
-    .catch(handleError)
+    .catch(handleError);
 
   return response.data;
 }
 
 export async function post<BodyType, RespType>(urlPath: string, body: BodyType): Promise<RespType> {
   const response = await instance.post(urlPath, body)
-    .catch(handleError)
+    .catch(handleError);
+
+  return response.data;
+}
+
+export async function patch<BodyType, RespType>(urlPath: string, body: BodyType): Promise<RespType> {
+  const response = await instance.patch(urlPath, body)
+    .catch(handleError);
 
   return response.data;
 }

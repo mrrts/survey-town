@@ -10,14 +10,17 @@ import { useForm } from 'react-hook-form';
 import { keys } from 'lodash';
 import { useAppDispatch } from '../../store';
 import { CreateSurveyDto } from '../../entities/dtos/create-survey.dto';
-import { createSurvey } from '../../store/surveys/slice';
+import { createSurvey, updateSurvey } from '../../store/surveys/slice';
+import { useSurvey } from '../../util/hooks/useSurvey.hook';
+import { UpdateSurveyDto } from '../../entities/dtos/update-survey.dto';
 
-export interface ICreateSurveyModalProps {
+export interface ISurveyGeneralFormModalProps {
 
 }
 
-export const CreateSurveyModal: FC<ICreateSurveyModalProps> = () => {
+export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
   const modal = useModal(ModalKeys.CREATE_SURVEY);
+  const { survey } = useSurvey(modal.data?.surveyId)
   const dispatch = useAppDispatch();
   const schema = yup.object().shape({
     title: yup.string().required().min(4).max(100),
@@ -25,7 +28,11 @@ export const CreateSurveyModal: FC<ICreateSurveyModalProps> = () => {
   }).required();
 
   const { register, handleSubmit, formState: { errors }, getValues, reset } = useForm({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    defaultValues: {
+      title: survey?.title,
+      description: survey?.description
+    }
   });
 
   const valid = keys(errors).length === 0;
@@ -33,15 +40,25 @@ export const CreateSurveyModal: FC<ICreateSurveyModalProps> = () => {
   const onSubmit = useCallback((data: any) => {
     if (valid) {
       const values = getValues();
-      const dto: CreateSurveyDto = new CreateSurveyDto({
-        title: values.title,
-        description: values.description
-      });
+
+      if (!survey) {
+        const dto: CreateSurveyDto = new CreateSurveyDto({
+          title: values.title,
+          description: values.description
+        });
+        dispatch(createSurvey({ dto }));
+      } else {
+        const dto: UpdateSurveyDto = new UpdateSurveyDto({
+          title: values.title,
+          description: values.description
+        });
+        dispatch(updateSurvey({ surveyId: survey?.uuid, dto }));
+      }
+
       reset();
-      dispatch(createSurvey({ dto }));
       modal.closeModal();
     }
-  }, [getValues, valid, reset, dispatch, modal]);
+  }, [getValues, valid, reset, dispatch, modal, survey]);
 
   return (
     <Modal show={modal.isOpen}>

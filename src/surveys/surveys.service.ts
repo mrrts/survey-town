@@ -16,6 +16,7 @@ import { ResponseRepository } from './repositories/response.repository';
 import { CreateResponseDto } from './dto/create-response.dto';
 import { IResponse } from './entities/response.entity';
 import { keys, groupBy } from 'lodash';
+import { UpdateSurveyDto } from './dto/update-survey.dto';
 
 @Injectable()
 export class SurveysService {
@@ -66,6 +67,22 @@ export class SurveysService {
     }
 
     return this.surveyRepository.remove(surveyId);
+  }
+
+  async update(surveyId: string, dto: UpdateSurveyDto, userId: string): Promise<SurveyDto> {
+    const survey = await this.surveyRepository.findOne(surveyId);
+
+    if (!survey) {
+      throw new NotFoundException();
+    }
+
+    if (survey?.author !== userId) {
+      throw new ForbiddenException();
+    }
+
+    const updatedSurvey = await this.surveyRepository.update(surveyId, dto);
+    
+    return this.getSurveyDto(surveyId);
   }
 
   async createSurveyItem(

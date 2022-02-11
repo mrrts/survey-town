@@ -3,6 +3,7 @@ import { ModalKeys } from "../../constants/ModalKeys.enum";
 
 export interface IModalState {
   isOpen: boolean;
+  data: any;
 }
 
 export interface IModalsState {
@@ -10,7 +11,8 @@ export interface IModalsState {
 }
 
 const defaultModalState: IModalState = {
-  isOpen: false
+  isOpen: false,
+  data: {}
 };
 
 export const defaultModalsState: IModalsState = {
@@ -22,13 +24,16 @@ const slice = createSlice({
   initialState: defaultModalsState,
   reducers: {
     setModalOpen(state: IModalsState, action: PayloadAction<{ key: ModalKeys, open: boolean }>) {
-      state.modals = {
-        ...state.modals,
-        [action.payload.key]: {
-          ...defaultModalState,
-          isOpen: action.payload.open
-        }
+      state.modals[action.payload.key] = {
+        ...(state.modals[action.payload.key] || defaultModalState),
+        isOpen: action.payload.open
       };
+    },
+    setModalData(state: IModalsState, action: PayloadAction<{ key: ModalKeys, data: any }>) {
+      state.modals[action.payload.key] = {
+        ...(state.modals[action.payload.key] || defaultModalState),
+        data: action.payload.data
+      }
     }
   }
 });

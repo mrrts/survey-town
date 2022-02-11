@@ -11,15 +11,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { ModalKeys } from '../../constants/ModalKeys.enum';
 import { useModal } from '../../util/hooks/useModal.hook';
-import { CreateSurveyModal } from './CreateSurveyModal';
+import { SurveyGeneralFormModal } from './SurveyGeneralFormModal';
 
 export interface ISurveysProps extends RouteComponentProps {
 }
 
 export const Surveys: FC<ISurveysProps> = ({ children }) => {
   const dispatch = useAppDispatch();
-  const createSurveyModal = useModal(ModalKeys.CREATE_SURVEY);
+  const surveyFormModal = useModal(ModalKeys.CREATE_SURVEY);
   const surveys = useAppSelector(getSurveysByDateDesc);
+
+  const handleCreateClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    surveyFormModal.openModal();
+    surveyFormModal.setModalData({ surveyId: null });
+  }
 
   useEffect(() => {
     dispatch(fetchSurveys());
@@ -33,7 +39,7 @@ export const Surveys: FC<ISurveysProps> = ({ children }) => {
           <Button 
             className='btn-lg create-survey-button'
             variant='primary'
-            onClick={() => createSurveyModal.openModal()}
+            onClick={handleCreateClick}
           >
             <FontAwesomeIcon icon={faPlusCircle} className='create-survey-button-icon' />
             <span>Create a Survey</span>
@@ -49,7 +55,7 @@ export const Surveys: FC<ISurveysProps> = ({ children }) => {
 
       {children}
 
-      <CreateSurveyModal />
+      <SurveyGeneralFormModal />
     </div>
   );
 };

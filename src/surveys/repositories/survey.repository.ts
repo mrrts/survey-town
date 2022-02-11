@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateSurveyDto } from '../dto/create-survey.dto';
+import { UpdateSurveyDto } from '../dto/update-survey.dto';
 import { ISurvey, Survey, SurveyDocument } from '../entities/survey.entity';
 
 @Injectable()
@@ -29,6 +30,11 @@ export class SurveyRepository {
   async remove(surveyId: string): Promise<boolean> {
     const result = await this.surveyModel.deleteOne({ uuid: surveyId }).exec();
     return result.deletedCount === 1;
+  }
+
+  async update(surveyId: string, dto: UpdateSurveyDto): Promise<ISurvey> {
+    const result = await this.surveyModel.updateOne({ uuid: surveyId }, { $set: dto });
+    return this.findOne(surveyId);
   }
 
   async addItem(surveyId: string, itemId: string): Promise<ISurvey> {

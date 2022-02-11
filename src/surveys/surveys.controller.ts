@@ -8,6 +8,7 @@ import {
   UseGuards,
   ImATeapotException,
   UnauthorizedException,
+  Patch,
 } from '@nestjs/common';
 import { SurveysService } from './surveys.service';
 import { CreateSurveyDto } from './dto/create-survey.dto';
@@ -18,6 +19,7 @@ import { RolesGuard } from '../common/roles.guard';
 import { Roles } from '../common/roles.decorator';
 import { USER_ROLES } from '../users/entities/user.entity';
 import { User } from '../common/user.decorator';
+import { IUpdateSurveyDto } from '../../client/src/entities/dtos/update-survey.dto';
 
 @Controller('api/surveys')
 @UseGuards(RolesGuard)
@@ -53,6 +55,16 @@ export class SurveysController {
     @User('uuid') userId: string,
   ): Promise<boolean> {
     return this.surveysService.remove(surveyId, userId);
+  }
+
+  @Patch(':surveyId')
+  @Roles({ requireAll: [USER_ROLES.USER] })
+  update(
+    @Param('surveyId') surveyId: string,
+    @Body() dto: IUpdateSurveyDto,
+    @User('uuid') userId: string,
+  ): Promise<SurveyDto> {
+    return this.surveysService.update(surveyId, dto, userId);
   }
 
   @Post(':surveyId/items')
