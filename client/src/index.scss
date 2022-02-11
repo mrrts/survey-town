@@ -69,7 +69,7 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   border-radius: $borderRadius;
   border: 1px solid lightgray;
   width: 500px;
-  max-width: 100vw;
+  max-width: 100%;
   margin: 50px auto 50px;
   padding: 20px;
   .btn {
@@ -81,13 +81,14 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   .surveys-header {
     display: flex;
     justify-content: space-between;
+    margin: 20px 0 30px;
   }
 }
 .survey-list-item {
   .survey-card {
-    width: 500px;
-    max-width: 99vw;
-    margin: 15px auto;
+    width: 100%;
+    max-width: 100%;
+    margin: 25px auto;
     border-radius: $borderRadius;
 
     .responses-badge {
@@ -96,6 +97,7 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 
     .take-survey-button {
       width: 100%;
+      margin: 15px 0 0 0;
     }
   }
 }
