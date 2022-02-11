@@ -2,7 +2,7 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~bootswatch/dist/yeti/bootswatch";
 
-$borderRadius: 15px;
+$borderRadius: 1.2em;
 $lightGray: #f7f7f7;
 $cardBoxShadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
@@ -12,19 +12,6 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   width: 100vw;
   background: $lightGray;
   overflow: scroll;
-}
-
-.btn {
-  &:disabled {
-    cursor: not-allowed;
-  }
-}
-
-.btn-link {
-  border: 0;
-  padding: 0;
-  background: transparent;
-  cursor: pointer;
 }
 
 .spinner-wrapper {
@@ -59,7 +46,7 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .btn {
-  border-radius: $borderRadius;
+  border-radius: .5em;
   svg[data-icon] {
     &:first-child {
       margin-right: .5em;
@@ -68,6 +55,13 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
       margin-left: .5em;
     }
   }
+}
+
+.btn-link {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
 .login, .register {
