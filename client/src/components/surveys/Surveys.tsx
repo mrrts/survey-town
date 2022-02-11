@@ -12,6 +12,7 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { ModalKeys } from '../../constants/ModalKeys.enum';
 import { useModal } from '../../util/hooks/useModal.hook';
 import { SurveyGeneralFormModal } from './SurveyGeneralFormModal';
+import { TakeSurveyModal } from './TakeSurveyModal';
 
 export interface ISurveysProps extends RouteComponentProps {
 }
@@ -56,6 +57,7 @@ export const Surveys: FC<ISurveysProps> = ({ children }) => {
       {children}
 
       <SurveyGeneralFormModal />
+      <TakeSurveyModal />
     </div>
   );
 };

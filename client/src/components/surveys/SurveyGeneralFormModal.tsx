@@ -20,7 +20,8 @@ export interface ISurveyGeneralFormModalProps {
 
 export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
   const modal = useModal(ModalKeys.SURVEY_GENERAL);
-  const { survey } = useSurvey(modal.data?.surveyId)
+
+  const { survey } = useSurvey(modal.data?.surveyId);
   const dispatch = useAppDispatch();
   const schema = yup.object().shape({
     title: yup.string().required().min(4).max(100),
@@ -52,14 +53,21 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
       }
 
       reset();
+      modal.clearData();
       modal.closeModal();
     }
   }, [getValues, valid, reset, dispatch, modal, survey]);
+  
+  const handleCloseClick = () => {
+    reset();
+    modal.clearData();
+    modal.closeModal();
+  };
 
   if (!modal.isOpen) {
     return null;
   }
-  
+
   return (
     <Modal show={modal.isOpen}>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -90,7 +98,7 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => { reset(); modal.closeModal(); }}>
+          <Button variant="secondary" onClick={handleCloseClick}>
             Close
           </Button>
           <Button type='submit' variant="primary" disabled={!valid}>

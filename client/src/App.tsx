@@ -9,6 +9,7 @@ import { restoreSession } from './store/auth/slice';
 import Container from 'react-bootstrap/Container';
 import { SurveyRoute } from './components/surveys/SurveyRoute';
 import { Register } from './components/auth/Register';
+import { EditSurveyItemsRoute } from './components/surveys/EditSurveyItemsRoute';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -28,9 +29,8 @@ function App() {
             <Login path='login' />
             <Register path='register' />
             <ProtectedRoute path='surveys'>
-              <Surveys path='/'>
-                <SurveyRoute path=':surveyId' />
-              </Surveys>
+              <Surveys path='/' />
+              <EditSurveyItemsRoute path=':surveyId/edit' />
             </ProtectedRoute>
           </Router>
         </Container>

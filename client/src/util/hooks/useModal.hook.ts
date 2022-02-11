@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { AnyAction } from "redux";
 import { ModalKeys } from "../../constants/ModalKeys.enum";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { getModalState } from "../../store/modals/selectors";
@@ -9,6 +8,7 @@ export interface ModalOps {
   openModal: () => void;
   closeModal: () => void;
   setData: (data: any) => void;
+  clearData: () => void;
 }
 
 export const useModal = (modalKey: ModalKeys): IModalState & ModalOps => {
@@ -23,11 +23,13 @@ export const useModal = (modalKey: ModalKeys): IModalState & ModalOps => {
   const openModal = () => dispatch(setModalOpen({ key: modalKey, open: true }));
   const closeModal = () => dispatch(setModalOpen({ key: modalKey, open: false }));
   const setData = (data: any) => dispatch(setModalData({ key: modalKey, data }));
+  const clearData = () => dispatch(setModalData({ key: modalKey, data: {} }));
 
   return {
     ...modalState,
     openModal,
     closeModal,
-    setData
+    setData,
+    clearData
   };
 }
