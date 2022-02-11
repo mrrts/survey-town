@@ -7,7 +7,6 @@ import { Navbar } from './components/Navbar';
 import { useAppDispatch } from './store';
 import { restoreSession } from './store/auth/slice';
 import Container from 'react-bootstrap/Container';
-import { SurveyRoute } from './components/surveys/SurveyRoute';
 import { Register } from './components/auth/Register';
 import { EditSurveyItemsRoute } from './components/surveys/EditSurveyItemsRoute';
 
