@@ -24,8 +24,8 @@ export const Surveys: FC<ISurveysProps> = ({ children }) => {
 
   const handleCreateClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    surveyFormModal.clearData();
     surveyFormModal.openModal();
-    surveyFormModal.setData({ surveyId: null });
   }
 
   useEffect(() => {

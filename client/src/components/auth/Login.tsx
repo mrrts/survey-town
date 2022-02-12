@@ -1,5 +1,5 @@
 import { RouteComponentProps, navigate } from '@reach/router';
-import React, { FC, MouseEvent, useEffect, useState } from 'react';
+import React, { FC, MouseEvent, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -9,13 +9,14 @@ import { getUser } from '../../store/auth/selectors';
 import { RequestInfo } from '../common/RequestInfo';
 import { Link } from '@reach/router';
 import { Spinner } from '../common/Spinner';
+import { useDelayedRender } from '../../util/hooks/useDelayedRender.hook';
 
 export interface ILoginProps extends RouteComponentProps {
 
 }
 
 export const Login: FC<ILoginProps> = () => {
-  const [showForm, setShowForm] = useState(false);
+  const showForm = useDelayedRender(1000).show;
   const dispatch = useAppDispatch();
   const { register, getValues } = useForm();
   const user = useAppSelector(getUser);
@@ -31,11 +32,6 @@ export const Login: FC<ILoginProps> = () => {
       navigate('/surveys');
     }
   }, [user]);
-
-  useEffect(() => {
-    const t = setTimeout(() => setShowForm(true), 1000);
-    return () => clearTimeout(t);
-  }, [setShowForm]);
 
   if (!showForm) {
     return (
