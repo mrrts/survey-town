@@ -10,11 +10,14 @@ import { logoutUser } from '../store/auth/slice';
 import { getUser } from '../store/auth/selectors';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+import { Spinner } from './common/Spinner';
+import { useDelayedRender } from '../util/hooks/useDelayedRender.hook';
 
 export interface IAppNavbarProps {
 }
 
 export const AppNavbar: FC<IAppNavbarProps> = () => {
+  const showLogin = useDelayedRender(1000).show;
   const user = useAppSelector(getUser);
   const dispatch = useAppDispatch();
 
@@ -51,7 +54,10 @@ export const AppNavbar: FC<IAppNavbarProps> = () => {
                     </NavDropdown>
                   </>
                 )}
-                {!user && (
+                {!user && !showLogin && (
+                  <Spinner />
+                )}
+                {!user && showLogin && (
                   <Link className='btn btn-sm btn-primary login-button' to='/login'>
                     Login
                     <FontAwesomeIcon icon={faSignInAlt} />
