@@ -20,7 +20,10 @@ export const useModal = (modalKey: ModalKeys): IModalState & ModalOps => {
 
   const modalState = useAppSelector(selector);
 
-  const openModal = () => dispatch(setModalOpen({ key: modalKey, open: true }));
+  const openModal = (data?: any) => {
+    if (data) { dispatch(setModalData({ key: modalKey, data })); }
+    dispatch(setModalOpen({ key: modalKey, open: true }));
+  }
   const closeModal = () => dispatch(setModalOpen({ key: modalKey, open: false }));
   const setData = (data: any) => dispatch(setModalData({ key: modalKey, data }));
   const clearData = () => dispatch(setModalData({ key: modalKey, data: {} }));

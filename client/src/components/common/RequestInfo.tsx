@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useRequest } from '../../util/hooks/useRequest.hook';
-import Alert from 'react-bootstrap/Alert';
 import { Spinner } from './Spinner';
+import { toastDanger } from '../../util/toast.util';
 
 export interface IRequestInfoProps {
   requestKey: string;
@@ -10,16 +10,14 @@ export interface IRequestInfoProps {
 export const RequestInfo: FC<IRequestInfoProps> = ({ requestKey }) => {
   const { isPending, error } = useRequest(requestKey);
 
+  useEffect(() => {
+    if (error?.message) {
+      toastDanger(error.message);
+    }
+  }, [error?.message]);
+
   if (isPending) {
     return <Spinner />
-  }
-
-  if (error) {
-    return (
-      <Alert variant='danger'>
-        {error.message}
-      </Alert>
-    );
   }
 
   return null;

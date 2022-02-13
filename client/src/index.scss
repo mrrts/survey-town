@@ -129,6 +129,17 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   }
 }
 
+.Toastify {
+  .danger-toast {
+    background: $danger;
+    color: #fff;
+  }
+  .success-toast {
+    background: $success;
+    color: #fff;
+  }
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);

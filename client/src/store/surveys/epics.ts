@@ -1,7 +1,7 @@
 import { getType, PayloadAction } from "@reduxjs/toolkit";
 import { Action } from "redux";
 import { ofType } from "redux-observable";
-import { concat, mergeMap, Observable, of, from, switchMap, catchError } from "rxjs";
+import { concat, mergeMap, Observable, of, from, switchMap, catchError, tap } from "rxjs";
 import { AppState } from "..";
 import { ISurveyDto, SurveyDto } from "../../entities/dtos/survey.dto";
 import { requestError, requestStart, requestSuccess } from "../requests/slice";
@@ -12,6 +12,7 @@ import { RequestError } from "../../util/http.util";
 import { Survey } from "../../entities/survey.model";
 import { CreateSurveyDto } from "../../entities/dtos/create-survey.dto";
 import { UpdateSurveyDto } from "../../entities/dtos/update-survey.dto";
+import { toastSuccess } from "../../util/toast.util";
 
 export const fetchSurveysEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
@@ -60,7 +61,9 @@ export const createSurveyEpic = (action$: Observable<Action>, state$: Observable
             return concat(
               of(requestSuccess({ key })),
               of(receiveSurveys({ surveys: [survey] })),
-              of(receiveSurveyItems({ surveyItems }))
+              of(receiveSurveyItems({ surveyItems })).pipe(
+                tap(() => toastSuccess(`Survey "${dto.survey.title}" created.`))
+              )
             );
           }),
           catchError((err: RequestError) => {
@@ -88,7 +91,9 @@ export const createSurveyEpic = (action$: Observable<Action>, state$: Observable
               return concat(
                 of(requestSuccess({ key })),
                 of(receiveSurveys({ surveys: [survey] })),
-                of(receiveSurveyItems({ surveyItems }))
+                of(receiveSurveyItems({ surveyItems })).pipe(
+                  tap(() => toastSuccess(`Survey "${dto.survey.title}" updated.`))
+                )
               );
             }),
             catchError((err: RequestError) => {
