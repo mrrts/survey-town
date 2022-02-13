@@ -18,7 +18,7 @@ export interface IRegisterProps extends RouteComponentProps {
 export const Register: FC<IRegisterProps> = () => {
   const schema = yup.object().shape({
     emailAddress: yup.string().email('Must be a valid email address').required(),
-    handle: yup.string().required().min(6).max(20).matches(/^\w+$/),
+    handle: yup.string().required().min(6).max(20).matches(/^\w+$/, { message: 'must be only letters, numbers, and underscores'}),
     plaintextPassword: yup.string().required().min(8).max(36),
     plaintextPassword2: yup.string().required()
   }).required();
