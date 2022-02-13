@@ -9,6 +9,7 @@ import { restoreSession } from './store/auth/slice';
 import Container from 'react-bootstrap/Container';
 import { Register } from './components/auth/Register';
 import { EditSurveyItemsRoute } from './components/surveys/EditSurveyItemsRoute';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -34,6 +35,7 @@ function App() {
           </Router>
         </Container>
       </main>
+      <ToastContainer />
     </div>
   );
 }
