@@ -24,7 +24,7 @@ function App() {
       </header>
       <main className='main-container'>
         <Container>
-          <Router>
+          <Router primary={false}>
             <Login path='login' />
             <Register path='register' />
             <ProtectedRoute path='surveys'>
