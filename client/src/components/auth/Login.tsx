@@ -1,4 +1,4 @@
-import { RouteComponentProps, navigate } from '@reach/router';
+import { RouteComponentProps, navigate, Link } from '@reach/router';
 import React, { FC, MouseEvent, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import { loginUser } from '../../store/auth/slice';
 import { getUser } from '../../store/auth/selectors';
 import { RequestInfo } from '../common/RequestInfo';
-import { Link } from '@reach/router';
 import { Spinner } from '../common/Spinner';
 import { useDelayedRender } from '../../util/hooks/useDelayedRender.hook';
 
@@ -40,7 +39,7 @@ export const Login: FC<ILoginProps> = () => {
   }
 
   return (
-    <div className='login'>
+    <div className='login animate__animated animate__fadeIn'>
       <h2>Login</h2>
       <Form>
         <Form.Group className="mb-3" controlId="formBasicEmail">
