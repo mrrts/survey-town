@@ -9,6 +9,8 @@ import { getUser } from '../../store/auth/selectors';
 import { RequestInfo } from '../common/RequestInfo';
 import { Spinner } from '../common/Spinner';
 import { useDelayedRender } from '../../util/hooks/useDelayedRender.hook';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 export interface ILoginProps extends RouteComponentProps {
 
@@ -17,20 +19,27 @@ export interface ILoginProps extends RouteComponentProps {
 export const Login: FC<ILoginProps> = () => {
   const showForm = useDelayedRender(1000).show;
   const dispatch = useAppDispatch();
-  const { register, getValues } = useForm();
-  const user = useAppSelector(getUser);
 
-  const handleLoginClick = (e: MouseEvent) => {
-    e.preventDefault();
-    const { emailAddress, plaintextPassword } = getValues();
-    dispatch(loginUser({ dto: { emailAddress, plaintextPassword }}));
-  }
+  const schema = yup.object().shape({
+    emailAddress: yup.string().email().required(),
+    plaintextPassword: yup.string().required()
+  }).required();
+
+  const { register, getValues, formState: { errors }, handleSubmit} = useForm({
+    resolver: yupResolver(schema)
+  });
+  const user = useAppSelector(getUser);
 
   useEffect(() => {
     if (user) {
       navigate('/surveys');
     }
   }, [user]);
+
+  const onSubmit = (data: any) => {
+    const { emailAddress, plaintextPassword } = getValues();
+    dispatch(loginUser({ dto: { emailAddress, plaintextPassword }}));
+  }
 
   if (!showForm) {
     return (
@@ -41,20 +50,22 @@ export const Login: FC<ILoginProps> = () => {
   return (
     <div className='login animate__animated animate__fadeIn'>
       <h2>Login</h2>
-      <Form>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" placeholder="Enter email" { ...register('emailAddress') } />
+          <p className='text-danger'>{errors.emailAddress?.message}</p>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" placeholder="Password" { ...register('plaintextPassword') } />
+          <p className='text-danger'>{errors.plaintextPassword?.message}</p>
         </Form.Group>
 
         <RequestInfo requestKey='login' />
         
-        <Button variant="primary" type="submit" onClick={handleLoginClick}>
+        <Button variant="primary" type="submit">
           Login
         </Button>
 

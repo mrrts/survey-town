@@ -1,8 +1,7 @@
 import { RouteComponentProps } from '@reach/router';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { ISurvey } from '../../entities/survey.model';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { fetchSurveys } from '../../store/surveys/slice';
+import { useAppSelector } from '../../store';
 import { getSurveysByDateDesc } from '../../store/surveys/selectors';
 import { RequestInfo } from '../common/RequestInfo';
 import { SurveyListItem } from './SurveyListItem';
@@ -18,7 +17,6 @@ export interface ISurveysProps extends RouteComponentProps {
 }
 
 export const Surveys: FC<ISurveysProps> = ({ children }) => {
-  const dispatch = useAppDispatch();
   const surveyFormModal = useModal(ModalKeys.SURVEY_GENERAL);
   const surveys = useAppSelector(getSurveysByDateDesc);
 
@@ -27,10 +25,6 @@ export const Surveys: FC<ISurveysProps> = ({ children }) => {
     surveyFormModal.clearData();
     surveyFormModal.openModal();
   }
-
-  useEffect(() => {
-    dispatch(fetchSurveys());
-  }, [dispatch]);
 
   return (
     <div className='surveys'>

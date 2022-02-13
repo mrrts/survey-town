@@ -12,6 +12,7 @@ import { RequestError } from "../../util/http.util";
 import { fetchUserHandles } from "../users/slice";
 import { RegisterDto } from "../../entities/dtos/register.dto";
 import { navigate } from "@reach/router";
+import { fetchSurveys } from "../surveys/slice";
 
 export const loginEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
@@ -25,7 +26,10 @@ export const loginEpic = (action$: Observable<Action>, state$: Observable<AppSta
             return concat(
               of(requestSuccess({ key })),
               of(setUser({ user })),
-              of(fetchUserHandles())
+              of(fetchUserHandles()),
+              of(fetchSurveys()).pipe(
+                tap(() => navigate('/surveys'))
+              )
             );
           }),
           catchError((error: RequestError) => {
@@ -72,7 +76,8 @@ export const restoreSessionEpic = (action$: Observable<Action>, state$: Observab
             return concat(
               of(requestSuccess({ key })),
               of(setUser({ user })),
-              of(fetchUserHandles())
+              of(fetchUserHandles()),
+              of(fetchSurveys())
             );
           }),
           catchError((error: RequestError) => {
@@ -94,9 +99,12 @@ export const restoreSessionEpic = (action$: Observable<Action>, state$: Observab
             switchMap((user: User|null) => {
               return concat(
                 of(requestSuccess({ key })),
-                of(setUser({ user })).pipe(
-                  tap(() => navigate('/surveys'))
-                )
+                of(loginUser({ 
+                  dto: { 
+                    emailAddress: action.payload.dto.emailAddress,
+                    plaintextPassword: action.payload.dto.plaintextPassword 
+                  }}
+                ))
               );
             }),
             catchError((error: RequestError) => {
