@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import BSNavbar from 'react-bootstrap/Navbar';
+import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,27 +11,27 @@ import { getUser } from '../store/auth/selectors';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 
-export interface INavbarProps {
+export interface IAppNavbarProps {
 }
 
-export const Navbar: FC<INavbarProps> = () => {
+export const AppNavbar: FC<IAppNavbarProps> = () => {
   const user = useAppSelector(getUser);
   const dispatch = useAppDispatch();
 
   return (
     <div className='navbar-wrapper'>
-      <BSNavbar className='navbar' fixed='top'>
+      <Navbar className='navbar' fixed='top' collapseOnSelect expand="lg">
         <Container>
-          <BSNavbar.Brand as='button' onClick={() => navigate('/')} className='brand'>
+          <Navbar.Brand as='button' onClick={() => navigate('/')} className='brand'>
             <FontAwesomeIcon icon={faPoll} className='brand-icon' />
             Survey Town
-          </BSNavbar.Brand>
-          <BSNavbar.Toggle aria-controls="basic-navbar-nav" />
-          <BSNavbar.Collapse id="basic-navbar-nav">
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link as={Link} to='/surveys'>Surveys</Nav.Link>
             </Nav>
-            <BSNavbar.Collapse className="justify-content-end">
+            <Navbar.Collapse className="justify-content-end">
                 {user && (
                   <>
                     <NavDropdown 
@@ -57,10 +57,10 @@ export const Navbar: FC<INavbarProps> = () => {
                     <FontAwesomeIcon icon={faSignInAlt} />
                   </Link>
                 )}
-            </BSNavbar.Collapse>
-          </BSNavbar.Collapse>
+            </Navbar.Collapse>
+          </Navbar.Collapse>
         </Container>
-      </BSNavbar>
+      </Navbar>
     </div>
   );
 }

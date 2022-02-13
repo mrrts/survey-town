@@ -3,7 +3,7 @@ import { Router } from '@reach/router';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
 import { Surveys } from './components/surveys/Surveys';
 import { Login } from './components/auth/Login';
-import { Navbar } from './components/Navbar';
+import { AppNavbar } from './components/AppNavbar';
 import { useAppDispatch } from './store';
 import { restoreSession } from './store/auth/slice';
 import Container from 'react-bootstrap/Container';
@@ -20,7 +20,7 @@ function App() {
   return (
     <div className='app-container'>
       <header className='app-navbar'>
-        <Navbar />
+        <AppNavbar />
       </header>
       <main className='main-container'>
         <Container>
