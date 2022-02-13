@@ -1,5 +1,5 @@
-import { RouteComponentProps, navigate, Link } from '@reach/router';
-import React, { FC, MouseEvent, useEffect } from 'react';
+import { RouteComponentProps, Link, Redirect } from '@reach/router';
+import React, { FC } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -25,20 +25,20 @@ export const Login: FC<ILoginProps> = () => {
     plaintextPassword: yup.string().required()
   }).required();
 
-  const { register, getValues, formState: { errors }, handleSubmit} = useForm({
+  const { register, getValues, formState: { errors }, handleSubmit } = useForm({
     resolver: yupResolver(schema)
   });
   const user = useAppSelector(getUser);
 
-  useEffect(() => {
-    if (user) {
-      navigate('/surveys');
-    }
-  }, [user]);
-
   const onSubmit = (data: any) => {
     const { emailAddress, plaintextPassword } = getValues();
     dispatch(loginUser({ dto: { emailAddress, plaintextPassword }}));
+  }
+
+  if (user) {
+    return (
+      <Redirect to='/surveys' />
+    );
   }
 
   if (!showForm) {
