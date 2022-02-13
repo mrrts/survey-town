@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowCircleRight, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { useModal } from '../../util/hooks/useModal.hook';
 import { ModalKeys } from '../../constants/ModalKeys.enum';
-import { useIsSurveyOwner } from '../../util/hooks/useIsSurveyOwner.hook';
 import { Link } from '@reach/router';
 
 export interface ISurveyListItemProps {
@@ -15,15 +14,8 @@ export interface ISurveyListItemProps {
 }
 
 export const SurveyListItem: FC<ISurveyListItemProps> = ({ surveyId }) => {
-  const { survey, authorHandle, numberOfResponses } = useSurvey(surveyId);
-  const surveyGeneralModal = useModal(ModalKeys.SURVEY_GENERAL);
+  const { survey, authorHandle, numberOfResponses, isOwner } = useSurvey(surveyId);
   const takeSurveyModal = useModal(ModalKeys.TAKE_SURVEY);
-  const isOwner = useIsSurveyOwner(surveyId);
-
-  const handleEditTitleClick = useCallback(() => {
-    surveyGeneralModal.setData({ surveyId });
-    surveyGeneralModal.openModal();
-  }, [surveyGeneralModal, surveyId]);
 
   const handleTakeSurveyClick = useCallback(() => {
     takeSurveyModal.setData({ surveyId });
@@ -53,16 +45,10 @@ export const SurveyListItem: FC<ISurveyListItemProps> = ({ surveyId }) => {
               <FontAwesomeIcon icon={faArrowCircleRight} />
             </Button>
             {isOwner && (
-              <>
-                <Button className='edit-survey-general-button' variant='info' onClick={handleEditTitleClick}>
-                  <span>Edit Title/Description</span>
-                  <FontAwesomeIcon icon={faPencilAlt} />
-                </Button>
-                <Link to={`/surveys/${surveyId}/edit`} className='btn btn-info edit-survey-general-button'>
-                  <span>Edit Questions</span>
-                  <FontAwesomeIcon icon={faPencilAlt} />
-                </Link>
-              </>
+              <Link to={`/surveys/${surveyId}/edit`} className='btn btn-info edit-survey-general-button'>
+                <span>Edit / Add Questions</span>
+                <FontAwesomeIcon icon={faPencilAlt} />
+              </Link>
             )}
           </div>
 

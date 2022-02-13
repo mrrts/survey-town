@@ -10,6 +10,8 @@ import Container from 'react-bootstrap/Container';
 import { Register } from './components/auth/Register';
 import { EditSurveyItemsRoute } from './components/surveys/EditSurveyItemsRoute';
 import { ToastContainer } from 'react-toastify';
+import { SurveyGeneralFormModal } from './components/surveys/SurveyGeneralFormModal';
+import { TakeSurveyModal } from './components/surveys/TakeSurveyModal';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -36,6 +38,8 @@ function App() {
         </Container>
       </main>
       <ToastContainer />
+      <SurveyGeneralFormModal />
+      <TakeSurveyModal />
     </div>
   );
 }

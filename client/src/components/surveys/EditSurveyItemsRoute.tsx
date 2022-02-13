@@ -5,9 +5,12 @@ import { keys } from 'lodash';
 import { SurveyItemTypeData } from '../../constants/SurveyItems';
 import { SurveyItemType } from '../../constants/SurveyItemType.enum';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import Button from 'react-bootstrap/Button';
+import { useModal } from '../../util/hooks/useModal.hook';
+import { ModalKeys } from '../../constants/ModalKeys.enum';
 
 export interface IEditSurveyItemsRouteProps extends RouteComponentProps {
   surveyId?: string;
@@ -23,16 +26,30 @@ const options = keys(SurveyItemTypeData).map((itemType: SurveyItemType) => {
 });
 
 export const EditSurveyItemsRoute: FC<IEditSurveyItemsRouteProps> = ({ surveyId }) => {
-  const { survey } = useSurvey(surveyId as string);
+  const { survey, isOwner } = useSurvey(surveyId as string);
+  const surveyGeneralModal = useModal(ModalKeys.SURVEY_GENERAL);
 
   const handleOptionClick = useCallback((itemType: SurveyItemType) => {
     console.log({ itemType });
   }, []);
 
+  const handleEditTitleClick = () => {
+    surveyGeneralModal.setData({ surveyId: survey?.uuid });
+    surveyGeneralModal.openModal();
+  }
+
   return (
     <div className='edit-survey-items-route'>
       <h2>{survey?.title}</h2>
       <p>{survey?.description}</p>
+      {isOwner && (
+        <p>
+          <Button size='sm' variant='info' onClick={handleEditTitleClick}>
+            <FontAwesomeIcon icon={faPencilAlt} />
+            Edit title/description
+          </Button>
+        </p>
+      )}
 
       <div className='add-item-container'>
         <DropdownButton title={(
