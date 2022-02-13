@@ -13,6 +13,7 @@ import { Survey } from "../../entities/survey.model";
 import { CreateSurveyDto } from "../../entities/dtos/create-survey.dto";
 import { UpdateSurveyDto } from "../../entities/dtos/update-survey.dto";
 import { toastSuccess } from "../../util/toast.util";
+import { navigate } from "@reach/router";
 
 export const fetchSurveysEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
@@ -62,7 +63,10 @@ export const createSurveyEpic = (action$: Observable<Action>, state$: Observable
               of(requestSuccess({ key })),
               of(receiveSurveys({ surveys: [survey] })),
               of(receiveSurveyItems({ surveyItems })).pipe(
-                tap(() => toastSuccess(`Survey "${dto.survey.title}" created.`))
+                tap(() => {
+                  toastSuccess(`Survey "${dto.survey.title}" created.`);
+                  navigate(`/surveys/${survey.uuid}/edit`)
+                })
               )
             );
           }),
