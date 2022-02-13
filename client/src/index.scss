@@ -99,12 +99,15 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     .survey-list-item-title {
       display: flex;
       justify-content: space-between;
+      .responses-badge {
+        max-height: 2em;
+      }
     }
 
     .survey-card-actions {
       margin: 15px 0 0 0;
       .btn {
-        margin-right: .5em;
+        margin: 0 .5em .5em 0;
       }
     }
   }
