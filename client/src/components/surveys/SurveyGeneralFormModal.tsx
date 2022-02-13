@@ -53,13 +53,11 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
         dispatch(updateSurvey({ surveyId: survey?.uuid, dto }));
       }
 
-      modal.clearData();
       modal.closeModal();
     }
   }, [getValues, valid, dispatch, modal, survey]);
   
   const handleCloseClick = () => {
-    modal.clearData();
     modal.closeModal();
   };
 
@@ -68,10 +66,6 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
       reset();
     }
   }, [modal.isOpen, reset]);
-
-  if (!modal.isOpen) {
-    return null;
-  }
 
   return (
     <Modal show={modal.isOpen}>

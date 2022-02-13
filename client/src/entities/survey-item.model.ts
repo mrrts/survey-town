@@ -1,9 +1,4 @@
-export enum SurveyItemType {
-  CONTENT_INTERLUDE = 'CONTENT_INTERLUDE',
-  FREE_RESPONSE = 'FREE_RESPONSE',
-  MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',
-  MULTIPLE_SELECT = 'MULTIPLE_SELECT'
-}
+import { SurveyItemType } from "../constants/SurveyItemType.enum";
 
 export interface ISurveyItem {
   prompt?: string;
