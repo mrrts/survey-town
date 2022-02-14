@@ -2,7 +2,7 @@ import { RouteComponentProps } from '@reach/router';
 import React, { FC, useCallback } from 'react';
 import { useSurvey } from '../../util/hooks/useSurvey.hook';
 import { keys } from 'lodash';
-import { SurveyItemTypeData } from '../../constants/SurveyItems';
+import { SurveyItemTypeData } from '../../constants/SurveyItemTypeData';
 import { SurveyItemType } from '../../constants/SurveyItemType.enum';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
@@ -14,6 +14,7 @@ import { ModalKeys } from '../../constants/ModalKeys.enum';
 import { ICreateSurveyItemDto } from '../../entities/dtos/create-survey-item.dto';
 import { useAppDispatch } from '../../store';
 import { createSurveyItem } from '../../store/surveys/slice';
+import { ItemsList } from './survey-items/ItemsList';
 
 export interface IEditSurveyItemsRouteProps extends RouteComponentProps {
   surveyId?: string;
@@ -56,6 +57,8 @@ export const EditSurveyItemsRoute: FC<IEditSurveyItemsRouteProps> = ({ surveyId 
           </Button>
         </p>
       )}
+
+      <ItemsList surveyId={surveyId as string} />
 
       <div className='add-item-container'>
         <DropdownButton title={(
