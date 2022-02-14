@@ -5,6 +5,7 @@ import { ISurvey } from "../../entities/survey.model";
 import { keyBy } from 'lodash';
 import { CreateSurveyDto } from "../../entities/dtos/create-survey.dto";
 import { UpdateSurveyDto } from "../../entities/dtos/update-survey.dto";
+import { CreateSurveyItemDto } from "../../entities/dtos/create-survey-item.dto";
 
 export interface ISurveysState {
   surveys: Record<string, ISurvey>;
@@ -34,6 +35,9 @@ const slice = createSlice({
     updateSurvey(state: ISurveysState, action: PayloadAction<{ surveyId: string, dto: UpdateSurveyDto }>) {
       // triggers epic
     },
+    createSurveyItem(state: ISurveysState, action: PayloadAction<{ surveyId: string, dto: CreateSurveyItemDto }>) {
+      // triggers epic
+    },
     receiveSurveys(state: ISurveysState, action: PayloadAction<{ surveys: ISurvey[] }>) {
       state.surveys = {
         ...state.surveys,
@@ -60,6 +64,7 @@ export const {
   fetchSurveyResponses,
   createSurvey,
   updateSurvey,
+  createSurveyItem,
   receiveSurveys,
   receiveSurveyItems,
   receiveSurveyResponses

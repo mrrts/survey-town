@@ -11,6 +11,9 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from 'react-bootstrap/Button';
 import { useModal } from '../../util/hooks/useModal.hook';
 import { ModalKeys } from '../../constants/ModalKeys.enum';
+import { ICreateSurveyItemDto } from '../../entities/dtos/create-survey-item.dto';
+import { useAppDispatch } from '../../store';
+import { createSurveyItem } from '../../store/surveys/slice';
 
 export interface IEditSurveyItemsRouteProps extends RouteComponentProps {
   surveyId?: string;
@@ -28,10 +31,13 @@ const options = keys(SurveyItemTypeData).map((itemType: SurveyItemType) => {
 export const EditSurveyItemsRoute: FC<IEditSurveyItemsRouteProps> = ({ surveyId }) => {
   const { survey, isOwner } = useSurvey(surveyId as string);
   const surveyGeneralModal = useModal(ModalKeys.SURVEY_GENERAL);
+  const dispatch = useAppDispatch();
 
   const handleOptionClick = useCallback((itemType: SurveyItemType) => {
-    console.log({ itemType });
-  }, []);
+    if (!surveyId) { return; }
+    const dto: ICreateSurveyItemDto = { itemType };
+    dispatch(createSurveyItem({ surveyId, dto }));
+  }, [surveyId, dispatch]);
 
   const handleEditTitleClick = () => {
     surveyGeneralModal.setData({ surveyId: survey?.uuid });
