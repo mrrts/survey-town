@@ -3,6 +3,8 @@ import { SurveyItemType } from "./SurveyItemType.enum";
 import * as yup from 'yup';
 import React from "react";
 import { ContentInterludeFields } from "../components/surveys/survey-items/ContentInterludeFields";
+import { FreeResponseFields } from "../components/surveys/survey-items/FreeResponseFields";
+import { ItemWithChoicesFields } from "../components/surveys/survey-items/ItemWithChoicesFields";
 
 export interface ISurveyItemData {
   icon: IconDefinition;
@@ -29,7 +31,7 @@ export const SurveyItemTypeData: Record<SurveyItemType, ISurveyItemData> = {
     schema: yup.object().shape({
       prompt: yup.string().required()
     }).required(),
-    fieldsComponent: ContentInterludeFields
+    fieldsComponent: FreeResponseFields
   },
   [SurveyItemType.MULTIPLE_CHOICE]: {
     icon: faDotCircle,
@@ -37,9 +39,9 @@ export const SurveyItemTypeData: Record<SurveyItemType, ISurveyItemData> = {
     description: 'User can select only one of a list of options',
     schema: yup.object().shape({
       prompt: yup.string().required(),
-      choices: yup.array().of(yup.string()).required()
+      choices: yup.array().of(yup.string().required('choices must not be empty')).required()
     }).required(),
-    fieldsComponent: ContentInterludeFields
+    fieldsComponent: ItemWithChoicesFields
   },
   [SurveyItemType.MULTIPLE_SELECT]: {
     icon: faCheckSquare,
@@ -47,8 +49,8 @@ export const SurveyItemTypeData: Record<SurveyItemType, ISurveyItemData> = {
     description: 'User can make multiple selections from a list of options',
     schema: yup.object().shape({
       prompt: yup.string().required(),
-      choices: yup.array().of(yup.string()).required()
+      choices: yup.array().of(yup.string().required('choices must not be empty')).required()
     }).required(),
-    fieldsComponent: ContentInterludeFields
+    fieldsComponent: ItemWithChoicesFields
   }
 };

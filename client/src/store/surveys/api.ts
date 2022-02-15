@@ -1,6 +1,7 @@
 import { CreateSurveyItemDto } from '../../entities/dtos/create-survey-item.dto';
 import { CreateSurveyDto } from '../../entities/dtos/create-survey.dto';
 import { ISurveyDto, SurveyDto } from '../../entities/dtos/survey.dto';
+import { UpdateSurveyItemDto } from '../../entities/dtos/update-survey-item.dto';
 import { UpdateSurveyDto } from '../../entities/dtos/update-survey.dto';
 import * as httpUtil from '../../util/http.util';
 
@@ -23,5 +24,11 @@ export const patchSurvey = async (surveyId: string, dto: UpdateSurveyDto) => {
 export const postSurveyItem = async (surveyId: string, dto: CreateSurveyItemDto) => {
   const urlPath = `/surveys/${surveyId}/items`;
   const resp = await httpUtil.post<CreateSurveyItemDto, ISurveyDto>(urlPath, dto);
+  return new SurveyDto(resp);
+}
+
+export const patchSurveyItem = async (surveyId: string, surveyItemId: string, dto: UpdateSurveyItemDto) => {
+  const urlPath = `/surveys/${surveyId}/items/${surveyItemId}`;
+  const resp = await httpUtil.patch<UpdateSurveyItemDto, ISurveyDto>(urlPath, dto);
   return new SurveyDto(resp);
 }

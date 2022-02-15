@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateSurveyItemDto } from '../dto/create-survey-item.dto';
+import { UpdateSurveyItemDto } from '../dto/update-survey-item.dto';
 import {
   ISurveyItem,
   SurveyItem,
   SurveyItemDocument,
 } from '../entities/survey-item.entity';
+import { keys, forEach } from 'lodash';
 
 @Injectable()
 export class SurveyItemRepository {
@@ -32,6 +34,16 @@ export class SurveyItemRepository {
       author: authorId,
     });
     return item.save();
+  }
+
+  async update(surveyItemId: string, dto: UpdateSurveyItemDto): Promise<ISurveyItem> {
+    const surveyItem = await this.surveyItemModel.findOne({ uuid: surveyItemId }).exec();
+
+    forEach(keys(dto), (dtoKey: string) => {
+      surveyItem[dtoKey] = dto[dtoKey];
+    });
+
+    return surveyItem.save();
   }
 
   async removeOne(uuid: string): Promise<boolean> {

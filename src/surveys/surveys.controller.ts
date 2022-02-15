@@ -20,6 +20,7 @@ import { Roles } from '../common/roles.decorator';
 import { USER_ROLES } from '../users/entities/user.entity';
 import { User } from '../common/user.decorator';
 import { UpdateSurveyDto } from '../surveys/dto/update-survey.dto';
+import { UpdateSurveyItemDto } from './dto/update-survey-item.dto';
 
 @Controller('api/surveys')
 @UseGuards(RolesGuard)
@@ -78,6 +79,17 @@ export class SurveysController {
       surveyId,
       userId,
     );
+  }
+
+  @Patch(':surveyId/items/:surveyItemId')
+  @Roles({ requireAll: [USER_ROLES.USER] })
+  updateSurveyItem(
+    @Param('surveyId') surveyId: string,
+    @Param('surveyItemId') itemId: string,
+    @User('uuid') userId: string,
+    @Body() dto: UpdateSurveyItemDto
+  ) {
+    return this.surveysService.updateSurveyItem(dto, surveyId, itemId, userId);
   }
 
   @Delete(':surveyId/items/:itemId')

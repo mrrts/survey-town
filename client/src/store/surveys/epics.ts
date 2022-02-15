@@ -6,7 +6,7 @@ import { AppState } from "..";
 import { ISurveyDto, SurveyDto } from "../../entities/dtos/survey.dto";
 import { requestError, requestStart, requestSuccess } from "../requests/slice";
 import * as api from "./api";
-import { receiveSurveyItems, receiveSurveys, fetchSurveys as fetchSurveysAction, createSurvey, updateSurvey, createSurveyItem } from "./slice";
+import { receiveSurveyItems, receiveSurveys, fetchSurveys as fetchSurveysAction, createSurvey, updateSurvey, createSurveyItem, updateSurveyItem } from "./slice";
 import { flatMap } from 'lodash';
 import { RequestError } from "../../util/http.util";
 import { Survey } from "../../entities/survey.model";
@@ -15,6 +15,7 @@ import { UpdateSurveyDto } from "../../entities/dtos/update-survey.dto";
 import { toastSuccess } from "../../util/toast.util";
 import { navigate } from "@reach/router";
 import { CreateSurveyItemDto } from "../../entities/dtos/create-survey-item.dto";
+import { UpdateSurveyItemDto } from "../../entities/dtos/update-survey-item.dto";
 
 export const fetchSurveysEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
@@ -128,6 +129,36 @@ export const createSurveyItemEpic = (action$: Observable<Action>, state$: Observ
               of(receiveSurveys({ surveys: [survey] })),
               of(receiveSurveyItems({ surveyItems })).pipe(
                 tap(() => toastSuccess(`Item added to survey "${survey.title}"`))
+              )
+            );
+          }),
+          catchError((err: RequestError) => {
+            return of(requestError({ key, error: err.data }));
+          })
+        )
+      );
+    })
+  );
+
+export const updateSurveyItemEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
+  action$.pipe(
+    ofType(getType(updateSurveyItem)) as any,
+    mergeMap((action: PayloadAction<{ surveyId: string, surveyItemId: string, dto: UpdateSurveyItemDto }>) => {
+      const key = `update_survey_item_${action.payload.surveyItemId}`;
+      return concat(
+        of(requestStart({ key })),
+        from(api.patchSurveyItem(action.payload.surveyId, action.payload.surveyItemId, action.payload.dto)).pipe(
+          switchMap((dto: SurveyDto) => {
+            const survey = new Survey({
+              ...dto.survey,
+              numberOfResponses: dto.numberOfResponses
+            });
+            const surveyItems = dto.expandedItems;
+            return concat(
+              of(requestSuccess({ key })),
+              of(receiveSurveys({ surveys: [survey] })),
+              of(receiveSurveyItems({ surveyItems })).pipe(
+                tap(() => toastSuccess(`Item updated for survey "${survey.title}"`))
               )
             );
           }),

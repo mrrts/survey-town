@@ -31,4 +31,11 @@ export const getSurveyItemsBySurveyId = (surveyId: string) => createSelector(
       return surveyItemIds.indexOf(item?.uuid);
     });
   }
-)
+);
+
+export const getSurveyItemById = (surveyItemId: string) => createSelector(
+  getSurveysState,
+  (surveysState: ISurveysState): ISurveyItem => {
+    return surveysState.surveyItems?.[surveyItemId];
+  }
+);

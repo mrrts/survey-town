@@ -23,6 +23,7 @@ export class SurveyItem implements ISurveyItem {
 
   constructor(json: ISurveyItem) {
     this.prompt = json?.prompt;
+    this.content = json?.content;
     this.choices = json?.choices;
     this.author = json?.author;
     this.itemType = json?.itemType;

@@ -15,15 +15,18 @@ export const ItemsList: FC<IItemsListProps> = ({ surveyId }) => {
   return (
     <ul className='survey-items-list'>
       {surveyItems.map((surveyItem: ISurveyItem) => {
+        if (!surveyItem?.uuid) { return null; }
         const itemTypeData = SurveyItemTypeData[surveyItem.itemType];
         return (
-          <li key={surveyItem.uuid} className='survey-items-list-item'>
-            <h3>
-              <FontAwesomeIcon icon={itemTypeData.icon} />
+          <li key={surveyItem.uuid} className='survey-items-list-item card'>
+            <h3 className='survey-item-header'>
+              <FontAwesomeIcon className='survey-item-icon' icon={itemTypeData.icon} />
               {itemTypeData.label}
             </h3>
-            <p>{itemTypeData.description}</p>
-            <SurveyItemForm surveyId={surveyId} surveyItem={surveyItem} />
+            <p className='survey-item-description text-muted'>{itemTypeData.description}</p>
+            {surveyItem && (
+              <SurveyItemForm surveyId={surveyId} surveyItemId={surveyItem.uuid} />
+            )}
           </li>
         );
       })}

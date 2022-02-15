@@ -1,6 +1,7 @@
 @import "~bootswatch/dist/yeti/variables";
 @import "~bootstrap/scss/bootstrap";
 @import "~bootswatch/dist/yeti/bootswatch";
+@import "~animate.css/animate.min.css";
 
 $borderRadius: 1.2em;
 $lightGray: #f7f7f7;
@@ -114,6 +115,38 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .edit-survey-items-route {
+  .survey-items-list {
+    list-style-type: none;
+    padding: 0;
+    .survey-items-list-item {
+      margin-bottom: 10px;
+      padding: 15px;
+      border-radius: $borderRadius;
+      .survey-item-header {
+        font-size: 1.5em;
+        .survey-item-icon {
+          color: $primary;
+          margin: 0 .5em 0 0;
+        }
+      }
+      .survey-item-form {
+        .add-choices-group {
+          .choice-container {
+            display: flex;
+            justify-content: flext-start;
+            margin-bottom: .3em;
+            .delete-choice-button {
+              margin-right: .5em;
+            }
+          }
+        }
+        .survey-item-actions {
+          display: flex;
+          justify-content: flex-end;
+        }
+      }
+    }
+  }
   .add-item-container {
     display: flex;
     .add-item-label {
