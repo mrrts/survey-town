@@ -97,6 +97,7 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     max-width: 100%;
     margin: 25px auto;
     border-radius: $borderRadius;
+    border: 6px solid $primary;
     .survey-list-item-title {
       display: flex;
       justify-content: space-between;
@@ -176,10 +177,35 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   }
 }
 
+.take-survey-container {
+  .take-current-item-card {
+    padding: 2em;
+  }
+  .take-survey-actions {
+    margin-top: 1em;
+  }
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
   } to {
     transform: rotate(360deg);
   }
+}
+
+.surveyItemSwitch-leave {
+  &.surveyItemSwitch-leave-active {
+    animation: zoomOutLeft;
+    animation-duration: .5s;
+  }
+}
+.surveyItemSwitch-enter {
+  &.surveyItemSwitch-enter-active {
+    animation: slideInRight;
+    animation-duration: 1s;
+  }
+}
+.surveyItemSwitch-height {
+  transition: height 1s ease-out;
 }

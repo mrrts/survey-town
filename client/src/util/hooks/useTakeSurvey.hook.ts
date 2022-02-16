@@ -48,6 +48,9 @@ export const useTakeSurvey = (surveyId: string) => {
     dispatch(setCurrentTakingSurveyItem({ surveyItemId: prevItem?.uuid }));
   }, [dispatch, prevItem]);
 
+  const hasNextItem = !!nextItem;
+  const isLastItem = !!currentItem && !nextItem;
+
   return {
     prevItem,
     nextItem,
@@ -58,6 +61,8 @@ export const useTakeSurvey = (surveyId: string) => {
     goToNextItem,
     goToPrevItem,
     ownResponses,
-    firstItemWithoutResponse
+    firstItemWithoutResponse,
+    hasNextItem,
+    isLastItem
   };
 };
