@@ -11,13 +11,17 @@ import { UpdateSurveyItemDto } from "../../entities/dtos/update-survey-item.dto"
 export interface ISurveysState {
   surveys: Record<string, ISurvey>;
   surveyItems: Record<string, ISurveyItem>;
-  surveyResponses: Record<string, ISurveyResponse>;
+  anonSurveyResponses: Record<string, ISurveyResponse>; // anon == anonymous
+  ownResponses: Record<string, ISurveyResponse>;
+  currentTakingSurveyItem: string|null;
 }
 
 export const defaultSurveysState: ISurveysState = {
   surveys: {},
   surveyItems: {},
-  surveyResponses: {}
+  anonSurveyResponses: {},
+  ownResponses: {},
+  currentTakingSurveyItem: null
 };
 
 const slice = createSlice({
@@ -27,7 +31,7 @@ const slice = createSlice({
     fetchSurveys() {
       // triggers epic
     },
-    fetchSurveyResponses() {
+    fetchOwnResponsesForSurvey(state: ISurveysState, action: PayloadAction<{ surveyId: string }>) {
       // triggers epic
     },
     createSurvey(state: ISurveysState, action: PayloadAction<{ dto: CreateSurveyDto }>) {
@@ -55,24 +59,35 @@ const slice = createSlice({
       };
     },
     receiveSurveyResponses(state: ISurveysState, action: PayloadAction<{ surveyResponses: ISurveyResponse[] }>) {
-      state.surveyResponses = {
-        ...state.surveyResponses,
+      state.anonSurveyResponses = {
+        ...state.anonSurveyResponses,
         ...keyBy(action.payload.surveyResponses, 'uuid')
       };
+    },
+    receiveOwnResponses(state: ISurveysState, action: PayloadAction<{ surveyResponses: ISurveyResponse[] }>) {
+      state.ownResponses = {
+        ...state.ownResponses,
+        ...keyBy(action.payload.surveyResponses, 'uuid')
+      };
+    },
+    setCurrentTakingSurveyItem(state: ISurveysState, action: PayloadAction<{ surveyItemId: string }>) {
+      state.currentTakingSurveyItem = action.payload.surveyItemId;
     }
   }
 });
 
 export const {
   fetchSurveys,
-  fetchSurveyResponses,
+  fetchOwnResponsesForSurvey,
   createSurvey,
   updateSurvey,
   createSurveyItem,
   updateSurveyItem,
   receiveSurveys,
   receiveSurveyItems,
-  receiveSurveyResponses
+  receiveSurveyResponses,
+  receiveOwnResponses,
+  setCurrentTakingSurveyItem
 } = slice.actions;
 
 export const surveysReducer = slice.reducer;

@@ -28,8 +28,7 @@ export const ItemWithChoicesFields: FC<IItemWithChoicesFieldsProps> = ({
     name: 'choices'
   });
 
-  const handleAddClick = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleAddClick = () => {
     append('');
   };
 
@@ -60,7 +59,7 @@ export const ItemWithChoicesFields: FC<IItemWithChoicesFieldsProps> = ({
           return (
             <div key={field.id} className='choice-container'>
               <Button
-                variant='danger'
+                variant='link'
                 className='delete-choice-button'
                 size='sm'
                 aria-label='delete this choice'

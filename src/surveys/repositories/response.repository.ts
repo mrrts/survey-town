@@ -36,6 +36,10 @@ export class ResponseRepository {
       .exec();
   }
 
+  findAllForUserAndSurvey(surveyId: string, userId: string): Promise<IResponse[]> {
+    return this.responseModel.find({ survey: surveyId, user: userId }).exec();
+  }
+
   // Clear the responses for one user for one survey
   removeAllForUserAndSurvey(surveyId: string, userId: string) {
     return this.responseModel

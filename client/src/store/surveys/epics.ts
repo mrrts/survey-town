@@ -6,7 +6,7 @@ import { AppState } from "..";
 import { ISurveyDto, SurveyDto } from "../../entities/dtos/survey.dto";
 import { requestError, requestStart, requestSuccess } from "../requests/slice";
 import * as api from "./api";
-import { receiveSurveyItems, receiveSurveys, fetchSurveys as fetchSurveysAction, createSurvey, updateSurvey, createSurveyItem, updateSurveyItem } from "./slice";
+import { receiveSurveyItems, receiveSurveys, fetchSurveys as fetchSurveysAction, createSurvey, updateSurvey, createSurveyItem, updateSurveyItem, fetchOwnResponsesForSurvey, receiveOwnResponses } from "./slice";
 import { flatMap } from 'lodash';
 import { RequestError } from "../../util/http.util";
 import { Survey } from "../../entities/survey.model";
@@ -16,6 +16,10 @@ import { toastSuccess } from "../../util/toast.util";
 import { navigate } from "@reach/router";
 import { CreateSurveyItemDto } from "../../entities/dtos/create-survey-item.dto";
 import { UpdateSurveyItemDto } from "../../entities/dtos/update-survey-item.dto";
+import { ISurveyResponse } from "../../entities/survey-response.model";
+
+const handleRequestError = (key: string) => (err: RequestError) =>
+  of(requestError({ key, error: err.data }));
 
 export const fetchSurveysEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
@@ -39,9 +43,27 @@ export const fetchSurveysEpic = (action$: Observable<Action>, state$: Observable
               of(receiveSurveyItems({ surveyItems }))
             );
           }),
-          catchError((err: RequestError) => {
-            return of(requestError({ key, error: err.data }))
-          })
+          catchError(handleRequestError(key))
+        )
+      );
+    })
+  );
+
+export const fetchOwnResponsesForSurveyEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
+  action$.pipe(
+    ofType(getType(fetchOwnResponsesForSurvey)) as any,
+    mergeMap((action: PayloadAction<{ surveyId: string }>) => {
+      const key = `fetch_own_responses_for_survey_${action.payload.surveyId}`;
+      return concat(
+        of(requestStart({ key })),
+        from(api.fetchOwnResponsesForSurvey(action.payload.surveyId)).pipe(
+          switchMap((surveyResponses: ISurveyResponse[]) => {
+            return concat(
+              of(requestSuccess({ key })),
+              of(receiveOwnResponses({ surveyResponses }))
+            );
+          }),
+          catchError(handleRequestError(key))
         )
       );
     })
@@ -72,9 +94,7 @@ export const createSurveyEpic = (action$: Observable<Action>, state$: Observable
               )
             );
           }),
-          catchError((err: RequestError) => {
-            return of(requestError({ key, error: err.data }));
-          })
+          catchError(handleRequestError(key))
         )
       );
     })
@@ -102,9 +122,7 @@ export const updateSurveyEpic = (action$: Observable<Action>, state$: Observable
               )
             );
           }),
-          catchError((err: RequestError) => {
-            return of(requestError({ key, error: err.data }));
-          })
+          catchError(handleRequestError(key))
         )
       );
     })
@@ -132,9 +150,7 @@ export const createSurveyItemEpic = (action$: Observable<Action>, state$: Observ
               )
             );
           }),
-          catchError((err: RequestError) => {
-            return of(requestError({ key, error: err.data }));
-          })
+          catchError(handleRequestError(key))
         )
       );
     })
@@ -162,9 +178,7 @@ export const updateSurveyItemEpic = (action$: Observable<Action>, state$: Observ
               )
             );
           }),
-          catchError((err: RequestError) => {
-            return of(requestError({ key, error: err.data }));
-          })
+          catchError(handleRequestError(key))
         )
       );
     })

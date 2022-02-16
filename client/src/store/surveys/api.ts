@@ -3,11 +3,18 @@ import { CreateSurveyDto } from '../../entities/dtos/create-survey.dto';
 import { ISurveyDto, SurveyDto } from '../../entities/dtos/survey.dto';
 import { UpdateSurveyItemDto } from '../../entities/dtos/update-survey-item.dto';
 import { UpdateSurveyDto } from '../../entities/dtos/update-survey.dto';
+import { ISurveyResponse, SurveyResponse } from '../../entities/survey-response.model';
 import * as httpUtil from '../../util/http.util';
 
 export const fetchSurveys = async () => {
   const dtos = await httpUtil.get<ISurveyDto[]>('/surveys');
   return dtos.map((dto: ISurveyDto) => new SurveyDto(dto));
+}
+
+export const fetchOwnResponsesForSurvey = async (surveyId: string) => {
+  const urlPath = `/surveys/${surveyId}/own-responses`;
+  const responses = await httpUtil.get<ISurveyResponse[]>(urlPath);
+  return responses.map((dto: ISurveyResponse) => new SurveyResponse(dto));
 }
 
 export const postSurvey = async (dto: CreateSurveyDto) => {

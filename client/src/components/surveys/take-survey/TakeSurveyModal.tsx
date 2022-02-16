@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
-import { ModalKeys } from '../../constants/ModalKeys.enum';
-import { useModal } from '../../util/hooks/useModal.hook';
+import { ModalKeys } from '../../../constants/ModalKeys.enum';
+import { useModal } from '../../../util/hooks/useModal.hook';
 import Modal from 'react-bootstrap/Modal';
-import { useSurvey } from '../../util/hooks/useSurvey.hook';
+import { useSurvey } from '../../../util/hooks/useSurvey.hook';
 import Button from 'react-bootstrap/Button';
+import { TakeSurvey } from './TakeSurvey';
 
 export interface ITakeSurveyModalProps {}
 
@@ -23,7 +24,7 @@ export const TakeSurveyModal: FC<ITakeSurveyModalProps> = () => {
         {survey?.title}
       </Modal.Header>
       <Modal.Body>
-        Take-Survey UI 
+        <TakeSurvey surveyId={modal.data?.surveyId} />
       </Modal.Body>
       <Modal.Footer>
         <Button variant='secondary' onClick={handleCloseClick}>

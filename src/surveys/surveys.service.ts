@@ -161,6 +161,10 @@ export class SurveysService {
     return this.responseRepository.findAllForSurvey(surveyId);
   }
 
+  findAllResponsesForUserAndSurvey(surveyId: string, userId: string): Promise<IResponse[]> {
+    return this.responseRepository.findAllForUserAndSurvey(surveyId, userId);
+  }
+
   async createResponse(
     dto: CreateResponseDto,
     surveyId: string,

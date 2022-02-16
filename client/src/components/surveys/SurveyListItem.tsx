@@ -46,7 +46,7 @@ export const SurveyListItem: FC<ISurveyListItemProps> = ({ surveyId }) => {
             </Button>
             {isOwner && (
               <Link to={`/surveys/${surveyId}/edit`} className='btn btn-info edit-survey-general-button'>
-                <span>Edit / Add Questions</span>
+                <span>Edit Survey</span>
                 <FontAwesomeIcon icon={faPencilAlt} />
               </Link>
             )}

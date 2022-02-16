@@ -11,7 +11,7 @@ import { Register } from './components/auth/Register';
 import { EditSurveyItemsRoute } from './components/surveys/EditSurveyItemsRoute';
 import { ToastContainer } from 'react-toastify';
 import { SurveyGeneralFormModal } from './components/surveys/SurveyGeneralFormModal';
-import { TakeSurveyModal } from './components/surveys/TakeSurveyModal';
+import { TakeSurveyModal } from './components/surveys/take-survey/TakeSurveyModal';
 
 function App() {
   const dispatch = useAppDispatch();

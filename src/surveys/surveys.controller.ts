@@ -119,6 +119,15 @@ export class SurveysController {
     return this.surveysService.createResponse(dto, surveyId, itemId, userId);
   }
 
+  @Get(':surveyId/own-responses')
+  @Roles({ requireAll: [USER_ROLES.USER] })
+  getOwnResponsesForSurvey(
+    @Param('surveyId') surveyId: string,
+    @User('uuid') userId: string
+  ) {
+    return this.surveysService.findAllResponsesForUserAndSurvey(surveyId, userId);
+  }
+
   @Delete(':surveyId/own-responses')
   @Roles({ requireAll: [USER_ROLES.USER] })
   removeOwnResponsesForSurvey(
@@ -131,13 +140,4 @@ export class SurveysController {
     );
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateSurveyDto: UpdateSurveyDto) {
-  //   return this.surveysService.update(id, updateSurveyDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.surveysService.remove(id);
-  // }
 }
