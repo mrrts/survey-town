@@ -22,7 +22,7 @@ export const SurveyItemForm: FC<ISurveyItemFormProps> = ({ surveyId, surveyItemI
 
   const schema = itemTypeData.schema;
 
-  const { register, handleSubmit, getValues, formState: { errors }, reset, control } = useForm({
+  const { register, handleSubmit, getValues, formState: { errors, isDirty }, reset, control } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -41,10 +41,10 @@ export const SurveyItemForm: FC<ISurveyItemFormProps> = ({ surveyId, surveyItemI
         )
       }
       <div className='survey-item-actions'>
-        <Button className='me-1' variant='secondary' onClick={() => reset()}>
+        <Button className='me-1' variant='secondary' onClick={() => reset()} disabled={!isDirty}>
           Reset
         </Button>
-        <Button variant='success' type='submit'>
+        <Button variant='success' type='submit' disabled={!isDirty}>
           Save
         </Button>
       </div>

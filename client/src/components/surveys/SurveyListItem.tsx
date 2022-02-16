@@ -8,6 +8,7 @@ import { faArrowCircleRight, faPencilAlt } from '@fortawesome/free-solid-svg-ico
 import { useModal } from '../../util/hooks/useModal.hook';
 import { ModalKeys } from '../../constants/ModalKeys.enum';
 import { Link } from '@reach/router';
+import { formatDistance } from 'date-fns';
 
 export interface ISurveyListItemProps {
   surveyId: string;
@@ -22,6 +23,8 @@ export const SurveyListItem: FC<ISurveyListItemProps> = ({ surveyId }) => {
     takeSurveyModal.openModal();
   }, [takeSurveyModal, surveyId]);
 
+  const createdAgoPhrase = formatDistance(survey?.createdAt, new Date(), { addSuffix: true });
+
   return (
     <div className='survey-list-item'>
       <Card className='survey-card'>
@@ -33,10 +36,12 @@ export const SurveyListItem: FC<ISurveyListItemProps> = ({ surveyId }) => {
               {numberOfResponses} response{numberOfResponses === 1 ? '' : 's'}
             </Badge>
           </Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">by {authorHandle}</Card.Subtitle>
+          <Card.Subtitle className="mb-2 text-muted">
+            by {authorHandle}, {createdAgoPhrase}
+          </Card.Subtitle>
           
-          <Card.Text>
-            Description: {survey.description}
+          <Card.Text aria-label='description of survey'>
+            {survey.description}
           </Card.Text>
 
           <div className='survey-card-actions'>
