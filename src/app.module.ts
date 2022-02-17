@@ -1,4 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -13,6 +14,7 @@ import { LoggerMiddleware } from './common/logger.middleware';
 import { SurveysController } from './surveys/surveys.controller';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -27,13 +29,22 @@ import { join } from 'path';
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }),
+    ThrottlerModule.forRoot({
+      limit: 20,
+      ttl: 10
+    }),
     UsersModule,
     SurveysModule,
     AuthModule,
     PasswordModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PasswordService, UsersService],
+  providers: [
+    AppService,
+    PasswordService,
+    UsersService,
+    { provide: APP_GUARD, useClass: ThrottlerGuard }
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
