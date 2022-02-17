@@ -14,13 +14,14 @@ import { SurveysService } from './surveys.service';
 import { CreateSurveyDto } from './dto/create-survey.dto';
 import { SurveyDto } from './dto/survey.dto';
 import { CreateSurveyItemDto } from './dto/create-survey-item.dto';
-import { CreateResponseDto } from './dto/create-response.dto';
+import { CreateResponseDto, createResponseDtoSchema } from './dto/create-response.dto';
 import { RolesGuard } from '../common/roles.guard';
 import { Roles } from '../common/roles.decorator';
 import { USER_ROLES } from '../users/entities/user.entity';
 import { User } from '../common/user.decorator';
 import { UpdateSurveyDto } from '../surveys/dto/update-survey.dto';
 import { UpdateSurveyItemDto } from './dto/update-survey-item.dto';
+import { SchemaValidatorPipe } from '../common/schema-validator.pipe';
 
 @Controller('api/surveys')
 @UseGuards(RolesGuard)
@@ -111,7 +112,7 @@ export class SurveysController {
   @Post(':surveyId/items/:itemId/responses')
   @Roles({ requireAll: [USER_ROLES.USER] })
   createResponse(
-    @Body() dto: CreateResponseDto,
+    @Body(new SchemaValidatorPipe(createResponseDtoSchema)) dto: CreateResponseDto,
     @Param('surveyId') surveyId: string,
     @Param('itemId') itemId: string,
     @User('uuid') userId: string,

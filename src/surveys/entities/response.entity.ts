@@ -2,9 +2,9 @@ import { Document, Schema, model, Model, SchemaOptions } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 export enum ResponseType {
-  FREE_RESPONSE = 'FREE_RESPONSE_RESPONSE',
-  MULTIPLE_CHOICE = 'MULTIPLE_CHOICE_RESPONSE',
-  MULTIPLE_SELECT = 'MULTIPLE_SELECT_RESPONSE',
+  FREE_RESPONSE_RESPONSE = 'FREE_RESPONSE_RESPONSE',
+  MULTIPLE_CHOICE_RESPONSE = 'MULTIPLE_CHOICE_RESPONSE',
+  MULTIPLE_SELECT_RESPONSE = 'MULTIPLE_SELECT_RESPONSE',
 }
 
 export interface IResponse {
@@ -62,17 +62,17 @@ export const multipleSelectResponseSchema = new Schema(
 export const Response: Model<IResponse> = model('Response', responseSchema);
 
 export const FreeResponse: Model<IResponse> = Response.discriminator(
-  ResponseType.FREE_RESPONSE,
+  ResponseType.FREE_RESPONSE_RESPONSE,
   freeResponseSchema,
 );
 
 export const MultipleChoiceResponse: Model<IResponse> = Response.discriminator(
-  ResponseType.MULTIPLE_CHOICE,
+  ResponseType.MULTIPLE_CHOICE_RESPONSE,
   multipleChoiceResponseSchema,
 );
 
 export const MultipleSelectResponse: Model<IResponse> = Response.discriminator(
-  ResponseType.MULTIPLE_SELECT,
+  ResponseType.MULTIPLE_SELECT_RESPONSE,
   multipleSelectResponseSchema,
 );
 

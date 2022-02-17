@@ -3,6 +3,7 @@ import {
   ForbiddenException,
   Injectable,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { CreateSurveyDto } from './dto/create-survey.dto';
 import { SurveyDto } from './dto/survey.dto';
@@ -186,6 +187,19 @@ export class SurveysService {
       throw new ConflictException(
         'User has already submitted a response for this survey item',
       );
+    }
+
+    if (dto.selection && !surveyItem.choices.includes(dto.selection)) {
+      throw new BadRequestException(`${dto.selection} is not a valid selection`);
+    }
+
+    if (
+      dto.selections 
+      && !dto.selections.every((selection: string) => 
+        surveyItem.choices.includes(selection)
+      )
+    ) {
+      throw new BadRequestException('All selections must be valid choices');
     }
 
     return this.responseRepository.create(dto, surveyId, surveyItemId, userId);
