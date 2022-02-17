@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { IRequestErrorData } from "../../util/http.util";
 
-export enum RequestState {
+export enum RequestStatus {
   PENDING = 'PENDING',
   SUCCESS = 'SUCCESS',
   ERROR = 'ERROR'
@@ -9,7 +9,7 @@ export enum RequestState {
 
 export interface IRequestState {
   key: string,
-  state: RequestState,
+  state: RequestStatus,
   error?: IRequestErrorData
 }
 
@@ -28,19 +28,19 @@ const slice = createSlice({
     requestStart(state: IRequestsState, action: PayloadAction<{ key: string }>) {
       state.requests[action.payload.key] = {
         key: action.payload.key,
-        state: RequestState.PENDING,
+        state: RequestStatus.PENDING,
         error: undefined
       }
     },
     requestSuccess(state: IRequestsState, action: PayloadAction<{ key: string }>) {
       if (state.requests?.[action.payload.key]) {
-        state.requests[action.payload.key].state = RequestState.SUCCESS;
+        state.requests[action.payload.key].state = RequestStatus.SUCCESS;
         state.requests[action.payload.key].error = undefined;
       }
     },
     requestError(state: IRequestsState, action: PayloadAction<{ key: string, error: IRequestErrorData }>) {
       if (state.requests?.[action.payload.key]) {
-        state.requests[action.payload.key].state = RequestState.ERROR; 
+        state.requests[action.payload.key].state = RequestStatus.ERROR; 
         state.requests[action.payload.key].error = action.payload.error; 
       }
     }
