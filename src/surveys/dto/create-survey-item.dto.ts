@@ -23,6 +23,6 @@ export const createSurveyItemDtoSchema: yup.AnySchema = yup.object({
     is: (itemType: SurveyItemType) => {
       return [SurveyItemType.MULTIPLE_CHOICE, SurveyItemType.MULTIPLE_SELECT].includes(itemType);
     },
-    then: yup.array().of(yup.string()).min(1).required()
+    then: yup.array().of(yup.string()).min(1, 'must have at least one choice').required()
   })
 });

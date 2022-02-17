@@ -11,7 +11,7 @@ import {
   Patch,
 } from '@nestjs/common';
 import { SurveysService } from './surveys.service';
-import { CreateSurveyDto } from './dto/create-survey.dto';
+import { CreateSurveyDto, createSurveyDtoSchema } from './dto/create-survey.dto';
 import { SurveyDto } from './dto/survey.dto';
 import { CreateSurveyItemDto, createSurveyItemDtoSchema } from './dto/create-survey-item.dto';
 import { CreateResponseDto, createResponseDtoSchema } from './dto/create-response.dto';
@@ -19,8 +19,8 @@ import { RolesGuard } from '../common/roles.guard';
 import { Roles } from '../common/roles.decorator';
 import { USER_ROLES } from '../users/entities/user.entity';
 import { User } from '../common/user.decorator';
-import { UpdateSurveyDto } from '../surveys/dto/update-survey.dto';
-import { UpdateSurveyItemDto } from './dto/update-survey-item.dto';
+import { UpdateSurveyDto, updateSurveyDtoSchema } from '../surveys/dto/update-survey.dto';
+import { UpdateSurveyItemDto, updateSurveyItemDtoSchema } from './dto/update-survey-item.dto';
 import { SchemaValidatorPipe } from '../common/schema-validator.pipe';
 
 @Controller('api/surveys')
@@ -31,7 +31,7 @@ export class SurveysController {
   @Post()
   @Roles({ requireAll: [USER_ROLES.USER] })
   create(
-    @Body() createSurveyDto: CreateSurveyDto,
+    @Body(new SchemaValidatorPipe(createSurveyDtoSchema)) createSurveyDto: CreateSurveyDto,
     @User('uuid') userId: string,
   ) {
     return this.surveysService.create(createSurveyDto, userId);
@@ -62,7 +62,7 @@ export class SurveysController {
   @Roles({ requireAll: [USER_ROLES.USER] })
   update(
     @Param('surveyId') surveyId: string,
-    @Body() dto: UpdateSurveyDto,
+    @Body(new SchemaValidatorPipe(updateSurveyDtoSchema)) dto: UpdateSurveyDto,
     @User('uuid') userId: string,
   ): Promise<SurveyDto> {
     return this.surveysService.update(surveyId, dto, userId);
@@ -88,7 +88,7 @@ export class SurveysController {
     @Param('surveyId') surveyId: string,
     @Param('surveyItemId') itemId: string,
     @User('uuid') userId: string,
-    @Body() dto: UpdateSurveyItemDto
+    @Body(new SchemaValidatorPipe(updateSurveyItemDtoSchema)) dto: UpdateSurveyItemDto
   ) {
     return this.surveysService.updateSurveyItem(dto, surveyId, itemId, userId);
   }
