@@ -44,7 +44,7 @@ export const ItemWithChoicesFields: FC<IItemWithChoicesFieldsProps> = ({
   return (
     <>
       <Form.Group>
-        <Form.Label>Question Prompt</Form.Label>
+        <Form.Label>Question / Prompt</Form.Label>
         <Form.Control
           as='textarea'
           rows={2}

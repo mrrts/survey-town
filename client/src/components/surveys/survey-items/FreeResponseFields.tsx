@@ -15,7 +15,7 @@ export const FreeResponseFields: FC<IFreeResponseFieldsProps> = ({ register, err
   return (
     <>
       <Form.Group>
-        <Form.Label>Question Prompt</Form.Label>
+        <Form.Label>Question / Prompt</Form.Label>
         <Form.Control
           as='textarea'
           rows={2}
