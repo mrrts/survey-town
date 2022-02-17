@@ -13,7 +13,7 @@ import {
 import { SurveysService } from './surveys.service';
 import { CreateSurveyDto } from './dto/create-survey.dto';
 import { SurveyDto } from './dto/survey.dto';
-import { CreateSurveyItemDto } from './dto/create-survey-item.dto';
+import { CreateSurveyItemDto, createSurveyItemDtoSchema } from './dto/create-survey-item.dto';
 import { CreateResponseDto, createResponseDtoSchema } from './dto/create-response.dto';
 import { RolesGuard } from '../common/roles.guard';
 import { Roles } from '../common/roles.decorator';
@@ -72,7 +72,7 @@ export class SurveysController {
   @Roles({ requireAll: [USER_ROLES.USER] })
   createSurveyItem(
     @Param('surveyId') surveyId: string,
-    @Body() createSurveyItemDto: CreateSurveyItemDto,
+    @Body(new SchemaValidatorPipe(createSurveyItemDtoSchema)) createSurveyItemDto: CreateSurveyItemDto,
     @User('uuid') userId: string,
   ) {
     return this.surveysService.createSurveyItem(

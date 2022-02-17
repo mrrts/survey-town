@@ -199,7 +199,7 @@ export class SurveysService {
         surveyItem.choices.includes(selection)
       )
     ) {
-      throw new BadRequestException('All selections must be valid choices');
+      throw new BadRequestException('All selections must be from the provided list of choices');
     }
 
     return this.responseRepository.create(dto, surveyId, surveyItemId, userId);
@@ -215,11 +215,4 @@ export class SurveysService {
     return this.responseRepository.removeAllForUserAndSurvey(surveyId, userId);
   }
 
-  // update(id: string, updateSurveyDto: UpdateSurveyDto) {
-  //   return `This action updates a #${id} survey`;
-  // }
-
-  // remove(id: string) {
-  //   return `This action removes a #${id} survey`;
-  // }
 }
