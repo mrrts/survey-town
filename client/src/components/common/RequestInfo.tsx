@@ -8,13 +8,7 @@ export interface IRequestInfoProps {
 }
 
 export const RequestInfo: FC<IRequestInfoProps> = ({ requestKey }) => {
-  const { isPending, error } = useRequest(requestKey);
-
-  useEffect(() => {
-    if (error?.message) {
-      toastDanger(error.message);
-    }
-  }, [error?.message]);
+  const { isPending } = useRequest(requestKey);
 
   if (isPending) {
     return <Spinner />

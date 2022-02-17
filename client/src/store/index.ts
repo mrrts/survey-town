@@ -7,6 +7,7 @@ import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import * as authEpics from './auth/epics';
 import * as surveyEpics from './surveys/epics';
 import * as userEpics from './users/epics';
+import * as requestEpics from './requests/epics';
 import { values } from 'lodash';
 import { requestsReducer } from "./requests/slice";
 import { surveysReducer } from "./surveys/slice";
@@ -41,7 +42,8 @@ export const store = configureStore({
 const rootEpic = combineEpics(
   ...values(authEpics),
   ...values(surveyEpics),
-  ...values(userEpics)
+  ...values(userEpics),
+  ...values(requestEpics)
 );
 epicMiddleware.run(rootEpic);
 
