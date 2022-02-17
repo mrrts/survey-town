@@ -36,7 +36,12 @@ export const EditSurveyItemsRoute: FC<IEditSurveyItemsRouteProps> = ({ surveyId 
 
   const handleOptionClick = useCallback((itemType: SurveyItemType) => {
     if (!surveyId) { return; }
-    const dto: ICreateSurveyItemDto = { itemType };
+    const dto: ICreateSurveyItemDto = {
+      itemType,
+      content: 'Default content',
+      choices: ['Choice A', 'Choice B'],
+      prompt: 'Default question?'
+    };
     dispatch(createSurveyItem({ surveyId, dto }));
   }, [surveyId, dispatch]);
 
