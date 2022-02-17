@@ -29,7 +29,7 @@ export const surveySchema = new Schema(
     updatedAt: { type: Date, default: Date.now, required: true },
     author: { type: String, index: true, required: true },
     title: { type: String, required: true },
-    description: { type: String, required: true },
+    description: { type: String, required: false },
     responsesPublic: { type: Boolean, required: true, default: () => true },
     surveyItems: { type: [String], required: true, default: () => [] },
   },

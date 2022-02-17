@@ -26,7 +26,7 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
 
   const schema = yup.object().shape({
     title: yup.string().required().min(4).max(100),
-    description: yup.string().required().min(4).max(500)
+    description: yup.string().max(500)
   }).required();
 
   const { register, handleSubmit, formState: { errors }, getValues, reset } = useForm({
