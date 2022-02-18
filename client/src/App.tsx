@@ -12,6 +12,7 @@ import { EditSurveyItemsRoute } from './components/surveys/EditSurveyItemsRoute'
 import { ToastContainer } from 'react-toastify';
 import { SurveyGeneralFormModal } from './components/surveys/SurveyGeneralFormModal';
 import { TakeSurveyModal } from './components/surveys/take-survey/TakeSurveyModal';
+import { Home } from './components/Home';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -28,6 +29,7 @@ function App() {
       <main className='main-container'>
         <Container>
           <Router primary={false}>
+            <Home path='/' />
             <Login path='login' />
             <Register path='register' />
             <ProtectedRoute path='surveys'>

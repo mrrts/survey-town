@@ -14,6 +14,44 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   background: $lightGray;
   overflow: scroll;
   padding-top: 60px;
+  position: relative;
+}
+
+.home-container {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  .home-banner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15vh;
+
+    h2 {
+      text-align: center;
+      span {
+        font-size: 3rem;
+      }
+      font-size: 4.5rem;
+    }
+  }
+
+  .home-skyline-image {
+    position: absolute;
+    bottom: -20px;
+    width: 125%;
+    left: -120px;
+    pointer-events: none;
+    max-height: 60vh;
+    .path {
+      fill: #dedede;
+    }
+  }
 }
 
 .spinner-wrapper {
