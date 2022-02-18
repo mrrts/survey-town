@@ -27,6 +27,8 @@ export const useTakeSurvey = (surveyId: string) => {
   const prevItemIndex = currentItemIndex - 1;
   const nextItemIndex = currentItemIndex + 1;
 
+  const progressPercentage = Math.floor(((currentItemIndex + 1) / (numItems || 1)) * 100);
+
   // Be sure to check in component for defined prevItem and nextItem
   const currentItem = surveyItems[currentItemIndex];
   const prevItem = surveyItems[prevItemIndex];
@@ -105,6 +107,7 @@ export const useTakeSurvey = (surveyId: string) => {
     goToNextItem,
     goToPrevItem,
     ownResponses,
+    progressPercentage,
     firstItemWithoutResponse,
     hasNextItem,
     isLastItem,

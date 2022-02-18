@@ -12,6 +12,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { RequestInfo } from '../../common/RequestInfo';
 import { useRequest } from '../../../util/hooks/useRequest.hook';
+import ProgressBar from 'react-bootstrap/ProgressBar';
 
 interface ICurrentItemProps {
   surveyId: string;
@@ -30,7 +31,8 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
     currentItemSubmittedValues,
     submitResponses,
     ownResponses,
-    deleteOwnResponses
+    deleteOwnResponses,
+    progressPercentage
   } = useTakeSurvey(surveyId);
   const [shouldSubmit, setShouldSubmit] = useState(false);
   const [isValid, setIsValid] = useState(false);
@@ -131,7 +133,7 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
   
   return (
     <div className='current-item-container'>
-      <Card key={currentItemId} className='take-current-item-card'>
+      <Card className='take-current-item-card'>
         <FormProvider { ...form }>
           <Form onSubmit={form.handleSubmit(onItemSubmit)}>
             <TakeSurveyItemComponent
@@ -167,6 +169,7 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
         </FormProvider>
         <RequestInfo requestKey={submitRequestKey} />
       </Card>
+      <ProgressBar now={progressPercentage} />
     </div>
   );
 }

@@ -1,14 +1,15 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useSurvey } from '../../util/hooks/useSurvey.hook';
 import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowCircleRight, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { faArrowCircleRight, faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useModal } from '../../util/hooks/useModal.hook';
 import { ModalKeys } from '../../constants/ModalKeys.enum';
 import { Link } from '@reach/router';
 import { formatDistance } from 'date-fns';
+import { useAppDispatch } from '../../store';
 
 export interface ISurveyListItemProps {
   surveyId: string;
@@ -17,11 +18,24 @@ export interface ISurveyListItemProps {
 export const SurveyListItem: FC<ISurveyListItemProps> = ({ surveyId }) => {
   const { survey, authorHandle, numberOfResponses, isOwner } = useSurvey(surveyId);
   const takeSurveyModal = useModal(ModalKeys.TAKE_SURVEY);
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+  const dispatch = useAppDispatch();
 
   const handleTakeSurveyClick = useCallback(() => {
     takeSurveyModal.setData({ surveyId });
     takeSurveyModal.openModal();
   }, [takeSurveyModal, surveyId]);
+
+  const handleDeleteClick = useCallback(() => {
+    if (!isConfirmingDelete) {
+      setIsConfirmingDelete(true);
+      const timeout = setTimeout(() => {
+        setIsConfirmingDelete(false);
+      }, 5000);
+      return () => clearTimeout(timeout);
+    }
+    console.log('delete')
+  }, [isConfirmingDelete, setIsConfirmingDelete, dispatch]);
 
   const createdAgoPhrase = formatDistance(survey?.createdAt, new Date(), { addSuffix: true });
 
@@ -45,18 +59,23 @@ export const SurveyListItem: FC<ISurveyListItemProps> = ({ surveyId }) => {
           </Card.Text>
 
           <div className='survey-card-actions'>
-            <Button className='take-survey-button' variant='primary' onClick={handleTakeSurveyClick}>
-              <span>Take this survey</span>
-              <FontAwesomeIcon icon={faArrowCircleRight} />
-            </Button>
             {isOwner && (
-              <Link to={`/surveys/${surveyId}/edit`} className='btn btn-info edit-survey-general-button'>
-                <FontAwesomeIcon icon={faPencilAlt} />
-                <span>Edit Survey</span>
-              </Link>
+              <>
+                <Link to={`/surveys/${surveyId}/edit`} className='btn btn-link btn-sm edit-survey-general-button'>
+                  <FontAwesomeIcon icon={faPencilAlt} />
+                  <span>Edit Survey</span>
+                </Link>
+                <Button variant='link' size='sm' onClick={handleDeleteClick}>
+                  <FontAwesomeIcon icon={faTrash} />
+                  {isConfirmingDelete ?  'Confirm?' : 'Delete'}
+                </Button>
+              </>
             )}
           </div>
-
+          <Button className='take-survey-button' variant='primary' onClick={handleTakeSurveyClick}>
+            <span>Take this survey</span>
+            <FontAwesomeIcon icon={faArrowCircleRight} />
+          </Button>
         </Card.Body>
       </Card>
     </div>
