@@ -5,7 +5,7 @@ import ReactCSSTransitionReplace from 'react-css-transition-replace';
 import { useSurveyItem } from '../../../util/hooks/useSurveyItem.hook';
 import { SurveyItemTypeData } from '../../../constants/SurveyItemTypeData';
 import { Spinner } from '../../common/Spinner';
-import Form from 'react-bootstrap/form';
+import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faUndo } from '@fortawesome/free-solid-svg-icons';
