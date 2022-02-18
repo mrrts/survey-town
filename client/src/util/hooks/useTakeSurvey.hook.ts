@@ -64,7 +64,7 @@ export const useTakeSurvey = (surveyId: string) => {
     forEach(responseSubmissionActions, (action: PayloadAction<any>) => {
       dispatch(action);
     });
-    dispatch(clearAllTakingSurveyData);
+    dispatch(clearAllTakingSurveyData());
   }, [dispatch, responseSubmissionActions]);
 
   const goToFirstItem = useCallback(() => {

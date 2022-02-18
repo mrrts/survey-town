@@ -6,7 +6,20 @@ import { AppState } from "..";
 import { ISurveyDto, SurveyDto } from "../../entities/dtos/survey.dto";
 import { requestError, requestStart, requestSuccess } from "../requests/slice";
 import * as api from "./api";
-import { receiveSurveyItems, receiveSurveys, fetchSurveys as fetchSurveysAction, createSurvey, updateSurvey, createSurveyItem, updateSurveyItem, fetchOwnResponsesForSurvey, receiveOwnResponses, createResponse, deleteOwnResponsesForSurvey, clearOwnResponses } from "./slice";
+import {
+  receiveSurveyItems,
+  receiveSurveys,
+  fetchSurveys as fetchSurveysAction,
+  createSurvey,
+  updateSurvey,
+  createSurveyItem,
+  updateSurveyItem,
+  fetchOwnResponsesForSurvey,
+  receiveOwnResponses,
+  createResponse,
+  deleteOwnResponsesForSurvey,
+  clearOwnResponses
+} from "./slice";
 import { flatMap } from 'lodash';
 import { RequestError } from "../../util/http.util";
 import { Survey } from "../../entities/survey.model";
@@ -216,7 +229,8 @@ export const deleteOwnResponsesForSurveyEpic = (action$: Observable<Action>, sta
           switchMap(() => {
             return concat(
               of(requestSuccess({ key })),
-              of(clearOwnResponses())
+              of(clearOwnResponses()),
+              of(fetchSurveysAction())
             );
           }),
           catchError(handleRequestError(key))

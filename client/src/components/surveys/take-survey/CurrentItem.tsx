@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTakeSurvey } from '../../../util/hooks/useTakeSurvey.hook';
 import Card from 'react-bootstrap/Card';
-import ReactCSSTransitionReplace from 'react-css-transition-replace';
 import { useSurveyItem } from '../../../util/hooks/useSurveyItem.hook';
 import { SurveyItemTypeData } from '../../../constants/SurveyItemTypeData';
 import { Spinner } from '../../common/Spinner';
@@ -132,47 +131,42 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
   
   return (
     <div className='current-item-container'>
-      <ReactCSSTransitionReplace
-        transitionName='surveyItemSwitch'
-        transitionEnterTimeout={1000}
-        transitionLeaveTimeout={500}
-      >
-        <Card key={currentItemId} className='take-current-item-card'>
-          <FormProvider { ...form }>
-            <Form onSubmit={form.handleSubmit(onItemSubmit)}>
-              <TakeSurveyItemComponent
-                surveyItemId={surveyItem?.uuid}
-              />
-              {isDirty && (<p className='text-danger'>{validationError}</p>)}
-              <div className='take-survey-item-actions'>
-                {!!prevItem && (
-                  <Button onClick={handlePrevClick}>
-                    <FontAwesomeIcon icon={faArrowLeft} />
-                    Previous
-                  </Button>
-                )}
-                {!!nextItem && (
-                  <Button type='submit' variant='primary' disabled={buttonShouldDisable}>
-                    Save and continue
-                    <FontAwesomeIcon icon={faArrowRight} />
-                  </Button>
-                )}
-                {!nextItem && (
-                  <Button
-                    variant='success'
-                    disabled={buttonShouldDisable}
-                    onClick={handleSurveySubmitClick}
-                  >
-                    Submit &amp; View Results
-                    <FontAwesomeIcon icon={faArrowRight} />
-                  </Button>
-                )}
-              </div>
-            </Form>
-          </FormProvider>
-          <RequestInfo requestKey={submitRequestKey} />
-        </Card>
-      </ReactCSSTransitionReplace>
+      <Card key={currentItemId} className='take-current-item-card'>
+        <FormProvider { ...form }>
+          <Form onSubmit={form.handleSubmit(onItemSubmit)}>
+            <TakeSurveyItemComponent
+              key={surveyItem?.uuid}
+              surveyItemId={surveyItem?.uuid}
+            />
+            {isDirty && (<p className='text-danger'>{validationError}</p>)}
+            <div className='take-survey-item-actions'>
+              {!!prevItem && (
+                <Button onClick={handlePrevClick}>
+                  <FontAwesomeIcon icon={faArrowLeft} />
+                  Previous
+                </Button>
+              )}
+              {!!nextItem && (
+                <Button type='submit' variant='primary' disabled={buttonShouldDisable}>
+                  Save and continue
+                  <FontAwesomeIcon icon={faArrowRight} />
+                </Button>
+              )}
+              {!nextItem && (
+                <Button
+                  variant='success'
+                  disabled={buttonShouldDisable}
+                  onClick={handleSurveySubmitClick}
+                >
+                  Submit &amp; View Results
+                  <FontAwesomeIcon icon={faArrowRight} />
+                </Button>
+              )}
+            </div>
+          </Form>
+        </FormProvider>
+        <RequestInfo requestKey={submitRequestKey} />
+      </Card>
     </div>
   );
 }
