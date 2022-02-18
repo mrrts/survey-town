@@ -10,9 +10,13 @@ import { requestError } from "./slice";
 export const requestErrorEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
     ofType(getType(requestError)) as any,
-    switchMap((action: PayloadAction<{ key: string, error: IRequestErrorData }>) => {
-      return of(EMPTY).pipe(
-        tap(() => toastDanger(action.payload.error?.message))
+    switchMap((action: PayloadAction<{ key: string, error: IRequestErrorData, shouldToastError: boolean }>) => {
+      return of({ type: 'emptyAction' }).pipe(
+        tap(() => {
+          if (action.payload.shouldToastError) {
+            toastDanger(action.payload.error?.message);
+          }
+        })
       );
     })
   );

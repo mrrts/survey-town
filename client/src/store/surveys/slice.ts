@@ -7,6 +7,7 @@ import { CreateSurveyDto } from "../../entities/dtos/create-survey.dto";
 import { UpdateSurveyDto } from "../../entities/dtos/update-survey.dto";
 import { CreateSurveyItemDto } from "../../entities/dtos/create-survey-item.dto";
 import { UpdateSurveyItemDto } from "../../entities/dtos/update-survey-item.dto";
+import { CreateResponseDto } from "../../entities/dtos/create-response.dto";
 
 export interface ISurveysState {
   surveys: Record<string, ISurvey>;
@@ -14,6 +15,7 @@ export interface ISurveysState {
   anonSurveyResponses: Record<string, ISurveyResponse>; // anon == anonymous
   ownResponses: Record<string, ISurveyResponse>;
   currentTakingSurveyItem: string|null;
+  takingSurveySubmittedItemData: Record<string, any>;
 }
 
 export const defaultSurveysState: ISurveysState = {
@@ -21,7 +23,8 @@ export const defaultSurveysState: ISurveysState = {
   surveyItems: {},
   anonSurveyResponses: {},
   ownResponses: {},
-  currentTakingSurveyItem: null
+  currentTakingSurveyItem: null,
+  takingSurveySubmittedItemData: {}
 };
 
 const slice = createSlice({
@@ -43,7 +46,10 @@ const slice = createSlice({
     createSurveyItem(state: ISurveysState, action: PayloadAction<{ surveyId: string, dto: CreateSurveyItemDto }>) {
       // triggers epic
     },
-    updateSurveyItem(state: ISurveysState, action: PayloadAction<{surveyId: string, surveyItemId: string, dto: UpdateSurveyItemDto}>) {
+    updateSurveyItem(state: ISurveysState, action: PayloadAction<{ surveyId: string, surveyItemId: string, dto: UpdateSurveyItemDto }>) {
+      // triggers epic
+    },
+    createResponse(state: ISurveysState, action: PayloadAction<{ surveyId: string, surveyItemId: string, dto: CreateResponseDto }>) {
       // triggers epic
     },
     receiveSurveys(state: ISurveysState, action: PayloadAction<{ surveys: ISurvey[] }>) {
@@ -72,6 +78,13 @@ const slice = createSlice({
     },
     setCurrentTakingSurveyItem(state: ISurveysState, action: PayloadAction<{ surveyItemId: string }>) {
       state.currentTakingSurveyItem = action.payload.surveyItemId;
+    },
+    setTakingItemData(state: ISurveysState, action: PayloadAction<{ surveyItemId: string, data: any }>) {
+      state.takingSurveySubmittedItemData[action.payload.surveyItemId] = action.payload.data;
+    },
+    clearAllTakingSurveyData(state: ISurveysState) {
+      state.takingSurveySubmittedItemData = defaultSurveysState.takingSurveySubmittedItemData;
+      state.currentTakingSurveyItem = null;
     }
   }
 });
@@ -83,11 +96,14 @@ export const {
   updateSurvey,
   createSurveyItem,
   updateSurveyItem,
+  createResponse,
   receiveSurveys,
   receiveSurveyItems,
   receiveSurveyResponses,
   receiveOwnResponses,
-  setCurrentTakingSurveyItem
+  setCurrentTakingSurveyItem,
+  setTakingItemData,
+  clearAllTakingSurveyData
 } = slice.actions;
 
 export const surveysReducer = slice.reducer;

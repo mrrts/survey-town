@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { IRequestErrorData } from "../../util/http.util";
+import { isUndefined } from "lodash";
 
 export enum RequestStatus {
   PENDING = 'PENDING',
@@ -11,6 +12,7 @@ export interface IRequestState {
   key: string,
   state: RequestStatus,
   error?: IRequestErrorData
+  shouldToastError?: boolean
 }
 
 export interface IRequestsState {
@@ -29,7 +31,8 @@ const slice = createSlice({
       state.requests[action.payload.key] = {
         key: action.payload.key,
         state: RequestStatus.PENDING,
-        error: undefined
+        error: undefined,
+        shouldToastError: false
       }
     },
     requestSuccess(state: IRequestsState, action: PayloadAction<{ key: string }>) {
@@ -38,10 +41,13 @@ const slice = createSlice({
         state.requests[action.payload.key].error = undefined;
       }
     },
-    requestError(state: IRequestsState, action: PayloadAction<{ key: string, error: IRequestErrorData }>) {
+    requestError(state: IRequestsState, action: PayloadAction<{ key: string, error: IRequestErrorData, shouldToastError?: boolean }>) {
       if (state.requests?.[action.payload.key]) {
         state.requests[action.payload.key].state = RequestStatus.ERROR; 
         state.requests[action.payload.key].error = action.payload.error; 
+        state.requests[action.payload.key].shouldToastError = isUndefined(action.payload.shouldToastError)
+          ? true
+          : action.payload.shouldToastError; 
       }
     }
   }

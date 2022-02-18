@@ -6,20 +6,21 @@ import { AppState } from "..";
 import { ISurveyDto, SurveyDto } from "../../entities/dtos/survey.dto";
 import { requestError, requestStart, requestSuccess } from "../requests/slice";
 import * as api from "./api";
-import { receiveSurveyItems, receiveSurveys, fetchSurveys as fetchSurveysAction, createSurvey, updateSurvey, createSurveyItem, updateSurveyItem, fetchOwnResponsesForSurvey, receiveOwnResponses } from "./slice";
+import { receiveSurveyItems, receiveSurveys, fetchSurveys as fetchSurveysAction, createSurvey, updateSurvey, createSurveyItem, updateSurveyItem, fetchOwnResponsesForSurvey, receiveOwnResponses, createResponse } from "./slice";
 import { flatMap } from 'lodash';
 import { RequestError } from "../../util/http.util";
 import { Survey } from "../../entities/survey.model";
 import { CreateSurveyDto } from "../../entities/dtos/create-survey.dto";
 import { UpdateSurveyDto } from "../../entities/dtos/update-survey.dto";
+import { CreateResponseDto } from "../../entities/dtos/create-response.dto";
 import { toastSuccess } from "../../util/toast.util";
 import { navigate } from "@reach/router";
 import { CreateSurveyItemDto } from "../../entities/dtos/create-survey-item.dto";
 import { UpdateSurveyItemDto } from "../../entities/dtos/update-survey-item.dto";
 import { ISurveyResponse } from "../../entities/survey-response.model";
 
-const handleRequestError = (key: string) => (err: RequestError) =>
-  of(requestError({ key, error: err.data }));
+const handleRequestError = (key: string, shouldToastError: boolean = true) => (err: RequestError) =>
+  of(requestError({ key, error: err.data, shouldToastError }));
 
 export const fetchSurveysEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
@@ -179,6 +180,26 @@ export const updateSurveyItemEpic = (action$: Observable<Action>, state$: Observ
             );
           }),
           catchError(handleRequestError(key))
+        )
+      );
+    })
+  );
+
+export const createResponseEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
+  action$.pipe(
+    ofType(getType(createResponse)) as any,
+    mergeMap((action: PayloadAction<{ surveyId: string, surveyItemId: string, dto: CreateResponseDto }>) => {
+      const key = `create_response_item_${action.payload.surveyItemId}`;
+      return concat(
+        of(requestStart({ key })),
+        from(api.postResponse(action.payload.surveyId, action.payload.surveyItemId, action.payload.dto)).pipe(
+          switchMap((surveyResponse: ISurveyResponse) => {
+            return concat(
+              of(requestSuccess({ key })),
+              of(receiveOwnResponses({ surveyResponses: [surveyResponse] }))
+            );
+          }),
+          catchError(handleRequestError(key, false))
         )
       );
     })

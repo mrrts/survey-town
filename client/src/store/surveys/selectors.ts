@@ -70,3 +70,8 @@ export const getCurrentTakingSurveyItem = createSelector(
   getSurveysState,
   (surveysState: ISurveysState) => surveysState.currentTakingSurveyItem
 );
+
+export const getTakingSurveySubmittedItemData = createSelector(
+  getSurveysState,
+  (surveysState: ISurveysState) => surveysState.takingSurveySubmittedItemData
+);

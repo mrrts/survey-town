@@ -1,12 +1,10 @@
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useAppDispatch } from '../../../store';
 import { fetchOwnResponsesForSurvey, setCurrentTakingSurveyItem } from '../../../store/surveys/slice';
 import { useRequest } from '../../../util/hooks/useRequest.hook';
 import { useTakeSurvey } from '../../../util/hooks/useTakeSurvey.hook';
 import { RequestInfo } from '../../common/RequestInfo';
-import ReactCSSTransitionReplace from 'react-css-transition-replace';
 import { CurrentItem } from './CurrentItem';
-import Button from 'react-bootstrap/Button';
 
 interface ITakeSurveyProps {
   surveyId: string;
@@ -21,13 +19,7 @@ export const TakeSurvey: FC<ITakeSurveyProps> = ({ surveyId }) => {
   const {
     firstItemWithoutResponse,
     currentItemId,
-    hasNextItem,
-    goToNextItem
   } = useTakeSurvey(surveyId);
-
-  const handleNextClick = useCallback(() => {
-    goToNextItem();
-  }, [goToNextItem]);
 
   useEffect(() => {
     dispatch(fetchOwnResponsesForSurvey({ surveyId }));
@@ -44,27 +36,10 @@ export const TakeSurvey: FC<ITakeSurveyProps> = ({ surveyId }) => {
 
   return (
     <div className='take-survey-container'>
-      <ReactCSSTransitionReplace
-        transitionName='surveyItemSwitch'
-        transitionEnterTimeout={1000}
-        transitionLeaveTimeout={500}
-      >
-        <CurrentItem
-          key={currentItemId}
-          surveyId={surveyId}
-        />
-      </ReactCSSTransitionReplace>
-      <div className='take-survey-actions'>
-        {hasNextItem && (
-          <Button
-            size='sm'
-            variant='primary'
-            onClick={handleNextClick}
-          >
-            Next
-          </Button>
-        )}
-      </div>
+      <CurrentItem
+        key={currentItemId}
+        surveyId={surveyId}
+      />
     </div>
   );
 }

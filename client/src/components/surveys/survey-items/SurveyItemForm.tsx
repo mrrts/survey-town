@@ -1,4 +1,4 @@
-import React, { createElement, FC, useCallback } from 'react';
+import React, { FC, useCallback } from 'react';
 import { SurveyItemTypeData } from '../../../constants/SurveyItemTypeData';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -32,14 +32,17 @@ export const SurveyItemForm: FC<ISurveyItemFormProps> = ({ surveyId, surveyItemI
     dispatch(updateSurveyItem({ surveyId, surveyItemId: surveyItem.uuid, dto }));
   }, [getValues, dispatch, surveyId, surveyItem, itemType]);
 
+  const FieldsComponent = itemTypeData.fieldsComponent;
+
   return (
     <Form className='survey-item-form' onSubmit={handleSubmit(onSubmit)}>
-      {
-        createElement(
-          itemTypeData.fieldsComponent,
-          { register, errors, control, surveyItemId: surveyItem.uuid, reset } as any
-        )
-      }
+      <FieldsComponent
+        register={register}
+        errors={errors}
+        control={control}
+        surveyItemId={surveyItem.uuid}
+        reset={reset}
+      />
       <div className='survey-item-actions'>
         <Button className='me-1' variant='secondary' onClick={() => reset()} disabled={!isDirty}>
           Reset
