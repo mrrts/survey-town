@@ -83,7 +83,6 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
 
   useEffect(() => {
     if (shouldSubmit) {
-      console.log('submitting');
       submitResponses();
     }
   }, [shouldSubmit]);
@@ -104,10 +103,6 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
         setValidationError(err.message);
       });
   }, [values, itemTakeSchema, setIsValid, setValidationError]);
-
-  useEffect(() => {
-    console.log({ isValid, values, validationError, takeSurveyDefaultValues })
-  }, [isValid, values, validationError, takeSurveyDefaultValues]);
 
   if (!TakeSurveyItemComponent && !ownResponses.length) {
     return <Spinner />;
