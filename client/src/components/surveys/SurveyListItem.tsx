@@ -10,6 +10,7 @@ import { ModalKeys } from '../../constants/ModalKeys.enum';
 import { Link } from '@reach/router';
 import { formatDistance } from 'date-fns';
 import { useAppDispatch } from '../../store';
+import { destroySurvey } from '../../store/surveys/slice';
 
 export interface ISurveyListItemProps {
   surveyId: string;
@@ -29,13 +30,13 @@ export const SurveyListItem: FC<ISurveyListItemProps> = ({ surveyId }) => {
   const handleDeleteClick = useCallback(() => {
     if (!isConfirmingDelete) {
       setIsConfirmingDelete(true);
-      const timeout = setTimeout(() => {
+      setTimeout(() => {
         setIsConfirmingDelete(false);
       }, 5000);
-      return () => clearTimeout(timeout);
+      return;;
     }
-    console.log('delete')
-  }, [isConfirmingDelete, setIsConfirmingDelete, dispatch]);
+    dispatch(destroySurvey({ surveyId }))
+  }, [isConfirmingDelete, setIsConfirmingDelete, dispatch, surveyId]);
 
   const createdAgoPhrase = formatDistance(survey?.createdAt, new Date(), { addSuffix: true });
 

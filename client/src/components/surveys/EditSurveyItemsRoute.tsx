@@ -39,7 +39,7 @@ export const EditSurveyItemsRoute: FC<IEditSurveyItemsRouteProps> = ({ surveyId 
     const dto: ICreateSurveyItemDto = {
       itemType,
       content: 'Default content',
-      choices: ['Choice A', 'Choice B'],
+      choices: ['Choice 1', 'Choice 2'],
       prompt: 'Default question?'
     };
     dispatch(createSurveyItem({ surveyId, dto }));

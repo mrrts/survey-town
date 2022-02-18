@@ -18,7 +18,11 @@ import {
   receiveOwnResponses,
   createResponse,
   deleteOwnResponsesForSurvey,
-  clearOwnResponses
+  clearOwnResponses,
+  destroySurvey,
+  removeSurvey,
+  destroySurveyItem,
+  removeSurveyItem,
 } from "./slice";
 import { flatMap } from 'lodash';
 import { RequestError } from "../../util/http.util";
@@ -231,6 +235,50 @@ export const deleteOwnResponsesForSurveyEpic = (action$: Observable<Action>, sta
               of(requestSuccess({ key })),
               of(clearOwnResponses()),
               of(fetchSurveysAction())
+            );
+          }),
+          catchError(handleRequestError(key))
+        )
+      );
+    })
+  );
+
+export const destroySurveyEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
+  action$.pipe(
+    ofType(getType(destroySurvey)) as any,
+    mergeMap((action: PayloadAction<{ surveyId: string }>) => {
+      const key = `destroy_survey_${action.payload.surveyId}`;
+      return concat(
+        of(requestStart({ key })),
+        from(api.deleteSurvey(action.payload.surveyId)).pipe(
+          switchMap((resp: void) => {
+            return concat(
+              of(requestSuccess({ key })),
+              of(removeSurvey({ surveyId: action.payload.surveyId })).pipe(
+                tap(() => toastSuccess('Survey deleted'))
+              )
+            );
+          }),
+          catchError(handleRequestError(key))
+        )
+      );
+    })
+  );
+
+export const destroySurveyItemEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
+  action$.pipe(
+    ofType(getType(destroySurveyItem)) as any,
+    mergeMap((action: PayloadAction<{ surveyId: string, surveyItemId: string }>) => {
+      const key = `destroy_survey_item_${action.payload.surveyItemId}`;
+      return concat(
+        of(requestStart({ key })),
+        from(api.deleteSurveyItem(action.payload.surveyId, action.payload.surveyItemId)).pipe(
+          switchMap((resp: void) => {
+            return concat(
+              of(requestSuccess({ key })),
+              of(removeSurveyItem({ surveyId: action.payload.surveyId, surveyItemId: action.payload.surveyItemId })).pipe(
+                tap(() => toastSuccess('Item deleted from survey'))
+              )
             );
           }),
           catchError(handleRequestError(key))

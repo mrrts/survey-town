@@ -52,3 +52,13 @@ export const deleteOwnResponsesForSurvey = async (surveyId: string) => {
   await httpUtil._delete<void>(urlPath);
   return null;
 }
+
+export const deleteSurvey = async (surveyId: string) => {
+  const urlPath = `/surveys/${surveyId}`;
+  return httpUtil._delete<void>(urlPath);
+}
+
+export const deleteSurveyItem = async (surveyId: string, surveyItemId: string) => {
+  const urlPath = `/surveys/${surveyId}/items/${surveyItemId}`;
+  return httpUtil._delete<void>(urlPath);
+}

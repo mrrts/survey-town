@@ -29,7 +29,7 @@ export const ItemWithChoicesFields: FC<IItemWithChoicesFieldsProps> = ({
   });
 
   const handleAddClick = () => {
-    append('');
+    append(`Choice ${fields.length + 1}`);
   };
 
   const handleDeleteClick = useCallback((index: number) => {

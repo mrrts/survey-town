@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ISurveyItem } from "../../entities/survey-item.model";
 import { ISurveyResponse } from "../../entities/survey-response.model";
 import { ISurvey } from "../../entities/survey.model";
-import { keyBy } from 'lodash';
+import { keyBy, filter } from 'lodash';
 import { CreateSurveyDto } from "../../entities/dtos/create-survey.dto";
 import { UpdateSurveyDto } from "../../entities/dtos/update-survey.dto";
 import { CreateSurveyItemDto } from "../../entities/dtos/create-survey-item.dto";
@@ -55,6 +55,12 @@ const slice = createSlice({
     deleteOwnResponsesForSurvey(state: ISurveysState, action: PayloadAction<{ surveyId: string }>) {
       // triggers epic
     },
+    destroySurvey(state: ISurveysState, action: PayloadAction<{ surveyId: string }>) {
+      // triggers epic
+    },
+    destroySurveyItem(state: ISurveysState, action: PayloadAction<{ surveyId: string, surveyItemId: string }>) {
+      // triggers epic
+    },
     receiveSurveys(state: ISurveysState, action: PayloadAction<{ surveys: ISurvey[] }>) {
       state.surveys = {
         ...state.surveys,
@@ -91,6 +97,16 @@ const slice = createSlice({
     },
     clearOwnResponses(state: ISurveysState) {
       state.ownResponses = {};
+    },
+    removeSurvey(state: ISurveysState, action: PayloadAction<{ surveyId: string }>) {
+      delete state.surveys[action.payload.surveyId];
+    },
+    removeSurveyItem(state: ISurveysState, action: PayloadAction<{ surveyId: string, surveyItemId: string }>) {
+      state.surveys[action.payload.surveyId].surveyItems = filter(
+        state.surveys[action.payload.surveyId].surveyItems,
+        (itemId: string) => itemId !== action.payload.surveyItemId
+      );
+      delete state.surveyItems[action.payload.surveyItemId];
     }
   }
 });
@@ -104,6 +120,8 @@ export const {
   updateSurveyItem,
   createResponse,
   deleteOwnResponsesForSurvey,
+  destroySurvey,
+  destroySurveyItem,
   receiveSurveys,
   receiveSurveyItems,
   receiveSurveyResponses,
@@ -112,6 +130,8 @@ export const {
   setTakingItemData,
   clearAllTakingSurveyData,
   clearOwnResponses,
+  removeSurvey,
+  removeSurveyItem
 } = slice.actions;
 
 export const surveysReducer = slice.reducer;
