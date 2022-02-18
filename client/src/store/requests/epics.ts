@@ -1,7 +1,7 @@
 import { getType, PayloadAction } from "@reduxjs/toolkit";
 import { Action } from "redux";
 import { ofType } from "redux-observable";
-import { EMPTY, Observable, of, switchMap, tap } from "rxjs";
+import { Observable, of, switchMap, tap } from "rxjs";
 import { AppState } from "..";
 import { IRequestErrorData } from "../../util/http.util";
 import { toastDanger } from "../../util/toast.util";

@@ -46,3 +46,8 @@ export async function patch<BodyType, RespType>(urlPath: string, body: BodyType)
 
   return response.data;
 }
+
+export async function _delete<RespType>(urlPath: string): Promise<RespType> {
+  const response = await instance.delete(urlPath);
+  return response.data;
+}

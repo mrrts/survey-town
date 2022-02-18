@@ -8,7 +8,7 @@ import { Spinner } from '../../common/Spinner';
 import Form from 'react-bootstrap/form';
 import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { RequestInfo } from '../../common/RequestInfo';
@@ -24,12 +24,14 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
     setItemResponseData,
     prevItem,
     nextItem,
+    goToFirstItem,
     goToNextItem,
     goToPrevItem,
     currentItemType,
     currentItemSubmittedValues,
     submitResponses,
-    ownResponses
+    ownResponses,
+    deleteOwnResponses
   } = useTakeSurvey(surveyId);
   const [shouldSubmit, setShouldSubmit] = useState(false);
   const [isValid, setIsValid] = useState(false);
@@ -46,6 +48,7 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
   const form = useForm({
     defaultValues
   });
+  const { reset, formState: { isDirty }} = form;
 
   const submitRequestKey = `create_response_item_${currentItemId}`;
   const submitRequest = useRequest(submitRequestKey);
@@ -81,15 +84,20 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
     setShouldSubmit(true);
   }
 
+  const handleDeleteResponsesClick = () => {
+    deleteOwnResponses();
+    goToFirstItem();
+  };
+
   useEffect(() => {
     if (shouldSubmit) {
       submitResponses();
     }
-  }, [shouldSubmit]);
+  }, [shouldSubmit, submitResponses]);
 
   useEffect(() => {
-    form.reset();
-  }, [defaultValues, form.reset]);
+    reset();
+  }, [defaultValues, reset]);
 
   useEffect(() => {
     if (!itemTakeSchema) { return; }
@@ -112,9 +120,12 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
     return (
       <div className='survey-already-taken-container'>
         Thank you for taking this survey!
-        <Button onClick={() => alert('clear responses')}>
-          Delete my responses
-        </Button>
+        <div className='survey-already-taken-actions'>
+          <Button variant='link' onClick={handleDeleteResponsesClick}>
+            <FontAwesomeIcon icon={faUndo} />
+            Undo Submission
+          </Button>
+        </div>
       </div>
     );
   }
@@ -132,6 +143,7 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
               <TakeSurveyItemComponent
                 surveyItemId={surveyItem?.uuid}
               />
+              {isDirty && (<p className='text-danger'>{validationError}</p>)}
               <div className='take-survey-item-actions'>
                 {!!prevItem && (
                   <Button onClick={handlePrevClick}>
@@ -152,6 +164,7 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
                     onClick={handleSurveySubmitClick}
                   >
                     Submit &amp; View Results
+                    <FontAwesomeIcon icon={faArrowRight} />
                   </Button>
                 )}
               </div>

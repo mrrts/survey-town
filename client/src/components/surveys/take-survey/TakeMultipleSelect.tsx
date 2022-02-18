@@ -11,7 +11,7 @@ interface ITakeMultipleSelectProps {
 
 export const TakeMultipleSelect: FC<ITakeMultipleSelectProps> = ({ surveyItemId }) => {
   const { surveyItem } = useSurveyItem(surveyItemId);
-  const { register, formState: { errors }, watch} = useFormContext();
+  const { register, formState: { errors }} = useFormContext();
 
   if (!surveyItem) {
     return <Spinner />;

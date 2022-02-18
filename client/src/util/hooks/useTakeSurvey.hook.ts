@@ -4,8 +4,8 @@ import { useSurvey } from "./useSurvey.hook";
 import { findIndex, find, keys, compact, forEach } from 'lodash';
 import { ISurveyItem } from "../../entities/survey-item.model";
 import { useCallback, useMemo } from "react";
-import { clearAllTakingSurveyData, createResponse, setCurrentTakingSurveyItem, setTakingItemData } from "../../store/surveys/slice";
-import { ISurveyResponse, SurveyResponseType } from "../../entities/survey-response.model";
+import { clearAllTakingSurveyData, createResponse, deleteOwnResponsesForSurvey, setCurrentTakingSurveyItem, setTakingItemData } from "../../store/surveys/slice";
+import { ISurveyResponse } from "../../entities/survey-response.model";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 export const useTakeSurvey = (surveyId: string) => {
@@ -47,8 +47,8 @@ export const useTakeSurvey = (surveyId: string) => {
     }
   ), [surveyItems, ownResponses]);
 
-  const responseSubmissionActions =
-    compact(keys(takingSurveySubmittedValues).map((itemId: string) => {
+  const responseSubmissionActions = useMemo(() => {
+    return compact(keys(takingSurveySubmittedValues).map((itemId: string) => {
       if (!takingSurveySubmittedValues[itemId].responseType) {
         return undefined;
       }
@@ -58,29 +58,40 @@ export const useTakeSurvey = (surveyId: string) => {
         dto: takingSurveySubmittedValues[itemId]
       });
     }));
+  }, [takingSurveySubmittedValues, surveyId]);
 
-  const submitResponses = () => {
-    console.log({ responseSubmissionActions, takingSurveySubmittedValues })
+  const submitResponses = useCallback(() => {
     forEach(responseSubmissionActions, (action: PayloadAction<any>) => {
       dispatch(action);
     });
     dispatch(clearAllTakingSurveyData);
-  };
+  }, [dispatch, responseSubmissionActions]);
+
+  const goToFirstItem = useCallback(() => {
+    const firstItemId = surveyItems[0]?.uuid;
+    dispatch(setCurrentTakingSurveyItem({ surveyItemId: firstItemId }));
+  }, [dispatch, surveyItems]);
 
   const goToNextItem = useCallback(() => {
-    if (hasNextItem) {
+    if (!!nextItem) {
       dispatch(setCurrentTakingSurveyItem({ surveyItemId: nextItem?.uuid }));
       return;
     }
-  }, [dispatch, nextItem, hasNextItem]);
+  }, [dispatch, nextItem]);
 
   const goToPrevItem = useCallback(() => {
-    dispatch(setCurrentTakingSurveyItem({ surveyItemId: prevItem?.uuid }));
+    if (!!prevItem) {
+      dispatch(setCurrentTakingSurveyItem({ surveyItemId: prevItem?.uuid }));
+    }
   }, [dispatch, prevItem]);
 
   const setItemResponseData = useCallback((surveyItemId: string, data: any) => {
     dispatch(setTakingItemData({ surveyItemId, data }));
   }, [dispatch]);
+
+  const deleteOwnResponses = useCallback(() => {
+    dispatch(deleteOwnResponsesForSurvey({ surveyId }))
+  }, [dispatch, surveyId]);
 
   return {
     prevItem,
@@ -90,6 +101,7 @@ export const useTakeSurvey = (surveyId: string) => {
     currentItemIndex,
     currentItemId,
     numItems,
+    goToFirstItem,
     goToNextItem,
     goToPrevItem,
     ownResponses,
@@ -98,6 +110,7 @@ export const useTakeSurvey = (surveyId: string) => {
     isLastItem,
     setItemResponseData,
     currentItemSubmittedValues,
-    submitResponses
+    submitResponses,
+    deleteOwnResponses
   };
 };

@@ -52,6 +52,9 @@ const slice = createSlice({
     createResponse(state: ISurveysState, action: PayloadAction<{ surveyId: string, surveyItemId: string, dto: CreateResponseDto }>) {
       // triggers epic
     },
+    deleteOwnResponsesForSurvey(state: ISurveysState, action: PayloadAction<{ surveyId: string }>) {
+      // triggers epic
+    },
     receiveSurveys(state: ISurveysState, action: PayloadAction<{ surveys: ISurvey[] }>) {
       state.surveys = {
         ...state.surveys,
@@ -85,6 +88,9 @@ const slice = createSlice({
     clearAllTakingSurveyData(state: ISurveysState) {
       state.takingSurveySubmittedItemData = defaultSurveysState.takingSurveySubmittedItemData;
       state.currentTakingSurveyItem = null;
+    },
+    clearOwnResponses(state: ISurveysState) {
+      state.ownResponses = {};
     }
   }
 });
@@ -97,13 +103,15 @@ export const {
   createSurveyItem,
   updateSurveyItem,
   createResponse,
+  deleteOwnResponsesForSurvey,
   receiveSurveys,
   receiveSurveyItems,
   receiveSurveyResponses,
   receiveOwnResponses,
   setCurrentTakingSurveyItem,
   setTakingItemData,
-  clearAllTakingSurveyData
+  clearAllTakingSurveyData,
+  clearOwnResponses,
 } = slice.actions;
 
 export const surveysReducer = slice.reducer;

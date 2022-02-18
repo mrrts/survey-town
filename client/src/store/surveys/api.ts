@@ -46,3 +46,9 @@ export const postResponse = async (surveyId: string, surveyItemId: string, dto: 
   const resp = await httpUtil.post<CreateResponseDto, ISurveyResponse>(urlPath, dto);
   return new SurveyResponse(resp);
 }
+
+export const deleteOwnResponsesForSurvey = async (surveyId: string) => {
+  const urlPath = `/surveys/${surveyId}/own-responses`;
+  await httpUtil._delete<void>(urlPath);
+  return null;
+}

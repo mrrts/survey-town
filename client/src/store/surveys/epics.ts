@@ -6,7 +6,7 @@ import { AppState } from "..";
 import { ISurveyDto, SurveyDto } from "../../entities/dtos/survey.dto";
 import { requestError, requestStart, requestSuccess } from "../requests/slice";
 import * as api from "./api";
-import { receiveSurveyItems, receiveSurveys, fetchSurveys as fetchSurveysAction, createSurvey, updateSurvey, createSurveyItem, updateSurveyItem, fetchOwnResponsesForSurvey, receiveOwnResponses, createResponse } from "./slice";
+import { receiveSurveyItems, receiveSurveys, fetchSurveys as fetchSurveysAction, createSurvey, updateSurvey, createSurveyItem, updateSurveyItem, fetchOwnResponsesForSurvey, receiveOwnResponses, createResponse, deleteOwnResponsesForSurvey, clearOwnResponses } from "./slice";
 import { flatMap } from 'lodash';
 import { RequestError } from "../../util/http.util";
 import { Survey } from "../../entities/survey.model";
@@ -200,6 +200,26 @@ export const createResponseEpic = (action$: Observable<Action>, state$: Observab
             );
           }),
           catchError(handleRequestError(key, false))
+        )
+      );
+    })
+  );
+
+export const deleteOwnResponsesForSurveyEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
+  action$.pipe(
+    ofType(getType(deleteOwnResponsesForSurvey)) as any,
+    mergeMap((action: PayloadAction<{ surveyId: string }>) => {
+      const key = `delete_own_responses_survey_${action.payload.surveyId}`;
+      return concat(
+        of(requestStart({ key })),
+        from(api.deleteOwnResponsesForSurvey(action.payload.surveyId)).pipe(
+          switchMap(() => {
+            return concat(
+              of(requestSuccess({ key })),
+              of(clearOwnResponses())
+            );
+          }),
+          catchError(handleRequestError(key))
         )
       );
     })
