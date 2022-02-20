@@ -15,6 +15,7 @@ import { SurveysController } from './surveys/surveys.controller';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { APP_GUARD } from '@nestjs/core';
+import * as bcrypt from 'bcrypt';
 
 @Module({
   imports: [
@@ -43,7 +44,8 @@ import { APP_GUARD } from '@nestjs/core';
     AppService,
     PasswordService,
     UsersService,
-    { provide: APP_GUARD, useClass: ThrottlerGuard }
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+    { provide: 'BCRYPT', useValue: bcrypt },
   ],
 })
 export class AppModule implements NestModule {
