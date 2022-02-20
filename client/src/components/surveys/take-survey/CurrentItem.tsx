@@ -143,19 +143,20 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
             {isDirty && (<p className='text-danger'>{validationError}</p>)}
             <div className='take-survey-item-actions'>
               {!!prevItem && (
-                <Button onClick={handlePrevClick}>
+                <Button size='sm' variant='primary' onClick={handlePrevClick}>
                   <FontAwesomeIcon icon={faArrowLeft} />
                   Previous
                 </Button>
               )}
               {!!nextItem && (
-                <Button type='submit' variant='primary' disabled={buttonShouldDisable}>
+                <Button type='submit' size='sm' variant='primary' disabled={buttonShouldDisable}>
                   Save and continue
                   <FontAwesomeIcon icon={faArrowRight} />
                 </Button>
               )}
               {!nextItem && (
                 <Button
+                  size='sm'
                   variant='success'
                   disabled={buttonShouldDisable}
                   onClick={handleSurveySubmitClick}

@@ -71,7 +71,7 @@ export const SurveyListItem: FC<ISurveyListItemProps> = forwardRef(({ surveyId }
 
           <div className='survey-card-actions'>
             {isOwner && (
-              <>
+              <div className='my-2'>
                 <Link to={`/surveys/${surveyId}/edit`} className='btn btn-link btn-sm edit-survey-general-button'>
                   <FontAwesomeIcon icon={faPencilAlt} />
                   <span>Edit Survey</span>
@@ -80,7 +80,7 @@ export const SurveyListItem: FC<ISurveyListItemProps> = forwardRef(({ surveyId }
                   <FontAwesomeIcon icon={faTrash} />
                   {isConfirmingDelete ?  'Confirm?' : 'Delete'}
                 </Button>
-              </>
+              </div>
             )}
           </div>
           <Button className='take-survey-button' variant='primary' onClick={handleTakeSurveyClick}>

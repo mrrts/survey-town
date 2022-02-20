@@ -100,7 +100,7 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
           <Button variant="secondary" onClick={handleCloseClick}>
             Close
           </Button>
-          <Button type='submit' variant="primary" disabled={!valid}>
+          <Button type='submit' variant="success" disabled={!valid}>
             {survey ? 'Update' : 'Create'}
           </Button>
         </Modal.Footer>

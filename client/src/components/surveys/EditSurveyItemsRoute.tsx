@@ -67,9 +67,9 @@ export const EditSurveyItemsRoute: FC<IEditSurveyItemsRouteProps> = ({ surveyId 
         <h2><span className='sr-only'>Edit survey</span> {survey?.title}</h2>
         <p><span className='sr-only'>Survey Description:</span> {survey?.description}</p>
         <p>
-          <Button size='sm' variant='info' onClick={handleEditTitleClick}>
+          <Button size='sm' variant='link' onClick={handleEditTitleClick}>
             <FontAwesomeIcon icon={faPencilAlt} />
-            Edit title/description
+            Edit title &amp; description
           </Button>
         </p>
       </div>
