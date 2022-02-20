@@ -8,7 +8,7 @@ interface ITakeContentInterludeProps {
 export const TakeContentInterlude: FC<ITakeContentInterludeProps> = ({ surveyItemId }) => {
   const { surveyItem } = useSurveyItem(surveyItemId);
   return (
-    <div className='take-content-interlude-container'>
+    <div className='take-content-interlude-container animate__animated animate__fadeInRight'>
       <div className='content-interlude-content'>
         {surveyItem.content}
       </div>

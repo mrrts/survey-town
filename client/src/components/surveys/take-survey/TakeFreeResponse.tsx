@@ -17,7 +17,7 @@ export const TakeFreeResponse: FC<ITakeFreeResponseProps> = ({ surveyItemId }) =
   }
 
   return (
-    <div className='take-free-response-container'>
+    <div className='take-free-response-container animate__animated animate__fadeInRight'>
       <p>{surveyItem.prompt}</p>
 
       <Form.Group>

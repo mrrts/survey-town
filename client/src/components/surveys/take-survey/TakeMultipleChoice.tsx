@@ -18,7 +18,7 @@ export const TakeMultipleChoice: FC<ITakeMultipleChoiceProps> = ({ surveyItemId 
   }
 
   return (
-    <div className='take-multiple-choice-container'>
+    <div className='take-multiple-choice-container animate__animated animate__fadeInRight'>
       <p>{trim(surveyItem.prompt)}</p>
 
       {surveyItem.choices?.map((choice: string, i: number) => {
