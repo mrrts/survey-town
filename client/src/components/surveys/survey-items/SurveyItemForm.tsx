@@ -10,7 +10,6 @@ import { useSurveyItem } from '../../../util/hooks/useSurveyItem.hook';
 import { RequestInfo } from '../../common/RequestInfo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { usePrevious } from '../../../util/hooks/usePrevious.hook';
 
 export interface ISurveyItemFormProps {
   surveyId: string;
@@ -19,7 +18,6 @@ export interface ISurveyItemFormProps {
 
 export const SurveyItemForm: FC<ISurveyItemFormProps> = ({ surveyId, surveyItemId }) => {
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
-  const prevIsConfirmingDelete = usePrevious(isConfirmingDelete);
   const { surveyItem } = useSurveyItem(surveyItemId);
   const { itemType } = surveyItem || {};
   const itemTypeData = SurveyItemTypeData[itemType];
@@ -48,13 +46,13 @@ export const SurveyItemForm: FC<ISurveyItemFormProps> = ({ surveyId, surveyItemI
   const FieldsComponent = itemTypeData?.fieldsComponent || 'div';
 
   useEffect(() => {
-    if (!prevIsConfirmingDelete && isConfirmingDelete) {
+    if (isConfirmingDelete) {
       const t = setTimeout(() => {
         setIsConfirmingDelete(false);
       }, 5000);
       return () => clearTimeout(t);
     }
-  }, [prevIsConfirmingDelete, isConfirmingDelete, setIsConfirmingDelete]);
+  }, [isConfirmingDelete, setIsConfirmingDelete]);
 
   return (
     <Form className='survey-item-form' onSubmit={handleSubmit(onSubmit)}>

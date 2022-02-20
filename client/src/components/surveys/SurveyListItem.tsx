@@ -11,7 +11,6 @@ import { Link } from '@reach/router';
 import { formatDistance } from 'date-fns';
 import { useAppDispatch } from '../../store';
 import { destroySurvey } from '../../store/surveys/slice';
-import { usePrevious } from '../../util/hooks/usePrevious.hook';
 
 export interface ISurveyListItemProps {
   surveyId: string;
@@ -21,7 +20,6 @@ export const SurveyListItem: FC<ISurveyListItemProps> = forwardRef(({ surveyId }
   const { survey, authorHandle, numberOfResponses, isOwner } = useSurvey(surveyId);
   const takeSurveyModal = useModal(ModalKeys.TAKE_SURVEY);
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
-  const prevIsConfirmingDelete = usePrevious(isConfirmingDelete);
   const dispatch = useAppDispatch();
 
   const handleTakeSurveyClick = useCallback(() => {
@@ -42,14 +40,13 @@ export const SurveyListItem: FC<ISurveyListItemProps> = forwardRef(({ surveyId }
     : undefined;
 
   useEffect(() => {
-    let t: NodeJS.Timeout;
-    if (!prevIsConfirmingDelete && isConfirmingDelete) {
-      t = setTimeout(() => {
+    if (isConfirmingDelete) {
+      const t = setTimeout(() => {
         setIsConfirmingDelete(false);
       }, 5000);
+      return () => clearTimeout(t);
     } 
-    return () => clearTimeout(t);
-  }, [prevIsConfirmingDelete, isConfirmingDelete, setIsConfirmingDelete]);
+  }, [isConfirmingDelete, setIsConfirmingDelete]);
 
   return (
     <div className='survey-list-item' ref={ref}>
