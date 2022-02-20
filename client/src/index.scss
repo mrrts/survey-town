@@ -5,8 +5,7 @@
 
 $borderRadius: 1.2em;
 $lightGray: #f7f7f7;
-$cardBoxShadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-$cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+$cardBoxShadow: 0 4px 16px 0 rgb(70 70 69 / 16%), 0 16px 24px 0 rgb(70 70 69 / 16%);
 
 .app-container {
   height: 100vh;
@@ -143,7 +142,7 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   transition: all .3s ease-in-out;
   &:hover, &:focus-within {
     transform: translateY(-2px);
-    box-shadow: 0 4px 16px 0 rgb(70 70 69 / 16%), 0 16px 24px 0 rgb(70 70 69 / 16%)
+    box-shadow: $cardBoxShadow;
   }
 }
 
@@ -173,6 +172,10 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .edit-survey-items-route {
+  .dropdown-menu {
+    box-shadow: $cardBoxShadow;
+  }
+
   .edit-survey-items-header {
     border-radius: $borderRadius;
     border: 5px solid $primary;
