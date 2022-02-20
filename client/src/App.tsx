@@ -8,7 +8,7 @@ import { useAppDispatch } from './store';
 import { restoreSession } from './store/auth/slice';
 import Container from 'react-bootstrap/Container';
 import { Register } from './components/auth/Register';
-import { EditSurveyItemsRoute } from './components/surveys/EditSurveyItemsRoute';
+import { EditSurveyItemsRoute } from './components/surveys/survey-items/EditSurveyItemsRoute';
 import { ToastContainer } from 'react-toastify';
 import { SurveyGeneralFormModal } from './components/surveys/SurveyGeneralFormModal';
 import { TakeSurveyModal } from './components/surveys/take-survey/TakeSurveyModal';

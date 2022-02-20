@@ -1,5 +1,5 @@
 import { RouteComponentProps } from '@reach/router';
-import React, { FC, useRef } from 'react';
+import React, { FC } from 'react';
 import { ISurvey } from '../../entities/survey.model';
 import { useAppSelector } from '../../store';
 import { getSurveysByDateDesc } from '../../store/surveys/selectors';

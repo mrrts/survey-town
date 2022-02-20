@@ -1,11 +1,12 @@
 import React, { FC, useCallback, useEffect } from "react";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useSurveyItem } from "../../../util/hooks/useSurveyItem.hook";
 import FlipMove from 'react-flip-move';
+import { RichTextEditor } from '../../common/RichTextEditor';
 
 interface IItemWithChoicesFieldsProps {
   surveyItemId: string;
@@ -40,11 +41,15 @@ export const ItemWithChoicesFields: FC<IItemWithChoicesFieldsProps> = ({
     <>
       <Form.Group>
         <Form.Label>Question / Prompt</Form.Label>
-        <Form.Control
-          as='textarea'
-          rows={2}
-          { ...register('prompt') }
-          defaultValue={surveyItem?.prompt}
+        <Controller
+          name='prompt'
+          control={control}
+          render={({ field }) => (
+            <RichTextEditor
+              { ...field }
+              defaultValue={surveyItem?.prompt}
+            />
+          )}
         />
         <p className='text-danger'>{errors?.prompt?.message}</p>
       </Form.Group>

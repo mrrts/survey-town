@@ -19,7 +19,7 @@ export const TakeMultipleSelect: FC<ITakeMultipleSelectProps> = ({ surveyItemId 
 
   return (
     <div className='take-multiple-select-container animate__animated animate__fadeInRight'>
-      <p>{trim(surveyItem.prompt)}</p>
+      <p dangerouslySetInnerHTML={{ __html: surveyItem?.prompt as string }} />
 
       {surveyItem.choices?.map((choice: string, i: number) => {
         return (

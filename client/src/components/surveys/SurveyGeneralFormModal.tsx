@@ -6,13 +6,14 @@ import { useModal } from '../../util/hooks/useModal.hook';
 import Form from 'react-bootstrap/Form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { keys } from 'lodash';
 import { useAppDispatch } from '../../store';
 import { CreateSurveyDto } from '../../entities/dtos/create-survey.dto';
 import { createSurvey, updateSurvey } from '../../store/surveys/slice';
 import { useSurvey } from '../../util/hooks/useSurvey.hook';
 import { UpdateSurveyDto } from '../../entities/dtos/update-survey.dto';
+import { RichTextEditor } from '../common/RichTextEditor';
 
 export interface ISurveyGeneralFormModalProps {
 
@@ -29,7 +30,7 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
     description: yup.string().max(500)
   }).required();
 
-  const { register, handleSubmit, formState: { errors }, getValues, reset } = useForm({
+  const { register, handleSubmit, formState: { errors }, getValues, reset, control } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -86,13 +87,16 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
           </Form.Group>
           <Form.Group>
             <Form.Label>Description</Form.Label>
-            <Form.Control
-              { ...register('description') }
-              as='textarea'
-              maxLength={500}
-              rows={2}
-              defaultValue={survey?.description}
-            ></Form.Control>
+            <Controller
+              name='description'
+              control={control}
+              render={({ field }) => (
+                <RichTextEditor
+                  { ...field }
+                  defaultValue={survey?.description}
+                />
+              )}
+            />
             <Form.Text className='text-danger'>{errors.description?.message}</Form.Text>
           </Form.Group>
         </Modal.Body>

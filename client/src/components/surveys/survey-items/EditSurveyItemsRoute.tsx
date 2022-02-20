@@ -1,20 +1,20 @@
 import { Redirect, RouteComponentProps } from '@reach/router';
 import React, { FC, useCallback } from 'react';
-import { useSurvey } from '../../util/hooks/useSurvey.hook';
+import { useSurvey } from '../../../util/hooks/useSurvey.hook';
 import { keys } from 'lodash';
-import { SurveyItemTypeData } from '../../constants/SurveyItemTypeData';
-import { SurveyItemType } from '../../constants/SurveyItemType.enum';
+import { SurveyItemTypeData } from '../../../constants/SurveyItemTypeData';
+import { SurveyItemType } from '../../../constants/SurveyItemType.enum';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faPencilAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from 'react-bootstrap/Button';
-import { useModal } from '../../util/hooks/useModal.hook';
-import { ModalKeys } from '../../constants/ModalKeys.enum';
-import { ICreateSurveyItemDto } from '../../entities/dtos/create-survey-item.dto';
-import { useAppDispatch } from '../../store';
-import { createSurveyItem } from '../../store/surveys/slice';
-import { ItemsList } from './survey-items/ItemsList';
+import { useModal } from '../../../util/hooks/useModal.hook';
+import { ModalKeys } from '../../../constants/ModalKeys.enum';
+import { ICreateSurveyItemDto } from '../../../entities/dtos/create-survey-item.dto';
+import { useAppDispatch } from '../../../store';
+import { createSurveyItem } from '../../../store/surveys/slice';
+import { ItemsList } from './ItemsList';
 import { Link } from '@reach/router';
 
 export interface IEditSurveyItemsRouteProps extends RouteComponentProps {
@@ -65,7 +65,10 @@ export const EditSurveyItemsRoute: FC<IEditSurveyItemsRouteProps> = ({ surveyId 
       </p>
       <div className='edit-survey-items-header card'>
         <h2><span className='sr-only'>Edit survey</span> {survey?.title}</h2>
-        <p><span className='sr-only'>Survey Description:</span> {survey?.description}</p>
+        <div>
+          <span className='sr-only'>Survey Description:</span>
+          <div dangerouslySetInnerHTML={{ __html: survey?.description }} />
+        </div>
         <p>
           <Button size='sm' variant='link' onClick={handleEditTitleClick}>
             <FontAwesomeIcon icon={faPencilAlt} />

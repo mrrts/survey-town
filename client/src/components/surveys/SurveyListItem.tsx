@@ -66,7 +66,7 @@ export const SurveyListItem: FC<ISurveyListItemProps> = forwardRef(({ surveyId }
           
           <Card.Text>
             <h4 className='sr-only'>Description</h4>
-            {survey?.description}
+            <div dangerouslySetInnerHTML={{ __html: survey?.description }} />
           </Card.Text>
 
           <div className='survey-card-actions'>

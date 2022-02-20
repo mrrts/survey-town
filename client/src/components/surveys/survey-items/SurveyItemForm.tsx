@@ -9,7 +9,7 @@ import { destroySurveyItem, updateSurveyItem } from '../../../store/surveys/slic
 import { useSurveyItem } from '../../../util/hooks/useSurveyItem.hook';
 import { RequestInfo } from '../../common/RequestInfo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faCheckCircle, faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 export interface ISurveyItemFormProps {
   surveyId: string;
@@ -29,7 +29,7 @@ export const SurveyItemForm: FC<ISurveyItemFormProps> = ({ surveyId, surveyItemI
     resolver: yupResolver(schema),
   });
 
-  const { handleSubmit, getValues, formState: { isDirty }, reset } = form;
+  const { handleSubmit, getValues, formState: { isDirty }} = form;
 
   const onSubmit = useCallback((data: any) => {
     const values = getValues();
@@ -67,10 +67,6 @@ export const SurveyItemForm: FC<ISurveyItemFormProps> = ({ surveyId, surveyItemI
         <Button className='me-2' variant='link' size='sm' onClick={handleDeleteItemClick}>
           <FontAwesomeIcon icon={faTrash} />
           {isConfirmingDelete ? 'Confirm?' : 'Delete Item'}
-        </Button>
-        <Button className='me-2' variant='secondary' size='sm' onClick={() => reset()} disabled={!isDirty}>
-          <FontAwesomeIcon icon={faUndo} />
-          Revert to Saved
         </Button>
         <Button variant='success' type='submit' size='sm' disabled={!isDirty}>
           <FontAwesomeIcon icon={faCheckCircle} />

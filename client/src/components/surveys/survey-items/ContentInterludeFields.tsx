@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 import { useSurveyItem } from '../../../util/hooks/useSurveyItem.hook';
+import { RichTextEditor } from '../../common/RichTextEditor';
 
 interface IContentInterludeFieldsProps {
   surveyItemId: string;
@@ -9,17 +10,22 @@ interface IContentInterludeFieldsProps {
 
 export const ContentInterludeFields: FC<IContentInterludeFieldsProps> = ({ surveyItemId }) => {
   const { surveyItem } = useSurveyItem(surveyItemId);
-  const { register, formState: { errors }} = useFormContext();
+  const { formState: { errors }, control} = useFormContext();
 
   return (
     <>
       <Form.Group>
         <Form.Label>Content</Form.Label>
-        <Form.Control
-          as='textarea'
-          { ...register('content') }
-          defaultValue={surveyItem?.content}
-        ></Form.Control>
+        <Controller
+          name='content'
+          control={control}
+          render={({ field }) => (
+            <RichTextEditor
+              { ...field }
+              defaultValue={surveyItem?.content}
+            />
+          )}
+        />
         <p className='text-danger'>
           {errors?.content?.message}
         </p>

@@ -10,7 +10,7 @@ export const TakeContentInterlude: FC<ITakeContentInterludeProps> = ({ surveyIte
   return (
     <div className='take-content-interlude-container animate__animated animate__fadeInRight'>
       <div className='content-interlude-content'>
-        {surveyItem.content}
+        <p dangerouslySetInnerHTML={{ __html: surveyItem?.content as string }} />
       </div>
     </div>
   );

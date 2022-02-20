@@ -2,7 +2,8 @@ import React, { FC } from 'react';
 import { useSurveyItem } from '../../../util/hooks/useSurveyItem.hook';
 import { Spinner } from '../../common/Spinner';
 import Form from 'react-bootstrap/Form';
-import { useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
+import { RichTextEditor } from '../../common/RichTextEditor';
 
 interface ITakeFreeResponseProps {
   surveyItemId: string;
@@ -10,7 +11,7 @@ interface ITakeFreeResponseProps {
 
 export const TakeFreeResponse: FC<ITakeFreeResponseProps> = ({ surveyItemId }) => {
   const { surveyItem } = useSurveyItem(surveyItemId);
-  const { register, formState: { errors }} = useFormContext();
+  const { control, formState: { errors }} = useFormContext();
   
   if (!surveyItem) {
     return <Spinner />;
@@ -18,14 +19,18 @@ export const TakeFreeResponse: FC<ITakeFreeResponseProps> = ({ surveyItemId }) =
 
   return (
     <div className='take-free-response-container animate__animated animate__fadeInRight'>
-      <p>{surveyItem.prompt}</p>
+      <p dangerouslySetInnerHTML={{ __html: surveyItem?.prompt as string }} />
 
       <Form.Group>
-        <Form.Control
-          { ...register('freeResponse') }
-          as='textarea'
-          rows={3}
-          placeholder='Type your response here'
+        <Controller
+          name='freeResponse'
+          control={control}
+          render={({ field }) => (
+            <RichTextEditor
+              { ...field }
+              placeholder='Type your response here'
+            />
+          )}
         />
         <p className='text-danger'>{errors.freeResponse?.message}</p>
       </Form.Group>
