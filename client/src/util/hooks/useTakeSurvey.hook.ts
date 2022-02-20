@@ -62,6 +62,7 @@ export const useTakeSurvey = (surveyId: string) => {
     }));
   }, [takingSurveySubmittedValues, surveyId]);
 
+  // Submit all responses after taking all questions in survey
   const submitResponses = useCallback(() => {
     forEach(responseSubmissionActions, (action: PayloadAction<any>) => {
       dispatch(action);
@@ -87,6 +88,7 @@ export const useTakeSurvey = (surveyId: string) => {
     }
   }, [dispatch, prevItem]);
 
+  // add the response data to the store for a single item, not yet submitting to back-end
   const setItemResponseData = useCallback((surveyItemId: string, data: any) => {
     dispatch(setTakingItemData({ surveyItemId, data }));
   }, [dispatch]);
