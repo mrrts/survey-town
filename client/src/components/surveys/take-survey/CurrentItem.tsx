@@ -7,12 +7,15 @@ import { Spinner } from '../../common/Spinner';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight, faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight, faChartBar, faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { RequestInfo } from '../../common/RequestInfo';
 import { useRequest } from '../../../util/hooks/useRequest.hook';
 import ProgressBar from 'react-bootstrap/ProgressBar';
+import { Link } from '@reach/router';
+import { useModal } from '../../../util/hooks/useModal.hook';
+import { ModalKeys } from '../../../constants/ModalKeys.enum';
 
 interface ICurrentItemProps {
   surveyId: string;
@@ -40,6 +43,7 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
   const { surveyItem } = useSurveyItem(currentItemId as string);
   const itemTypeData = SurveyItemTypeData[currentItemType];
   const TakeSurveyItemComponent = itemTypeData?.takeSurveyComponent;
+  const takeSurveyModal = useModal(ModalKeys.TAKE_SURVEY);
 
   const takeSurveyDefaultValues = itemTypeData?.takeDefaultValues;
   const alreadyRespondedValue = currentItemSubmittedValues;
@@ -90,6 +94,10 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
     goToFirstItem();
   };
 
+  const handleResultsClick = () => {
+    takeSurveyModal.closeModal();
+  }
+
   useEffect(() => {
     if (shouldSubmit) {
       submitResponses();
@@ -126,6 +134,12 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
             <FontAwesomeIcon icon={faUndo} />
             Undo &amp; Retake
           </Button>
+          <div>
+            <Link to={`/surveys/${surveyId}/results`} onClick={handleResultsClick} className='results-link btn btn-primary btn-sm mt-4'>
+              <FontAwesomeIcon icon={faChartBar} />
+              View Results
+            </Link>
+          </div>
         </div>
       </div>
     );

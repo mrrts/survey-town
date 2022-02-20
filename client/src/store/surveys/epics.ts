@@ -23,6 +23,8 @@ import {
   removeSurvey,
   destroySurveyItem,
   removeSurveyItem,
+  fetchResponsesForSurvey,
+  receiveSurveyResponses,
 } from "./slice";
 import { flatMap } from 'lodash';
 import { RequestError } from "../../util/http.util";
@@ -34,7 +36,7 @@ import { toastSuccess } from "../../util/toast.util";
 import { navigate } from "@reach/router";
 import { CreateSurveyItemDto } from "../../entities/dtos/create-survey-item.dto";
 import { UpdateSurveyItemDto } from "../../entities/dtos/update-survey-item.dto";
-import { ISurveyResponse } from "../../entities/survey-response.model";
+import { ISurveyResponse, SurveyResponse } from "../../entities/survey-response.model";
 
 const handleRequestError = (key: string, shouldToastError: boolean = true) => (err: RequestError) =>
   of(requestError({ key, error: err.data, shouldToastError }));
@@ -79,6 +81,26 @@ export const fetchOwnResponsesForSurveyEpic = (action$: Observable<Action>, stat
             return concat(
               of(requestSuccess({ key })),
               of(receiveOwnResponses({ surveyResponses }))
+            );
+          }),
+          catchError(handleRequestError(key))
+        )
+      );
+    })
+  );
+
+export const fetchResponsesForSurveyEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
+  action$.pipe(
+    ofType(getType(fetchResponsesForSurvey)) as any,
+    mergeMap((action: PayloadAction<{ surveyId: string }>) => {
+      const key = `fetch_responses_for_survey_${action.payload.surveyId}`;
+      return concat(
+        of(requestStart({ key })),
+        from(api.fetchResponsesForSurvey(action.payload.surveyId)).pipe(
+          switchMap((responses: SurveyResponse[]) => {
+            return concat(
+              of(requestSuccess({ key })),
+              of(receiveSurveyResponses({ surveyResponses: responses }))
             );
           }),
           catchError(handleRequestError(key))

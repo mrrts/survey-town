@@ -248,6 +248,10 @@ div.rich-text-editor {
 }
 
 .take-survey-container {
+  .results-link {
+    width: 100%;
+  }
+  
   .take-current-item-card {
     padding: 2em;
     overflow-x: hidden;

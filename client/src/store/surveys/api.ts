@@ -18,6 +18,12 @@ export const fetchOwnResponsesForSurvey = async (surveyId: string) => {
   return responses.map((dto: ISurveyResponse) => new SurveyResponse(dto));
 }
 
+export const fetchResponsesForSurvey = async (surveyId: string) => {
+  const urlPath = `/surveys/${surveyId}/responses`;
+  const responses = await httpUtil.get<ISurveyResponse[]>(urlPath);
+  return responses.map((dto: ISurveyResponse) => new SurveyResponse(dto));
+}
+
 export const postSurvey = async (dto: CreateSurveyDto) => {
   const resp = await httpUtil.post<CreateSurveyDto, ISurveyDto>('/surveys', dto);
   return new SurveyDto(resp);

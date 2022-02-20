@@ -37,6 +37,9 @@ const slice = createSlice({
     fetchOwnResponsesForSurvey(state: ISurveysState, action: PayloadAction<{ surveyId: string }>) {
       // triggers epic
     },
+    fetchResponsesForSurvey(state: ISurveysState, action: PayloadAction<{ surveyId: string }>) {
+      // triggers epic
+    },
     createSurvey(state: ISurveysState, action: PayloadAction<{ dto: CreateSurveyDto }>) {
       // triggers epic
     },
@@ -114,6 +117,7 @@ const slice = createSlice({
 export const {
   fetchSurveys,
   fetchOwnResponsesForSurvey,
+  fetchResponsesForSurvey,
   createSurvey,
   updateSurvey,
   createSurveyItem,

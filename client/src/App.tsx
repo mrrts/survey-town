@@ -13,6 +13,7 @@ import { ToastContainer } from 'react-toastify';
 import { SurveyGeneralFormModal } from './components/surveys/SurveyGeneralFormModal';
 import { TakeSurveyModal } from './components/surveys/take-survey/TakeSurveyModal';
 import { Home } from './components/Home';
+import { ResultsRoute } from './components/surveys/results/ResultsRoute';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -36,6 +37,7 @@ function App() {
             <ProtectedRoute path='surveys'>
               <Surveys path='/' />
               <EditSurveyItemsRoute path=':surveyId/edit' />
+              <ResultsRoute path=':surveyId/results' />
             </ProtectedRoute>
           </Router>
         </Container>
