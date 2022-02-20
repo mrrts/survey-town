@@ -10,7 +10,7 @@ interface IHomeProps extends RouteComponentProps {
 export const Home: FC<IHomeProps> = () => {
   return (
     <div className='home-container'>
-      <div className='home-banner animate__animated animate__fadeInDown'>
+      <div className='home-banner animate__animated animate__zoomIn'>
         <h2><span>Welcome to</span> <br /><strong>Survey Town</strong></h2>
         <div className='home-actions'>
           <Link to='/surveys' className='btn btn-lg btn-primary my-4'>

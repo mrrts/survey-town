@@ -43,13 +43,31 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 
   .home-skyline-image {
     position: absolute;
-    bottom: -20px;
-    width: 125%;
-    left: -120px;
     pointer-events: none;
+    bottom: -20px;
+    width: 225%;
+    left: -350px;
     max-height: 60vh;
     .path {
       fill: #dedede;
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    .home-skyline-image {
+      bottom: -20px;
+      width: 125%;
+      left: -120px;
+      max-height: 60vh;
+    }
+  }
+
+  @include media-breakpoint-up(lg) {
+    .home-skyline-image {
+      bottom: -20px;
+      width: 125%;
+      left: -120px;
+      max-height: 60vh;
     }
   }
 }
