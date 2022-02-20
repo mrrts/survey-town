@@ -124,7 +124,7 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
         <div className='survey-already-taken-actions'>
           <Button variant='link' onClick={handleDeleteResponsesClick}>
             <FontAwesomeIcon icon={faUndo} />
-            Undo Submission
+            Undo &amp; Retake
           </Button>
         </div>
       </div>

@@ -80,7 +80,7 @@ export const ItemWithChoicesFields: FC<IItemWithChoicesFieldsProps> = ({
           })}
         </FlipMove>
         <div className='add-choice-container'>
-          <Button variant='primary' size='sm' onClick={handleAddClick}>
+          <Button className='my-2' variant='primary' size='sm' onClick={handleAddClick}>
             <FontAwesomeIcon icon={faPlus} />
             Add Choice
           </Button>
