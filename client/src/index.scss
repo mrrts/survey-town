@@ -139,6 +139,14 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   }
 }
 
+.card {
+  transition: all .3s ease-in-out;
+  &:hover, &:focus-within {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px 0 rgb(70 70 69 / 16%), 0 16px 24px 0 rgb(70 70 69 / 16%)
+  }
+}
+
 .survey-list-item {
   .survey-card {
     width: 100%;
