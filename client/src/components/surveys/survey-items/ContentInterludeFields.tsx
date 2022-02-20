@@ -1,16 +1,16 @@
 import React, { FC } from 'react';
-import { UseFormRegister } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 import { useSurveyItem } from '../../../util/hooks/useSurveyItem.hook';
 
 interface IContentInterludeFieldsProps {
-  register: UseFormRegister<any>;
-  errors: { [x: string]: any };
   surveyItemId: string;
 }
 
-export const ContentInterludeFields: FC<IContentInterludeFieldsProps> = ({ register, errors, surveyItemId }) => {
+export const ContentInterludeFields: FC<IContentInterludeFieldsProps> = ({ surveyItemId }) => {
   const { surveyItem } = useSurveyItem(surveyItemId);
+  const { register, formState: { errors }} = useFormContext();
+
   return (
     <>
       <Form.Group>

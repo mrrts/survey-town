@@ -1,16 +1,15 @@
 import React, { FC } from "react";
-import { UseFormRegister } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import Form from 'react-bootstrap/Form';
 import { useSurveyItem } from "../../../util/hooks/useSurveyItem.hook";
 
 interface IFreeResponseFieldsProps {
-  register: UseFormRegister<any>;
-  errors: { [x: string]: any };
   surveyItemId: string;
 }
 
-export const FreeResponseFields: FC<IFreeResponseFieldsProps> = ({ register, errors, surveyItemId }) => {
+export const FreeResponseFields: FC<IFreeResponseFieldsProps> = ({ surveyItemId }) => {
   const { surveyItem } = useSurveyItem(surveyItemId);
+  const { register, formState: { errors }} = useFormContext();
 
   return (
     <>

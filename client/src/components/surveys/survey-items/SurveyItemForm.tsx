@@ -1,7 +1,7 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { ComponentType, FC, useCallback, useEffect, useState } from 'react';
 import { SurveyItemTypeData } from '../../../constants/SurveyItemTypeData';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useAppDispatch } from '../../../store';
@@ -25,9 +25,11 @@ export const SurveyItemForm: FC<ISurveyItemFormProps> = ({ surveyId, surveyItemI
 
   const schema = itemTypeData?.schema;
 
-  const { register, handleSubmit, getValues, formState: { errors, isDirty }, reset, control } = useForm({
+  const form = useForm({
     resolver: yupResolver(schema),
   });
+
+  const { handleSubmit, getValues, formState: { isDirty }, reset } = form;
 
   const onSubmit = useCallback((data: any) => {
     const values = getValues();
@@ -43,7 +45,7 @@ export const SurveyItemForm: FC<ISurveyItemFormProps> = ({ surveyId, surveyItemI
     dispatch(destroySurveyItem({ surveyId, surveyItemId: surveyItem?.uuid }))
   }, [dispatch, isConfirmingDelete, setIsConfirmingDelete, surveyId, surveyItem]);
 
-  const FieldsComponent = itemTypeData?.fieldsComponent || 'div';
+  const FieldsComponent = (itemTypeData?.fieldsComponent || 'div') as ComponentType<{ surveyItemId: string }>;
 
   useEffect(() => {
     if (isConfirmingDelete) {
@@ -56,13 +58,11 @@ export const SurveyItemForm: FC<ISurveyItemFormProps> = ({ surveyId, surveyItemI
 
   return (
     <Form className='survey-item-form' onSubmit={handleSubmit(onSubmit)}>
-      <FieldsComponent
-        register={register}
-        errors={errors}
-        control={control}
-        surveyItemId={surveyItem?.uuid}
-        reset={reset}
-      />
+      <FormProvider { ...form }>
+        <FieldsComponent
+          surveyItemId={surveyItem?.uuid}
+        />
+      </FormProvider>
       <div className='survey-item-actions'>
         <Button className='me-2' variant='link' size='sm' onClick={handleDeleteItemClick}>
           <FontAwesomeIcon icon={faTrash} />

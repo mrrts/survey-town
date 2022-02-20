@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect } from "react";
-import { Control, useFieldArray, UseFormRegister } from "react-hook-form";
+import { useFieldArray, useFormContext } from "react-hook-form";
 import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,21 +8,15 @@ import { useSurveyItem } from "../../../util/hooks/useSurveyItem.hook";
 import FlipMove from 'react-flip-move';
 
 interface IItemWithChoicesFieldsProps {
-  register: UseFormRegister<any>;
-  errors: { [x: string]: any };
-  control: Control<any>;
   surveyItemId: string;
-  reset: any;
 }
 
 export const ItemWithChoicesFields: FC<IItemWithChoicesFieldsProps> = ({
-  register,
-  errors,
-  control,
   surveyItemId,
-  reset 
 }) => {
   const { surveyItem } = useSurveyItem(surveyItemId);
+
+  const { register, control, reset, formState: { errors }} = useFormContext();
 
   const { fields, append, remove } = useFieldArray({
     control,
