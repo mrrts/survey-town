@@ -17,6 +17,7 @@ export interface IResponse {
   selection?: string;
   selections?: string[];
   freeResponse?: string;
+  safe: () => IResponse;
 }
 
 const options: SchemaOptions = {
@@ -36,6 +37,11 @@ export const responseSchema = new Schema(
   },
   options,
 );
+
+responseSchema.methods.safe = function () {
+  this.user = null;
+  return this;
+}
 
 export const freeResponseSchema = new Schema(
   {

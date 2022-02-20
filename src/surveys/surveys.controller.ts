@@ -105,8 +105,9 @@ export class SurveysController {
 
   @Get(':surveyId/responses')
   @Roles({ requireAll: [USER_ROLES.USER] })
-  getSurveyResponses(@Param('surveyId') surveyId: string) {
-    return this.surveysService.findAllResponsesForSurvey(surveyId);
+  async getSurveyResponses(@Param('surveyId') surveyId: string) {
+    const responses = await this.surveysService.findAllResponsesForSurvey(surveyId);
+    return responses.map((resp) => resp.safe()); // remove user uuids
   }
 
   @Post(':surveyId/items/:itemId/responses')
