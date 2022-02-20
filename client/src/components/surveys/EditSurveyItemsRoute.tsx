@@ -1,11 +1,11 @@
-import { RouteComponentProps } from '@reach/router';
+import { Redirect, RouteComponentProps } from '@reach/router';
 import React, { FC, useCallback } from 'react';
 import { useSurvey } from '../../util/hooks/useSurvey.hook';
 import { keys } from 'lodash';
 import { SurveyItemTypeData } from '../../constants/SurveyItemTypeData';
 import { SurveyItemType } from '../../constants/SurveyItemType.enum';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faPencilAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from 'react-bootstrap/Button';
@@ -15,6 +15,7 @@ import { ICreateSurveyItemDto } from '../../entities/dtos/create-survey-item.dto
 import { useAppDispatch } from '../../store';
 import { createSurveyItem } from '../../store/surveys/slice';
 import { ItemsList } from './survey-items/ItemsList';
+import { Link } from '@reach/router';
 
 export interface IEditSurveyItemsRouteProps extends RouteComponentProps {
   surveyId?: string;
@@ -50,18 +51,28 @@ export const EditSurveyItemsRoute: FC<IEditSurveyItemsRouteProps> = ({ surveyId 
     surveyGeneralModal.openModal();
   }
 
+  if (!isOwner) {
+    return <Redirect to='/surveys' noThrow />;
+  }
+
   return (
     <div className='edit-survey-items-route animate__animated animate__fadeIn'>
-      <h2>{survey?.title}</h2>
-      <p>{survey?.description}</p>
-      {isOwner && (
+      <p>
+        <Link to='/surveys' className='btn btn-link btn-sm'>
+          <FontAwesomeIcon icon={faArrowLeft} />
+          Back to surveys list
+        </Link>
+      </p>
+      <div className='edit-survey-items-header card'>
+        <h2><span className='sr-only'>Edit survey</span> {survey?.title}</h2>
+        <p><span className='sr-only'>Survey Description:</span> {survey?.description}</p>
         <p>
           <Button size='sm' variant='info' onClick={handleEditTitleClick}>
             <FontAwesomeIcon icon={faPencilAlt} />
             Edit title/description
           </Button>
         </p>
-      )}
+      </div>
 
       <ItemsList surveyId={surveyId as string} />
 
