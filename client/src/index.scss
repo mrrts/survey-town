@@ -49,7 +49,7 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     left: -350px;
     max-height: 60vh;
     .path {
-      fill: #dedede;
+      fill: rgba($primary, .5);
     }
   }
 

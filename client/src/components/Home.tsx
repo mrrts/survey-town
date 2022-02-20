@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { RouteComponentProps } from "@reach/router";
-import { SkylineSVG } from './skyline';
+import { SkylineSVG } from './SkylineSVG';
 import { Link } from '@reach/router';
 
 interface IHomeProps extends RouteComponentProps {
