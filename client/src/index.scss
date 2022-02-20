@@ -246,6 +246,12 @@ $cardBoxShadow: 0 4px 16px 0 rgb(70 70 69 / 16%), 0 16px 24px 0 rgb(70 70 69 / 1
 .take-survey-container {
   .take-current-item-card {
     padding: 2em;
+    overflow-x: hidden;
+    box-shadow: none;
+    &:hover {
+      box-shadow: none;
+      transform: none;
+    }
   }
   .take-survey-item-actions {
     margin-top: 2em;
