@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useSurveyItem } from "../../../util/hooks/useSurveyItem.hook";
+import FlipMove from 'react-flip-move';
 
 interface IItemWithChoicesFieldsProps {
   register: UseFormRegister<any>;
@@ -55,27 +56,29 @@ export const ItemWithChoicesFields: FC<IItemWithChoicesFieldsProps> = ({
       </Form.Group>
       <Form.Group className='add-choices-group'>
         <Form.Label>Choices</Form.Label>
-        {fields.map((field, i) => {
-          return (
-            <div key={field.id} className='choice-container'>
-              <Button
-                variant='link'
-                className='delete-choice-button'
-                size='sm'
-                aria-label='delete this choice'
-                onClick={() => handleDeleteClick(i)}
-              >
-                <FontAwesomeIcon className='delete-choice-icon' icon={faTimes} />
-              </Button>
-              <Form.Control
-                { ...register(`choices[${i}]`) }
-                placeholder={`Choice ${i + 1}`}
-                defaultValue={surveyItem?.choices?.[i]}
-              />
-              <p className='text-danger'>{errors?.choices?.[i]?.message}</p>
-            </div>
-          );
-        })}
+        <FlipMove typeName={null}>
+          {fields.map((field, i) => {
+            return (
+              <div key={field.id} className='choice-container'>
+                <Button
+                  variant='link'
+                  className='delete-choice-button'
+                  size='sm'
+                  aria-label='delete this choice'
+                  onClick={() => handleDeleteClick(i)}
+                >
+                  <FontAwesomeIcon className='delete-choice-icon' icon={faTimes} />
+                </Button>
+                <Form.Control
+                  { ...register(`choices[${i}]`) }
+                  placeholder={`Choice ${i + 1}`}
+                  defaultValue={surveyItem?.choices?.[i]}
+                />
+                <p className='text-danger'>{errors?.choices?.[i]?.message}</p>
+              </div>
+            );
+          })}
+        </FlipMove>
         <div className='add-choice-container'>
           <Button variant='primary' size='sm' onClick={handleAddClick}>
             <FontAwesomeIcon icon={faPlus} />

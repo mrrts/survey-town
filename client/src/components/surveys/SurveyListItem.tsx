@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, forwardRef, useCallback, useEffect, useState } from 'react';
 import { useSurvey } from '../../util/hooks/useSurvey.hook';
 import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
@@ -11,15 +11,17 @@ import { Link } from '@reach/router';
 import { formatDistance } from 'date-fns';
 import { useAppDispatch } from '../../store';
 import { destroySurvey } from '../../store/surveys/slice';
+import { usePrevious } from '../../util/hooks/usePrevious.hook';
 
 export interface ISurveyListItemProps {
   surveyId: string;
 }
 
-export const SurveyListItem: FC<ISurveyListItemProps> = ({ surveyId }) => {
+export const SurveyListItem: FC<ISurveyListItemProps> = forwardRef(({ surveyId }, ref: React.ForwardedRef<HTMLDivElement>) => {
   const { survey, authorHandle, numberOfResponses, isOwner } = useSurvey(surveyId);
   const takeSurveyModal = useModal(ModalKeys.TAKE_SURVEY);
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+  const prevIsConfirmingDelete = usePrevious(isConfirmingDelete);
   const dispatch = useAppDispatch();
 
   const handleTakeSurveyClick = useCallback(() => {
@@ -30,18 +32,27 @@ export const SurveyListItem: FC<ISurveyListItemProps> = ({ surveyId }) => {
   const handleDeleteClick = useCallback(() => {
     if (!isConfirmingDelete) {
       setIsConfirmingDelete(true);
-      setTimeout(() => {
-        setIsConfirmingDelete(false);
-      }, 5000);
-      return;;
+      return;
     }
     dispatch(destroySurvey({ surveyId }))
   }, [isConfirmingDelete, setIsConfirmingDelete, dispatch, surveyId]);
 
-  const createdAgoPhrase = formatDistance(survey?.createdAt, new Date(), { addSuffix: true });
+  const createdAgoPhrase = survey
+    ? formatDistance(survey.createdAt, new Date(), { addSuffix: true })
+    : undefined;
+
+  useEffect(() => {
+    let t: NodeJS.Timeout;
+    if (!prevIsConfirmingDelete && isConfirmingDelete) {
+      t = setTimeout(() => {
+        setIsConfirmingDelete(false);
+      }, 5000);
+    } 
+    return () => clearTimeout(t);
+  }, [prevIsConfirmingDelete, isConfirmingDelete, setIsConfirmingDelete]);
 
   return (
-    <div className='survey-list-item'>
+    <div className='survey-list-item' ref={ref}>
       <Card className='survey-card'>
         <Card.Body>
           <Card.Title className='survey-list-item-title'>
@@ -56,7 +67,7 @@ export const SurveyListItem: FC<ISurveyListItemProps> = ({ surveyId }) => {
           </Card.Subtitle>
           
           <Card.Text aria-label='description of survey'>
-            {survey.description}
+            {survey?.description}
           </Card.Text>
 
           <div className='survey-card-actions'>
@@ -81,4 +92,4 @@ export const SurveyListItem: FC<ISurveyListItemProps> = ({ surveyId }) => {
       </Card>
     </div>
   );
-};
+});

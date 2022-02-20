@@ -1,5 +1,5 @@
 import { RouteComponentProps } from '@reach/router';
-import React, { FC } from 'react';
+import React, { FC, useRef } from 'react';
 import { ISurvey } from '../../entities/survey.model';
 import { useAppSelector } from '../../store';
 import { getSurveysByDateDesc } from '../../store/surveys/selectors';
@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { ModalKeys } from '../../constants/ModalKeys.enum';
 import { useModal } from '../../util/hooks/useModal.hook';
+import FlipMove from 'react-flip-move';
 
 export interface ISurveysProps extends RouteComponentProps {
 }
@@ -39,11 +40,13 @@ export const Surveys: FC<ISurveysProps> = ({ children }) => {
         </div>
       </div>
       <RequestInfo requestKey='fetch_surveys' />
-      {surveys.map((survey: ISurvey) => {
-        return (
-          <SurveyListItem key={survey.uuid} surveyId={survey.uuid} />
-        );
-      })}
+      <FlipMove typeName={null}>
+        {surveys.map((survey: ISurvey) => {
+          return (
+            <SurveyListItem key={survey.uuid} surveyId={survey.uuid} />
+          );
+        })}
+      </FlipMove>
 
       {children}
     </div>
