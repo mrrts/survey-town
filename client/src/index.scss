@@ -146,6 +146,10 @@ $cardBoxShadow: 0 4px 16px 0 rgb(70 70 69 / 16%), 0 16px 24px 0 rgb(70 70 69 / 1
   }
 }
 
+div.rich-text-editor {
+  font-family: inherit;
+}
+
 .survey-list-item {
   .survey-card {
     width: 100%;

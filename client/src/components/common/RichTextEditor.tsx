@@ -17,7 +17,7 @@ export const RichTextEditor: FC<any> = forwardRef(({ onChange, ...props }, ref) 
   };
   
   const [editorValue, setEditorValue] = useState<EditorValue>(
-    ReactRTE.createValueFromString(props?.defaultValue || '', 'html')
+    ReactRTE.createValueFromString(props.defaultValue || '', 'html')
   );
 
   const handleChange = useCallback((value: EditorValue) => {
@@ -28,6 +28,7 @@ export const RichTextEditor: FC<any> = forwardRef(({ onChange, ...props }, ref) 
   return (
     <ReactRTE
       toolbarConfig={toolbarConfig}
+      className='rich-text-editor'
       {...props}
       ref={ref}
       value={editorValue}
