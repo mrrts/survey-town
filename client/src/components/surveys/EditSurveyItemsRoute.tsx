@@ -51,7 +51,7 @@ export const EditSurveyItemsRoute: FC<IEditSurveyItemsRouteProps> = ({ surveyId 
   }
 
   return (
-    <div className='edit-survey-items-route'>
+    <div className='edit-survey-items-route animate__animated animate__fadeIn'>
       <h2>{survey?.title}</h2>
       <p>{survey?.description}</p>
       {isOwner && (

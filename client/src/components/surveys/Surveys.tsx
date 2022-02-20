@@ -25,7 +25,7 @@ export const Surveys: FC<ISurveysProps> = ({ children }) => {
   }
 
   return (
-    <div className='surveys'>
+    <div className='surveys animate__animated animate__fadeIn'>
       <div className='surveys-header'>
         <h2>Surveys</h2>
         <div className='actions'>
