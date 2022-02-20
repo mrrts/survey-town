@@ -30,6 +30,7 @@
     "react-flip-move": "^3.0.4",
     "react-hook-form": "^7.26.0",
     "react-redux": "^7.2.6",
+    "react-rte": "^0.16.5",
     "react-scripts": "5.0.0",
     "react-select": "^5.2.2",
     "react-toastify": "^8.1.1",
