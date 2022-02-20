@@ -21,7 +21,7 @@ export const TakeSurveyModal: FC<ITakeSurveyModalProps> = () => {
   return (
     <Modal show={modal.isOpen}>
       <Modal.Header>
-        {survey?.title}
+        <h4><strong>{survey?.title}</strong></h4>
       </Modal.Header>
       <Modal.Body>
         <TakeSurvey surveyId={modal.data?.surveyId} />
