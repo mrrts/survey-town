@@ -53,6 +53,7 @@ export const SurveyListItem: FC<ISurveyListItemProps> = forwardRef(({ surveyId }
       <Card className='survey-card'>
         <Card.Body>
           <Card.Title className='survey-list-item-title'>
+            <h3 className='sr-only'>Survey Title</h3>
             {survey?.title}
             &nbsp; 
             <Badge className='responses-badge' bg='info' pill>
@@ -63,7 +64,8 @@ export const SurveyListItem: FC<ISurveyListItemProps> = forwardRef(({ surveyId }
             by {authorHandle}, {createdAgoPhrase}
           </Card.Subtitle>
           
-          <Card.Text aria-label='description of survey'>
+          <Card.Text>
+            <h4 className='sr-only'>Description</h4>
             {survey?.description}
           </Card.Text>
 

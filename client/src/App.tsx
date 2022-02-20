@@ -23,6 +23,7 @@ function App() {
 
   return (
     <div className='app-container'>
+      <h1 className='sr-only'>Survey Town</h1>
       <header className='app-navbar'>
         <AppNavbar />
       </header>
