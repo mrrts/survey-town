@@ -75,7 +75,7 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
         </Modal.Header>
         <Modal.Body>
           <Form.Group>
-            <Form.Label>Title</Form.Label>
+            <Form.Label>Title*</Form.Label>
             <Form.Control
               { ...register('title') }
               type='text'
