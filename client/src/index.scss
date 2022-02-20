@@ -62,14 +62,6 @@ $cardBoxShadow2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     }
   }
 
-  @include media-breakpoint-up(lg) {
-    .home-skyline-image {
-      bottom: -20px;
-      width: 125%;
-      left: -120px;
-      max-height: 60vh;
-    }
-  }
 }
 
 .spinner-wrapper {
