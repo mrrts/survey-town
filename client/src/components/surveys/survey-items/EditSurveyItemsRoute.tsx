@@ -70,7 +70,7 @@ export const EditSurveyItemsRoute: FC<IEditSurveyItemsRouteProps> = ({ surveyId 
           <div dangerouslySetInnerHTML={{ __html: survey?.description }} />
         </div>
         <p>
-          <Button size='sm' variant='link' onClick={handleEditTitleClick}>
+          <Button className='mt-2' size='sm' variant='link' onClick={handleEditTitleClick}>
             <FontAwesomeIcon icon={faPencilAlt} />
             Edit title &amp; description
           </Button>
