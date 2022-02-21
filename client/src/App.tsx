@@ -22,7 +22,7 @@ function App() {
   const appContainer = appContainerRef.current;
 
   const handleRouteChange = useCallback((location: WindowLocation) => {
-    appContainer?.scrollTo(0, 0);
+    setTimeout(() => appContainer?.scrollTo(0,0), 0);
   }, [appContainer]);
 
   useEffect(() => {
