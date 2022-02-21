@@ -7,6 +7,7 @@ export enum SurveyResponseType {
 export interface ISurveyResponse {
   selection?: string;
   selections?: string[];
+  freeResponse?: string;
   survey: string;
   surveyItem: string;
   responseType: SurveyResponseType;
@@ -18,6 +19,7 @@ export interface ISurveyResponse {
 export class SurveyResponse implements ISurveyResponse {
   selection?: string;
   selections?: string[];
+  freeResponse?: string;
   survey: string;
   surveyItem: string;
   responseType: SurveyResponseType;
@@ -28,6 +30,7 @@ export class SurveyResponse implements ISurveyResponse {
   constructor(json: ISurveyResponse) {
     this.selection = json?.selection;
     this.selections = json?.selections;
+    this.freeResponse = json?.freeResponse;
     this.survey = json?.survey;
     this.surveyItem = json?.surveyItem;
     this.responseType = json?.responseType;
