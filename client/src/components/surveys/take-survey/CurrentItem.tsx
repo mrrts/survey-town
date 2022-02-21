@@ -127,7 +127,7 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
 
   if (ownResponses.length) {
     return (
-      <div className='survey-already-taken-container'>
+      <div className='survey-already-taken-container animate__animated animate__fadeIn'>
         Thank you for taking this survey!
         <div className='survey-already-taken-actions'>
           <Button variant='link' onClick={handleDeleteResponsesClick}>
@@ -135,7 +135,7 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
             Undo &amp; Retake
           </Button>
           <div>
-            <Link to={`/surveys/${surveyId}/results`} onClick={handleResultsClick} className='results-link btn btn-primary btn-sm mt-4'>
+            <Link to={`/surveys/${surveyId}/results`} onClick={handleResultsClick} className='results-link btn btn-primary mt-4'>
               <FontAwesomeIcon icon={faChartBar} />
               View Results
             </Link>
@@ -184,7 +184,7 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
         </FormProvider>
         <RequestInfo requestKey={submitRequestKey} />
       </Card>
-      <ProgressBar now={progressPercentage} />
+      <ProgressBar key='progress-bar' now={progressPercentage} />
     </div>
   );
 }

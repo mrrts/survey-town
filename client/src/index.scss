@@ -247,6 +247,17 @@ div.rich-text-editor {
   }
 }
 
+.modal-dialog {
+  .modal-content {
+    .modal-header {
+      border-bottom: 0;
+    }
+    .modal-footer {
+      border-top: 0;
+    }
+  }
+}
+
 .take-survey-container {
   .results-link {
     width: 100%;
