@@ -12,7 +12,7 @@ import { RequestError } from "../../util/http.util";
 import { fetchUserHandles } from "../users/slice";
 import { RegisterDto } from "../../entities/dtos/register.dto";
 import { navigate } from "@reach/router";
-import { fetchSurveys } from "../surveys/slice";
+import { clearOwnResponses, fetchSurveys } from "../surveys/slice";
 
 export const loginEpic = (action$: Observable<Action>, state$: Observable<AppState>) =>
   action$.pipe(
@@ -53,7 +53,8 @@ export const logoutEpic = (action$: Observable<Action>, state$: Observable<AppSt
               of(requestSuccess({ key })),
               of(unsetUser()).pipe(
                 tap(() => navigate('/'))
-              )
+              ),
+              of(clearOwnResponses())
             );
           }),
           catchError((error: RequestError) => {

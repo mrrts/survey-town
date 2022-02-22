@@ -6,7 +6,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useRequest } from '../../../util/hooks/useRequest.hook';
 import { Spinner } from '../../common/Spinner';
 import { useAppDispatch } from '../../../store';
-import { fetchResponsesForSurvey } from '../../../store/surveys/slice';
+import { clearResponsesForSurvey, fetchResponsesForSurvey, fetchSurveys } from '../../../store/surveys/slice';
 import { ISurveyItem } from '../../../entities/survey-item.model';
 import { ItemResults } from './ItemResults';
 
@@ -20,6 +20,7 @@ export const ResultsRoute: FC<IResultsRouteProps> = ({ surveyId }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    dispatch(clearResponsesForSurvey({ surveyId: surveyId as string }));
     dispatch(fetchResponsesForSurvey({ surveyId: surveyId as string }));
   }, [surveyId, dispatch]);
 
