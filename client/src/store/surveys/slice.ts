@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ISurveyItem } from "../../entities/survey-item.model";
 import { ISurveyResponse } from "../../entities/survey-response.model";
 import { ISurvey } from "../../entities/survey.model";
-import { keyBy, filter } from 'lodash';
+import { keyBy, filter, keys } from 'lodash';
 import { CreateSurveyDto } from "../../entities/dtos/create-survey.dto";
 import { UpdateSurveyDto } from "../../entities/dtos/update-survey.dto";
 import { CreateSurveyItemDto } from "../../entities/dtos/create-survey-item.dto";
@@ -101,6 +101,13 @@ const slice = createSlice({
     clearOwnResponses(state: ISurveysState) {
       state.ownResponses = {};
     },
+    clearResponsesForSurvey(state: ISurveysState, action: PayloadAction<{ surveyId: string }>) {
+      keys(state.anonSurveyResponses).forEach((responseId: string) => {
+        if (state.anonSurveyResponses[responseId].survey === action.payload.surveyId) {
+          delete state.anonSurveyResponses[responseId];
+        }
+      });
+    },
     removeSurvey(state: ISurveysState, action: PayloadAction<{ surveyId: string }>) {
       delete state.surveys[action.payload.surveyId];
     },
@@ -134,6 +141,7 @@ export const {
   setTakingItemData,
   clearAllTakingSurveyData,
   clearOwnResponses,
+  clearResponsesForSurvey,
   removeSurvey,
   removeSurveyItem
 } = slice.actions;
