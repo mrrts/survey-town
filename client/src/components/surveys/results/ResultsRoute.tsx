@@ -7,13 +7,15 @@ import { useRequest } from '../../../util/hooks/useRequest.hook';
 import { Spinner } from '../../common/Spinner';
 import { useAppDispatch } from '../../../store';
 import { fetchResponsesForSurvey } from '../../../store/surveys/slice';
+import { ISurveyItem } from '../../../entities/survey-item.model';
+import { ItemResults } from './ItemResults';
 
 interface IResultsRouteProps extends RouteComponentProps {
   surveyId?: string;
 }
 
 export const ResultsRoute: FC<IResultsRouteProps> = ({ surveyId }) => {
-  const { survey } = useSurvey(surveyId as string);
+  const { survey, surveyItems } = useSurvey(surveyId as string);
   const { isPending } = useRequest(`fetch_responses_for_survey_${surveyId}`);
   const dispatch = useAppDispatch();
 
@@ -33,6 +35,10 @@ export const ResultsRoute: FC<IResultsRouteProps> = ({ surveyId }) => {
       </Link>
 
       <h2>Results for "{survey.title}"</h2>
+
+      {surveyItems.map((surveyItem: ISurveyItem) => (
+        <ItemResults key={surveyItem.uuid} surveyItemId={surveyItem.uuid} />
+      ))}
     </div>
   );
 };

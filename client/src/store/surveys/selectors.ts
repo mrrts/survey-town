@@ -56,6 +56,11 @@ export const getOwnResponses = createSelector(
   (surveysState: ISurveysState) => surveysState.ownResponses
 );
 
+export const getAnonResponses = createSelector(
+  getSurveysState,
+  (surveysState: ISurveysState) => surveysState.anonSurveyResponses
+);
+
 export const getOwnResponsesForSurvey = (surveyId: string) => createSelector(
   getOwnResponses,
   (ownResponses: ISurveysState['ownResponses']): ISurveyResponse[] => {
@@ -74,4 +79,12 @@ export const getCurrentTakingSurveyItem = createSelector(
 export const getTakingSurveySubmittedItemData = createSelector(
   getSurveysState,
   (surveysState: ISurveysState) => surveysState.takingSurveySubmittedItemData
+);
+
+export const getResponsesForSurveyItem = (surveyItemId: string) => createSelector(
+  getAnonResponses,
+  (anonResponses: Record<string, ISurveyResponse>): ISurveyResponse[] => filter(
+    values(anonResponses),
+    (resp: ISurveyResponse) => resp.surveyItem === surveyItemId
+  )
 );

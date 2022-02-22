@@ -9,9 +9,10 @@ import { TakeContentInterlude } from "../components/surveys/take-survey/TakeCont
 import { TakeFreeResponse } from "../components/surveys/take-survey/TakeFreeResponse";
 import { TakeMultipleChoice } from "../components/surveys/take-survey/TakeMultipleChoice";
 import { TakeMultipleSelect } from "../components/surveys/take-survey/TakeMultipleSelect";
-import { ISurveyResponse, SurveyResponseType } from "../entities/survey-response.model";
-import { filter, countBy } from 'lodash';
-import { ISurveyItem } from "../entities/survey-item.model";
+import { SurveyResponseType } from "../entities/survey-response.model";
+import { FreeResponseResults } from "../components/surveys/results/FreeResponseResults";
+import { MultipleChoiceResults } from "../components/surveys/results/MultipleChoiceResults";
+import { MultipleSelectResults } from "../components/surveys/results/MultipleSelectResults";
 
 export interface ISurveyItemData {
   icon: IconDefinition;
@@ -20,10 +21,10 @@ export interface ISurveyItemData {
   schema: yup.AnyObjectSchema;
   takeSchema: yup.AnyObjectSchema;
   takeDefaultValues: { [x: string]: any };
-  fieldsComponent: React.FunctionComponent<any>,
-  takeSurveyComponent: React.FunctionComponent<any>,
+  fieldsComponent: React.FunctionComponent<any>;
+  takeSurveyComponent: React.FunctionComponent<any>;
   responseType?: SurveyResponseType | null;
-  resultsFn: (responses: ISurveyResponse[], surveyItem: ISurveyItem) => any;
+  resultsComponent: React.FunctionComponent<any>;
 }
 
 export const SurveyItemTypeData: Record<SurveyItemType, ISurveyItemData> = {
@@ -38,7 +39,7 @@ export const SurveyItemTypeData: Record<SurveyItemType, ISurveyItemData> = {
     takeDefaultValues: {},
     fieldsComponent: ContentInterludeFields,
     takeSurveyComponent: TakeContentInterlude,
-    resultsFn: (responses, surveyItem) => null as any
+    resultsComponent: () => null,
   },
   [SurveyItemType.FREE_RESPONSE]: {
     icon: faCommentAlt,
@@ -54,12 +55,7 @@ export const SurveyItemTypeData: Record<SurveyItemType, ISurveyItemData> = {
     fieldsComponent: FreeResponseFields,
     takeSurveyComponent: TakeFreeResponse,
     responseType: SurveyResponseType.FREE_RESPONSE_RESPONSE,
-    resultsFn: (responses: ISurveyResponse[], surveyItem: ISurveyItem): string[] => {
-      const responsesForItem = filterResponsesForItem(responses, surveyItem);
-      // array of freeResponse strings
-      return responsesForItem.map((r: ISurveyResponse) => r.freeResponse || '')
-        .filter((resp: string) => !!resp.length);
-    }
+    resultsComponent: FreeResponseResults,
   },
   [SurveyItemType.MULTIPLE_CHOICE]: {
     icon: faDotCircle,
@@ -76,15 +72,7 @@ export const SurveyItemTypeData: Record<SurveyItemType, ISurveyItemData> = {
     fieldsComponent: ItemWithChoicesFields,
     takeSurveyComponent: TakeMultipleChoice,
     responseType: SurveyResponseType.MULTIPLE_CHOICE_RESPONSE,
-    resultsFn: (responses: ISurveyResponse[], surveyItem: ISurveyItem): Record<string, number> => {
-      const responsesForItem = filterResponsesForItem(responses, surveyItem);
-      return (surveyItem.choices as string[]).reduce((acc: Record<string, number>, choice: string) => {
-        return {
-          ...acc,
-          [choice]: countBy(responsesForItem, (r: ISurveyResponse) => r.selection === choice)
-        };
-      }, {});
-    }
+    resultsComponent: MultipleChoiceResults,
   },
   [SurveyItemType.MULTIPLE_SELECT]: {
     icon: faCheckSquare,
@@ -101,19 +89,6 @@ export const SurveyItemTypeData: Record<SurveyItemType, ISurveyItemData> = {
     fieldsComponent: ItemWithChoicesFields,
     takeSurveyComponent: TakeMultipleSelect,
     responseType: SurveyResponseType.MULTIPLE_SELECT_RESPONSE,
-    resultsFn: (responses: ISurveyResponse[], surveyItem: ISurveyItem): Record<string, number> => {
-      const responsesForItem = filterResponsesForItem(responses, surveyItem);
-      const choices = surveyItem.choices;
-      return (choices as string[]).reduce((acc: Record<string, number>, choice: string) => {
-        return {
-          ...acc,
-          [choice]: countBy(responsesForItem, (resp: ISurveyResponse) => resp.selections?.includes(choice))
-        };
-      }, {});
-    }
+    resultsComponent: MultipleSelectResults,
   }
 };
-
-function filterResponsesForItem(responses: ISurveyResponse[], surveyItem: ISurveyItem): ISurveyResponse[] {
-  return filter(responses, (r: ISurveyResponse) => r.surveyItem === surveyItem.uuid);
-}

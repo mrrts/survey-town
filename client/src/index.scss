@@ -279,6 +279,22 @@ div.rich-text-editor {
   }
 }
 
+.card.item-results {
+  padding: 2em;
+  border-radius: $borderRadius;
+  box-shadow: none;
+  transition: all .3s ease-in-out;
+  &:hover {
+    box-shadow: $cardBoxShadow;
+    transform: translateY(-2px);
+  }
+
+  .free-response-results {
+    max-height: 400px;
+    overflow-y: scroll;
+  }
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
