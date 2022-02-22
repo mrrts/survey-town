@@ -10,7 +10,7 @@ const OnRouteChangeWorker: FC<{ action: (location: WindowLocation) => void }> = 
     if (location?.pathname !== prevLocation?.pathname) {
       action(location);
     }
-  }, [location, prevLocation]);
+  }, [location, prevLocation, action]);
 
   return null;
 }

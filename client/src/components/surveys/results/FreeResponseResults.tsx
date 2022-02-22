@@ -7,7 +7,7 @@ interface IFreeResponseResults {
 }
 
 export const FreeResponseResults: FC<IFreeResponseResults> = ({ surveyItemId }) => {
-  const { surveyItem, surveyItemTypeData, responses } = useSurveyItem(surveyItemId);
+  const { responses } = useSurveyItem(surveyItemId);
 
   return (
     <div className='free-response-results'>
