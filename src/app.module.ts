@@ -1,7 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { SurveysModule } from './surveys/surveys.module';
@@ -23,7 +21,7 @@ import * as bcrypt from 'bcrypt';
       rootPath: join(__dirname, '..', 'client/build'),
     }),
     ConfigModule.forRoot({
-      envFilePath: ['.env', '.env.development'],
+      envFilePath: ['.env.development', '.env'],
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.DB_URL, {
@@ -31,7 +29,7 @@ import * as bcrypt from 'bcrypt';
       useUnifiedTopology: true,
     }),
     ThrottlerModule.forRoot({
-      limit: 20,
+      limit: 100,
       ttl: 10
     }),
     UsersModule,
@@ -39,9 +37,7 @@ import * as bcrypt from 'bcrypt';
     AuthModule,
     PasswordModule,
   ],
-  controllers: [AppController],
   providers: [
-    AppService,
     PasswordService,
     UsersService,
     { provide: APP_GUARD, useClass: ThrottlerGuard },
@@ -50,6 +46,6 @@ import * as bcrypt from 'bcrypt';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes(SurveysController);
+    process.env.NODE_ENV === 'development' && consumer.apply(LoggerMiddleware).forRoutes(SurveysController);
   }
 }

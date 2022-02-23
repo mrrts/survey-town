@@ -1,7 +1,12 @@
+import { BadRequestException, ConflictException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { CreateResponseDto } from './dto/create-response.dto';
 import { CreateSurveyItemDto } from './dto/create-survey-item.dto';
 import { CreateSurveyDto } from './dto/create-survey.dto';
 import { SurveyDto } from './dto/survey.dto';
+import { UpdateSurveyItemDto } from './dto/update-survey-item.dto';
+import { UpdateSurveyDto } from './dto/update-survey.dto';
+import { ResponseType } from './entities/response.entity';
 import { ISurveyItem, SurveyItemType } from './entities/survey-item.entity';
 import { ISurvey } from './entities/survey.entity';
 import { ResponseRepository } from './repositories/response.repository';
@@ -65,6 +70,8 @@ describe('SurveysService', () => {
       findOne: jest.fn().mockReturnValue(mockSurvey),
       addItem: jest.fn(),
       findAll: jest.fn().mockReturnValue([mockSurvey]),
+      remove: jest.fn(),
+      update: jest.fn()
     };
 
     mockSurveyItemRepo = {
@@ -73,10 +80,20 @@ describe('SurveysService', () => {
         mockSurveyItem3,
         mockSurveyItem1,
       ]),
+      findOne: jest.fn().mockReturnValue(mockSurveyItem1),
+      update: jest.fn(),
       createWithAuthor: jest.fn().mockReturnValue(mockSurveyItem1),
     };
 
-    mockResponseRepo = {};
+    mockResponseRepo = {
+      findAllForSurvey: jest.fn().mockReturnValue([
+        { user: '1' }, { user: '1' }, { user: '2' }
+      ]),
+      findAllForUserAndSurvey: jest.fn(),
+      findForItemAndUser: jest.fn(),
+      create: jest.fn(),
+      removeAllForUserAndSurvey: jest.fn(),
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -88,6 +105,8 @@ describe('SurveysService', () => {
     }).compile();
 
     service = module.get<SurveysService>(SurveysService);
+
+    jest.spyOn(service, 'validateObjectAndUser');
   });
 
   it('should be defined', () => {
@@ -101,6 +120,7 @@ describe('SurveysService', () => {
     expect(mockSurveyItemRepo.findMultiple).toHaveBeenCalledWith(
       mockSurvey.surveyItems,
     );
+    expect(mockResponseRepo.findAllForSurvey).toHaveBeenCalledWith(mockSurvey.uuid);
     expect(resultDto).toBeInstanceOf(SurveyDto);
     expect(resultDto.survey).toMatchObject(mockSurvey);
     expect(resultDto.expandedItems).toHaveLength(3);
@@ -108,24 +128,66 @@ describe('SurveysService', () => {
     expect(resultDto.expandedItems[0]).toBe(mockSurveyItem1);
     expect(resultDto.expandedItems[1]).toBe(mockSurveyItem2);
     expect(resultDto.expandedItems[2]).toBe(mockSurveyItem3);
+
+    expect(resultDto.numberOfResponses).toBe(2);
+  });
+
+  it('validates presence of a survey or survey item and its correct author', () => {
+    expect(
+      () => service.validateObjectAndUser(null, mockSurvey.author)
+    ).toThrowError(NotFoundException);
+
+    expect(
+      () => service.validateObjectAndUser(mockSurvey, 'wrongUserId1')
+    ).toThrowError(ForbiddenException);
+
+    expect(
+      () => service.validateObjectAndUser(mockSurvey, mockSurvey.author)
+    ).not.toThrow();
   });
 
   it('creates a survey', async () => {
     const createDto: CreateSurveyDto = {
       title: 'title1',
       description: 'description1',
-      responsesPublic: true,
     };
 
     const authorId = 'author1';
 
-    const resultDto: SurveyDto = await service.create(createDto, authorId);
+    service.getSurveyDto = jest.fn().mockReturnValue('result');
+
+    const result = await service.create(createDto, authorId);
 
     expect(mockSurveyRepo.createWithAuthor).toHaveBeenCalledWith(
       createDto,
       authorId,
     );
-    expect(resultDto).toBeInstanceOf(SurveyDto);
+    expect(service.getSurveyDto).toHaveBeenCalledTimes(1);
+    expect(result).toBe('result');
+  });
+
+  it('removes a survey', async () => {
+    mockSurvey.author = 'user1';
+    mockSurveyRepo.findOne.mockReturnValue(mockSurvey);
+    await service.remove(mockSurvey.uuid, 'user1');
+    expect(service.validateObjectAndUser).toHaveBeenCalledWith(mockSurvey, 'user1');
+    expect(mockSurveyRepo.remove).toHaveBeenCalledWith(mockSurvey.uuid);
+  });
+
+  it('updates a survey', async () => {
+    const dto: UpdateSurveyDto = {
+      title: 'newTitle',
+      description: 'newDescription'
+    };
+
+    service.getSurveyDto = jest.fn().mockReturnValue('result1');
+
+    const result = await service.update(mockSurvey.uuid, dto, mockSurvey.author);
+
+    expect(mockSurveyRepo.findOne).toHaveBeenCalledWith(mockSurvey.uuid);
+    expect(mockSurveyRepo.update).toHaveBeenCalledWith(mockSurvey.uuid, dto);
+    expect(service.validateObjectAndUser).toHaveBeenCalledWith(mockSurvey, mockSurvey.author);
+    expect(result).toBe('result1');
   });
 
   it('creates a survey item', async () => {
@@ -133,24 +195,44 @@ describe('SurveysService', () => {
       itemType: SurveyItemType.CONTENT_INTERLUDE,
       content: 'content1',
     };
-    const surveyId = mockSurvey.uuid;
-    const authorId = mockSurvey.author;
+    
+    service.getSurveyDto = jest.fn().mockReturnValue('result1');
 
     const result: SurveyDto = await service.createSurveyItem(
       dto,
-      surveyId,
-      authorId,
+      mockSurvey.uuid,
+      mockSurvey.author,
     );
 
-    expect(mockSurveyItemRepo.createWithAuthor).toHaveBeenCalledWith(
+    expect(mockSurveyRepo.findOne).toHaveBeenCalledWith(mockSurvey.uuid);
+    expect(mockSurveyItemRepo.createWithAuthor).toHaveBeenCalledWith(dto, mockSurvey.author);
+    expect(mockSurveyRepo.addItem).toHaveBeenCalledWith(mockSurvey.uuid, mockSurveyItem1.uuid);
+    expect(service.getSurveyDto).toHaveBeenCalledWith(mockSurvey.uuid);
+    expect(service.validateObjectAndUser).toHaveBeenCalledWith(mockSurvey, mockSurvey.author);
+    expect(result).toBe('result1');
+  });
+
+  it('updates a survey item', async () => {
+    const dto: UpdateSurveyItemDto = {
+      itemType: SurveyItemType.FREE_RESPONSE,
+      prompt: 'newPrompt1'
+    };
+
+    service.getSurveyDto = jest.fn().mockReturnValue('result1');
+
+    const result = await service.updateSurveyItem(
       dto,
-      authorId,
-    );
-    expect(mockSurveyRepo.addItem).toHaveBeenCalledWith(
-      surveyId,
+      mockSurvey.uuid,
       mockSurveyItem1.uuid,
+      mockSurvey.author
     );
-    expect(result).toBeInstanceOf(SurveyDto);
+
+    expect(mockSurveyRepo.findOne).toHaveBeenCalledWith(mockSurvey.uuid);
+    expect(mockSurveyItemRepo.findOne).toHaveBeenCalledWith(mockSurveyItem1.uuid);
+    expect(mockSurveyItemRepo.update).toHaveBeenCalledWith(mockSurveyItem1.uuid, dto);
+    expect(service.validateObjectAndUser).toHaveBeenCalledWith(mockSurvey, mockSurvey.author);
+    expect(service.validateObjectAndUser).toHaveBeenCalledWith(mockSurveyItem1, mockSurveyItem1.author);
+    expect(result).toBe('result1');
   });
 
   it('finds all surveys', async () => {
@@ -164,5 +246,115 @@ describe('SurveysService', () => {
     const result = await service.findOne(mockSurvey.uuid);
     expect(result).toBeInstanceOf(SurveyDto);
     expect(result.survey.uuid).toBe(mockSurvey.uuid);
+  });
+
+  it('finds all responses for a survey', async () => {
+    await service.findAllResponsesForSurvey(mockSurvey.uuid);
+    expect(mockResponseRepo.findAllForSurvey).toHaveBeenCalledWith(mockSurvey.uuid);
+  });
+
+  it('finds all responses for user and survey', async () => {
+    await service.findAllResponsesForUserAndSurvey(mockSurvey.uuid, mockSurvey.author);
+    expect(mockResponseRepo.findAllForUserAndSurvey).toHaveBeenCalledWith(mockSurvey.uuid, mockSurvey.author);
+  });
+
+  describe('createResponse', () => {
+    it('successfuly creates a response', async () => {
+      const dto: CreateResponseDto = {
+        responseType: ResponseType.MULTIPLE_SELECT_RESPONSE,
+        selections: ['blue', 'green']
+      };
+
+      mockSurveyItemRepo.findOne.mockReturnValue(mockSurveyItem3);
+      mockResponseRepo.findForItemAndUser.mockReturnValue([]);
+  
+      await service.createResponse(dto, mockSurvey.uuid, mockSurveyItem3.uuid, 'user123');
+      expect(mockResponseRepo.create).toHaveBeenCalledWith(
+        dto,
+        mockSurvey.uuid,
+        mockSurveyItem3.uuid,
+        'user123'
+      );
+    });
+
+    it('throws when survey not found', async () => {
+      const dto: CreateResponseDto = {
+        responseType: ResponseType.MULTIPLE_SELECT_RESPONSE,
+        selections: ['blue', 'green']
+      };
+
+      mockSurveyRepo.findOne.mockReturnValue(null);
+      mockSurveyItemRepo.findOne.mockReturnValue(mockSurveyItem3);
+      mockResponseRepo.findForItemAndUser.mockReturnValue([]);
+
+      await expect(
+        () => service.createResponse(dto, mockSurvey.uuid, mockSurveyItem3.uuid, 'user123')
+      ).rejects.toThrowError(NotFoundException);
+    });
+    
+    it('throws when survey item not found', async () => {
+      const dto: CreateResponseDto = {
+        responseType: ResponseType.MULTIPLE_SELECT_RESPONSE,
+        selections: ['blue', 'green']
+      };
+
+      mockSurveyItemRepo.findOne.mockReturnValue(null);
+      mockResponseRepo.findForItemAndUser.mockReturnValue([]);
+
+      await expect(
+        () => service.createResponse(dto, mockSurvey.uuid, mockSurveyItem3.uuid, 'user123')
+      ).rejects.toThrowError(NotFoundException);
+    });
+    
+    it('throws when user has already responded', async () => {
+      const dto: CreateResponseDto = {
+        responseType: ResponseType.MULTIPLE_SELECT_RESPONSE,
+        selections: ['blue', 'green']
+      };
+
+      mockSurveyItemRepo.findOne.mockReturnValue(mockSurveyItem3);
+      mockResponseRepo.findForItemAndUser.mockReturnValue([
+        {}
+      ]);
+
+      await expect(
+        () => service.createResponse(dto, mockSurvey.uuid, mockSurveyItem3.uuid, 'user123')
+      ).rejects.toThrowError(new ConflictException('User has already submitted a response for this survey item'));
+    });
+    
+    it('throws when multiple-choice selection isn\'t included in item choices', async () => {
+      const dto: CreateResponseDto = {
+        responseType: ResponseType.MULTIPLE_CHOICE_RESPONSE,
+        selection: 'orange'
+      };
+
+      mockSurveyItemRepo.findOne.mockReturnValue(mockSurveyItem2);
+      mockResponseRepo.findForItemAndUser.mockReturnValue([]);
+
+      await expect(
+        () => service.createResponse(dto, mockSurvey.uuid, mockSurveyItem3.uuid, 'user123')
+      ).rejects.toThrowError(new BadRequestException(`orange is not a valid selection`));
+    });
+    
+    it('throws when one of the multiple-select selections isn\'t included in item choices', async () => {
+      const dto: CreateResponseDto = {
+        responseType: ResponseType.MULTIPLE_SELECT_RESPONSE,
+        selections: ['blue', 'orange']
+      };
+
+      mockSurveyItemRepo.findOne.mockReturnValue(mockSurveyItem3);
+      mockResponseRepo.findForItemAndUser.mockReturnValue([]);
+
+      await expect(
+        () => service.createResponse(dto, mockSurvey.uuid, mockSurveyItem3.uuid, 'user123')
+      ).rejects.toThrowError(new BadRequestException(`All selections must be from the provided list of choices`));
+    });
+  });
+
+  it('removes all responses for user and survey', async () => {
+    await service.removeAllResponsesForUserAndSurvey(mockSurvey.uuid, mockSurvey.author);
+    expect(mockSurveyRepo.findOne).toHaveBeenCalledWith(mockSurvey.uuid);
+    expect(service.validateObjectAndUser).toHaveBeenCalledWith(mockSurvey, mockSurvey.author);
+    expect(mockResponseRepo.removeAllForUserAndSurvey).toHaveBeenCalledWith(mockSurvey.uuid, mockSurvey.author);
   });
 });

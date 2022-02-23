@@ -13,8 +13,7 @@ import { keys, forEach } from 'lodash';
 @Injectable()
 export class SurveyItemRepository {
   constructor(
-    @InjectModel(SurveyItem.modelName)
-    private surveyItemModel: Model<SurveyItemDocument>,
+    @InjectModel(SurveyItem.modelName) private surveyItemModel: Model<SurveyItemDocument>,
   ) {}
 
   findMultiple(uuids: string[]): Promise<ISurveyItem[]> {

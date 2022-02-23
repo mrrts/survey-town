@@ -11,8 +11,7 @@ import {
 @Injectable()
 export class ResponseRepository {
   constructor(
-    @InjectModel(Response.modelName)
-    private responseModel: Model<ResponseDocument>,
+    @InjectModel(Response.modelName) private responseModel: Model<ResponseDocument>,
   ) {}
 
   findAll(): Promise<IResponse[]> {

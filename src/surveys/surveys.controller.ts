@@ -6,8 +6,6 @@ import {
   Param,
   Delete,
   UseGuards,
-  ImATeapotException,
-  UnauthorizedException,
   Patch,
 } from '@nestjs/common';
 import { SurveysService } from './surveys.service';

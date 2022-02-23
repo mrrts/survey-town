@@ -46,6 +46,16 @@ export class SurveysService {
     return dto;
   }
 
+  validateObjectAndUser(surveyOrItem: ISurvey|ISurveyItem, userId: string) {
+    if (!surveyOrItem) {
+      throw new NotFoundException();
+    }
+
+    if (surveyOrItem?.author !== userId) {
+      throw new ForbiddenException();
+    }
+  }
+
   async create(
     createSurveyDto: CreateSurveyDto,
     authorId: string,
@@ -60,13 +70,7 @@ export class SurveysService {
   async remove(surveyId: string, userId: string): Promise<boolean> {
     const survey = await this.surveyRepository.findOne(surveyId);
 
-    if (!survey) {
-      throw new NotFoundException();
-    }
-
-    if (survey?.author !== userId) {
-      throw new ForbiddenException();
-    }
+    this.validateObjectAndUser(survey, userId);
 
     return this.surveyRepository.remove(surveyId);
   }
@@ -74,13 +78,7 @@ export class SurveysService {
   async update(surveyId: string, dto: UpdateSurveyDto, userId: string): Promise<SurveyDto> {
     const survey = await this.surveyRepository.findOne(surveyId);
 
-    if (!survey) {
-      throw new NotFoundException();
-    }
-
-    if (survey?.author !== userId) {
-      throw new ForbiddenException();
-    }
+    this.validateObjectAndUser(survey, userId);
 
     const updatedSurvey = await this.surveyRepository.update(surveyId, dto);
     
@@ -94,13 +92,7 @@ export class SurveysService {
   ): Promise<SurveyDto> {
     const survey = await this.surveyRepository.findOne(surveyId);
 
-    if (!survey) {
-      throw new NotFoundException();
-    }
-
-    if (survey?.author !== userId) {
-      throw new ForbiddenException();
-    }
+    this.validateObjectAndUser(survey, userId);
 
     const item: ISurveyItem = await this.surveyItemRepository.createWithAuthor(
       dto,
@@ -119,13 +111,8 @@ export class SurveysService {
     const survey = await this.surveyRepository.findOne(surveyId);
     const surveyItem = await this.surveyItemRepository.findOne(surveyItemId);
 
-    if (!survey || !surveyItem) {
-      throw new NotFoundException();
-    }
-
-    if (survey?.author !== userId) {
-      throw new ForbiddenException();
-    }
+    this.validateObjectAndUser(survey, userId);
+    this.validateObjectAndUser(surveyItem, userId);
 
     await this.surveyItemRepository.update(surveyItemId, dto);
     return this.getSurveyDto(surveyId);
@@ -138,9 +125,7 @@ export class SurveysService {
   ): Promise<boolean> {
     const survey = await this.surveyRepository.findOne(surveyId);
 
-    if (survey?.author !== userId) {
-      throw new ForbiddenException();
-    }
+    this.validateObjectAndUser(survey, userId)
 
     await this.surveyRepository.removeItem(surveyId, itemId);
     return this.surveyItemRepository.removeOne(itemId);
@@ -179,6 +164,7 @@ export class SurveysService {
       userId,
     );
 
+    // don't check for ownership -- responder is a different user than the author
     if (!survey || !surveyItem) {
       throw new NotFoundException();
     }
@@ -189,10 +175,12 @@ export class SurveysService {
       );
     }
 
+    // Validate the selection is included in the choices array
     if (dto.selection && !surveyItem.choices.includes(dto.selection)) {
       throw new BadRequestException(`${dto.selection} is not a valid selection`);
     }
 
+    // Validate that all selections are included in the choices array
     if (
       dto.selections 
       && !dto.selections.every((selection: string) => 
@@ -208,9 +196,7 @@ export class SurveysService {
   async removeAllResponsesForUserAndSurvey(surveyId: string, userId: string) {
     const survey = await this.surveyRepository.findOne(surveyId);
 
-    if (!survey) {
-      throw new NotFoundException();
-    }
+    this.validateObjectAndUser(survey, userId);
 
     return this.responseRepository.removeAllForUserAndSurvey(surveyId, userId);
   }
