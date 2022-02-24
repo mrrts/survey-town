@@ -4,10 +4,19 @@ import { PasswordService } from './password.service';
 describe('PasswordService', () => {
   let service: PasswordService;
   const password: string = 'p@ssw0rd_123!';
+  let mockBcrypt: any;
 
   beforeEach(async () => {
+    mockBcrypt = {
+      hash: jest.fn(),
+      compare: jest.fn()
+    };
+
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PasswordService],
+      providers: [
+        PasswordService,
+        { provide: 'BCRYPT', useValue: mockBcrypt }
+      ],
     }).compile();
 
     service = module.get<PasswordService>(PasswordService);
@@ -18,15 +27,18 @@ describe('PasswordService', () => {
   });
 
   it('generates a password hash', async () => {
-    const hash = await service.generateHash(password);
-    expect(hash.length > 30).toBeTruthy();
-    expect(hash).not.toEqual(password);
-    expect(hash.includes(password)).toBeFalsy();
+    mockBcrypt.hash.mockReturnValue(Promise.resolve('hash1'));
+    const result = await service.generateHash(password);
+
+    expect(mockBcrypt.hash).toHaveBeenCalledWith(password, 12);
+    expect(result).toBe('hash1');
   });
 
   it('validates a password against a hash', async () => {
-    const hash = await service.generateHash(password);
-    expect(await service.validatePassword(password, hash)).toBe(true);
-    expect(await service.validatePassword('wrongPW', hash)).toBe(false);
+    mockBcrypt.compare.mockReturnValue(Promise.resolve(true));
+    const result = await service.validatePassword(password, 'hash1');
+    
+    expect(mockBcrypt.compare).toHaveBeenCalledWith(password, 'hash1');
+    expect(result).toBe(true);
   });
 });
