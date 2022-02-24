@@ -9,7 +9,7 @@ import { RolesConfig } from './roles.decorator';
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
-  canActivate(context: ExecutionContext) {
+  canActivate(context: ExecutionContext): boolean {
     const rolesConfig = this.reflector.get<RolesConfig>(
       'roles',
       context.getHandler(),
