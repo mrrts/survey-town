@@ -17,7 +17,10 @@ export class UserRepository {
 
   async updateOne(id: string, data: Partial<IUser>): Promise<IUser> {
     const user = await this.userModel.findOne({ uuid: id }).exec();
-    return user.updateOne({ $set: data });
+    return user.updateOne({ $set: {
+      ...data,
+      updatedAt: new Date()
+    } });
   }
 
   findById(uuid: string): Promise<IUser> {

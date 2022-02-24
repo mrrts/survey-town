@@ -33,20 +33,32 @@ export class SurveyRepository {
   }
 
   async update(surveyId: string, dto: UpdateSurveyDto): Promise<ISurvey> {
-    const result = await this.surveyModel.updateOne({ uuid: surveyId }, { $set: dto });
+    const result = await this.surveyModel.updateOne(
+      { uuid: surveyId },
+      { $set: {
+        ...dto,
+        updatedAt: new Date()
+      } }
+    );
     return this.findOne(surveyId);
   }
 
   async addItem(surveyId: string, itemId: string): Promise<ISurvey> {
     await this.surveyModel
-      .updateOne({ uuid: surveyId }, { $push: { surveyItems: itemId } })
+      .updateOne(
+        { uuid: surveyId },
+        { $push: { surveyItems: itemId }, updatedAt: new Date() }
+      )
       .exec();
     return this.findOne(surveyId);
   }
 
   async removeItem(surveyId: string, itemId: string): Promise<ISurvey> {
     await this.surveyModel
-      .updateOne({ uuid: surveyId }, { $pull: { surveyItems: itemId } })
+      .updateOne(
+        { uuid: surveyId },
+        { $pull: { surveyItems: itemId }, updatedAt: new Date() }
+      )
       .exec();
     return this.findOne(surveyId);
   }

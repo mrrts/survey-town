@@ -104,7 +104,7 @@ describe('SurveyRepository', () => {
       description: 'desc2'
     };
     const result = await repo.update(surveyId, dto);
-    expect(mockModel.updateOne).toHaveBeenCalledWith({ uuid: surveyId }, { $set: dto });
+    expect(mockModel.updateOne).toHaveBeenCalledWith({ uuid: surveyId }, { $set: { ...dto, updatedAt: expect.any(Date) }});
     expect(repo.findOne).toHaveBeenCalledWith(surveyId);
     expect(result).toBe('result2');
   });
@@ -115,7 +115,7 @@ describe('SurveyRepository', () => {
     const result = await repo.addItem(surveyId, 'item1');
     expect(mockModel.updateOne).toHaveBeenCalledWith(
       { uuid: surveyId },
-      { $push: { surveyItems: 'item1' }}
+      { $push: { surveyItems: 'item1' }, updatedAt: expect.any(Date)}
     );
 
     expect(result).toBe('result2');
@@ -127,7 +127,7 @@ describe('SurveyRepository', () => {
     const result = await repo.removeItem(surveyId, 'item1');
     expect(mockModel.updateOne).toHaveBeenCalledWith(
       { uuid: surveyId },
-      { $pull: { surveyItems: 'item1' }}
+      { $pull: { surveyItems: 'item1' }, updatedAt: expect.any(Date) }
     );
 
     expect(result).toBe('result2');

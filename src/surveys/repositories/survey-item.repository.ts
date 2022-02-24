@@ -42,6 +42,8 @@ export class SurveyItemRepository {
       surveyItem[dtoKey] = dto[dtoKey];
     });
 
+    surveyItem.updatedAt = new Date();
+
     return surveyItem.save();
   }
 
