@@ -4,7 +4,7 @@ import { useSurvey } from "./useSurvey.hook";
 import { findIndex, find, keys, compact, forEach } from 'lodash';
 import { ISurveyItem } from "../../entities/survey-item.model";
 import { useCallback, useMemo } from "react";
-import { clearAllTakingSurveyData, createResponse, deleteOwnResponsesForSurvey, setCurrentTakingSurveyItem, setTakingItemData } from "../../store/surveys/slice";
+import { clearAllTakingSurveyData, createResponse, deleteOwnResponsesForSurvey, fetchSurveys, setCurrentTakingSurveyItem, setTakingItemData } from "../../store/surveys/slice";
 import { ISurveyResponse } from "../../entities/survey-response.model";
 import { PayloadAction } from "@reduxjs/toolkit";
 
@@ -68,6 +68,7 @@ export const useTakeSurvey = (surveyId: string) => {
       dispatch(action);
     });
     dispatch(clearAllTakingSurveyData());
+    dispatch(fetchSurveys());
   }, [dispatch, responseSubmissionActions]);
 
   const goToFirstItem = useCallback(() => {
