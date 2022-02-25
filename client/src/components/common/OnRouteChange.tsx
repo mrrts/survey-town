@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react';
 import { LocationProvider, useLocation, WindowLocation } from "@reach/router";
 import { usePrevious } from "../../util/hooks/usePrevious.hook";
 
-const OnRouteChangeWorker: FC<{ action: (location: WindowLocation) => void }> = ({ action }) => {
+export const OnRouteChangeWorker: FC<{ action: (location: WindowLocation) => void }> = ({ action }) => {
   const location = useLocation();
   const prevLocation = usePrevious(location);
 

@@ -11,7 +11,7 @@ export const ProtectedRoute: FC<IProtectedRouteProps> = ({ children }) => {
 
   if (!user) {
     return (
-      <Redirect to='/login' />
+      <Redirect to='/login' noThrow />
     );
   }
 
