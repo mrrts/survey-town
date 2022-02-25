@@ -21,13 +21,18 @@ import * as bcrypt from 'bcrypt';
       rootPath: join(__dirname, '..', 'client/build'),
     }),
     ConfigModule.forRoot({
-      envFilePath: ['.env.development', '.env'],
+      envFilePath: process.env.NODE_ENV === 'test'
+        ? '.env.test'
+        : '.env',
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.DB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }),
+    MongooseModule.forRoot(
+      process.env.DB_URL,
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }
+    ),
     ThrottlerModule.forRoot({
       limit: 100,
       ttl: 10
