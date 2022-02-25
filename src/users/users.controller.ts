@@ -42,9 +42,9 @@ export class UsersController {
   // Used to restore session on client when refreshing browser
   @Get('self')
   async getSelfFromSession(
-    @User() user: IUser
+    @Session() session: IAppSession
   ) {
-    return user?.safe();
+    return this.usersService.getSelfFromSession(session);
   }
 
   @Patch('self')
