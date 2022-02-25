@@ -11,6 +11,8 @@ In the project directory, you can run:
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
+*Note*: If running the server simultaneously, which also runs by default on port 3000, it is recommended to start the server first (by running `npm start` at the project root). Then afterwards you can run `npm run start` at `<root>/client/`, which will give you the option to run the client on a different port (3001) since port 3000 will already be occupied by the server process.
+
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
