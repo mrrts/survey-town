@@ -45,16 +45,12 @@ export const Register: FC<IRegisterProps> = () => {
       dispatch(registerUser({ dto }));
     }
   }
-
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
   
   return (
     <div className='register'>
       <h2>Sign Up</h2>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Form.Group>
+        <Form.Group controlId='emailAddress'>
           <Form.Label>*Email Address (private)</Form.Label>
           <Form.Control
             type='email'
@@ -65,7 +61,7 @@ export const Register: FC<IRegisterProps> = () => {
           <Form.Text className='text-muted'>We will never share your email with anyone.</Form.Text>
           <p><Form.Text className='text-danger'>{errors.emailAddress?.message}</Form.Text></p>
         </Form.Group>
-        <Form.Group>
+        <Form.Group controlId='handle'>
           <Form.Label>*User Nickname (public)</Form.Label>
           <Form.Control
             type='text'
@@ -73,10 +69,10 @@ export const Register: FC<IRegisterProps> = () => {
             isInvalid={!!errors?.handle}
             { ...register('handle')}
           ></Form.Control>
-          <Form.Text className='text-muted'>6-20 characters - letters, numbers, and underscores only</Form.Text>
+          <Form.Text className='text-muted'>6-20 characters &em; letters, numbers, and underscores only</Form.Text>
           <p><Form.Text className='text-danger'>{errors.handle?.message}</Form.Text></p>
         </Form.Group>
-        <Form.Group>
+        <Form.Group controlId='plaintextPassword'>
           <Form.Label>*Password</Form.Label>
           <Form.Control
             type='password'
@@ -87,7 +83,7 @@ export const Register: FC<IRegisterProps> = () => {
           <Form.Text className='text-muted'>8-36 characters</Form.Text>
           <p><Form.Text className='text-danger'>{errors.plaintextPassword?.message}</Form.Text></p>
         </Form.Group>
-        <Form.Group>
+        <Form.Group controlId='plaintextPassword2'>
           <Form.Label>*Re-enter Password</Form.Label>
           <Form.Control 
             type='password'

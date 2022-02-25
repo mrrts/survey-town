@@ -37,7 +37,7 @@ export const Login: FC<ILoginProps> = () => {
 
   if (user) {
     return (
-      <Redirect to='/surveys' />
+      <Redirect to='/surveys' noThrow />
     );
   }
 
@@ -51,13 +51,13 @@ export const Login: FC<ILoginProps> = () => {
     <div className='login animate__animated animate__fadeIn'>
       <h2>Login</h2>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Group className="mb-3" controlId="emailAddress">
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" placeholder="Enter email" { ...register('emailAddress') } />
           <p className='text-danger'>{errors.emailAddress?.message}</p>
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Group className="mb-3" controlId="plaintextPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" placeholder="Password" { ...register('plaintextPassword') } />
           <p className='text-danger'>{errors.plaintextPassword?.message}</p>
