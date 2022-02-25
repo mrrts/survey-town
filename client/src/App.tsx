@@ -19,11 +19,10 @@ import { OnRouteChange } from './components/common/OnRouteChange';
 function App() {
   const dispatch = useAppDispatch();
   const appContainerRef = useRef<any>();
-  const appContainer = appContainerRef.current;
 
-  const handleRouteChange = useCallback((location: WindowLocation) => {
-    appContainer?.scrollTo(0,0);
-  }, [appContainer]);
+  const handleRouteChange = (location: WindowLocation) => {
+    appContainerRef?.current?.scrollTo(0,0);
+  };
 
   useEffect(() => {
     dispatch(restoreSession());
