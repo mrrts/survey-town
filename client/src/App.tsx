@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Router, WindowLocation } from '@reach/router';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
 import { Surveys } from './components/surveys/Surveys';
@@ -18,10 +18,12 @@ import { OnRouteChange } from './components/common/OnRouteChange';
 
 function App() {
   const dispatch = useAppDispatch();
-  const appContainerRef = useRef<any>();
+  const appContainerRef = useRef<HTMLDivElement>();
+  const env = process.env.NODE_ENV;
 
   const handleRouteChange = (location: WindowLocation) => {
-    appContainerRef?.current?.scrollTo(0,0);
+    // jsdom in test env throws typeError that scrollTo is not a function
+    env !== 'test' && appContainerRef.current?.scrollTo(0, 0);
   };
 
   useEffect(() => {
@@ -29,7 +31,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className='app-container' ref={appContainerRef}>
+    <div className='app-container' ref={appContainerRef as any}>
       <h1 className='sr-only'>Survey Town</h1>
       <header className='app-navbar'>
         <AppNavbar />
