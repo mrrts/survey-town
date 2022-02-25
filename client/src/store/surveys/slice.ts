@@ -27,7 +27,7 @@ export const defaultSurveysState: ISurveysState = {
   takingSurveySubmittedItemData: {}
 };
 
-const slice = createSlice({
+export const slice = createSlice({
   name: 'surveys',
   initialState: defaultSurveysState,
   reducers: {

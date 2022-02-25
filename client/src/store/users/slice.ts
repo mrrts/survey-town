@@ -7,11 +7,11 @@ export interface IUsersState {
   handles: Record<string, Partial<IUser>>;
 }
 
-const defaultUsersState: IUsersState = {
+export const defaultUsersState: IUsersState = {
   handles: {}
 };
 
-const slice = createSlice({
+export const slice = createSlice({
   name: 'users',
   initialState: defaultUsersState,
   reducers: {

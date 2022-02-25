@@ -19,7 +19,7 @@ export const defaultModalsState: IModalsState = {
   modals: {}
 };
 
-const slice = createSlice({
+export const slice = createSlice({
   name: 'modals',
   initialState: defaultModalsState,
   reducers: {

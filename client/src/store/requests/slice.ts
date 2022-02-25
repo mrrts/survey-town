@@ -23,7 +23,7 @@ export const defaultRequestsState: IRequestsState = {
   requests: {}
 }
 
-const slice = createSlice({
+export const slice = createSlice({
   name: 'requests',
   initialState: defaultRequestsState,
   reducers: {

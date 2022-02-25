@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { Middleware } from 'redux';
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
-import { authReducer } from "./auth/slice";
+import { authReducer, defaultAuthState } from "./auth/slice";
 import { createLogger } from 'redux-logger';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import * as authEpics from './auth/epics';
@@ -9,34 +9,48 @@ import * as surveyEpics from './surveys/epics';
 import * as userEpics from './users/epics';
 import * as requestEpics from './requests/epics';
 import { values } from 'lodash';
-import { requestsReducer } from "./requests/slice";
-import { surveysReducer } from "./surveys/slice";
-import { usersReducer } from "./users/slice";
-import { modalsReducer } from "./modals/slice";
+import { requestsReducer, defaultRequestsState } from "./requests/slice";
+import { surveysReducer, defaultSurveysState } from "./surveys/slice";
+import { usersReducer, defaultUsersState } from "./users/slice";
+import { modalsReducer, defaultModalsState } from "./modals/slice";
 
 const loggerMiddleware = createLogger({ collapsed: true });
 const epicMiddleware = createEpicMiddleware();
 
 const middlewares: Middleware[] = [
-  loggerMiddleware,
   epicMiddleware
 ];
 
+if (process.env.REACT_APP_ENV === 'development') {
+  middlewares.push(loggerMiddleware);
+}
+
+export const rootReducer = {
+  auth: authReducer,
+  requests: requestsReducer,
+  surveys: surveysReducer,
+  users: usersReducer,
+  modals: modalsReducer
+};
+
+export const defaultAppState: any = {
+  auth: defaultAuthState,
+  requests: defaultRequestsState,
+  surveys: defaultSurveysState,
+  users: defaultUsersState,
+  modals: defaultModalsState,
+};
+
 export const store = configureStore({
-  reducer: {
-    auth: authReducer,
-    requests: requestsReducer,
-    surveys: surveysReducer,
-    users: usersReducer,
-    modals: modalsReducer
-  },
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware({
       serializableCheck: false
     }).concat(
       middlewares as ReturnType<typeof getDefaultMiddleware>
     );
-  }
+  },
+  preloadedState: defaultAppState
 });
 
 const rootEpic = combineEpics(

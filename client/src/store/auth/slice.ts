@@ -11,7 +11,7 @@ export const defaultAuthState: IAuthState = {
   user: null,
 };
 
-const slice = createSlice({
+export const slice = createSlice({
   name: 'auth',
   initialState: defaultAuthState,
   reducers: {
