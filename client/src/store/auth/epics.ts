@@ -82,7 +82,7 @@ export const restoreSessionEpic = (action$: Observable<Action>, state$: Observab
             );
           }),
           catchError((error: RequestError) => {
-            return of(requestError({ key, error: error.data }))
+            return of(requestError({ key, error: error.data, shouldToastError: false }))
           })
         )
       );
