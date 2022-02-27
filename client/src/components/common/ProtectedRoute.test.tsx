@@ -14,9 +14,10 @@ describe('ProtectedRoute', () => {
     );
   });
 
-  it('shows the child components if the user is logged in', () => {
+  it('shows the child components if the user is logged in', async () => {
     defaultRender();
 
+    await wait(1000);
     expect(query('.protected-child')).toBeInTheDocument();
   });
 
@@ -31,7 +32,7 @@ describe('ProtectedRoute', () => {
       '/'
     );
 
-    await wait(100);
+    await wait(1000);
 
     expect(query('.protected-child')).not.toBeInTheDocument();
     expect(history.location.pathname).toBe('/login');
