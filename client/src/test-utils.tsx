@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useEffect } from 'react';
 import { act, fireEvent, render, RenderResult, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { AppState, defaultAppState, rootReducer } from "./store";
@@ -6,6 +6,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import { createHistory, createMemorySource, History, LocationProvider } from '@reach/router';
 import { defaultAuthState } from './store/auth/slice';
 import { IUser } from './entities/user.model';
+import { FormProvider, useForm } from 'react-hook-form';
+import { keys } from 'lodash';
 
 export const testUser: IUser = {
   uuid: 'test-user-uuid',
@@ -42,7 +44,7 @@ export const customRender = (
 
   const history: History = createHistory(createMemorySource(route));
 
-  const renderResult: RenderResult = render(
+  const renderResultUtils: RenderResult = render(
     <LocationProvider history={history}>
       <Provider store={mockStore}>
         {child}
@@ -50,7 +52,7 @@ export const customRender = (
     </LocationProvider>
   );
 
-  return { mockStore, history, ...renderResult };
+  return { mockStore, history, ...renderResultUtils };
 }
 
 // pause test execution so that time can elapse in a tested component containing timeouts/intervals
@@ -60,7 +62,7 @@ export const wait = async (ms: number): Promise<void> => {
   });
 }
 
-// log tested screen DOM to test runner shell
+// log rendered screen DOM to test runner shell
 export const debug = () => screen.debug();
 
 // shorthand utilities
@@ -77,4 +79,20 @@ export const click = (element: Element|null) => {
   act(() => {
     fireEvent.click(element as Element);
   });
+}
+
+export const FormContextConsumerWrapper: FC<any> = ({ children, errors }) => {
+  const form = useForm();
+  
+  useEffect(() => {
+    keys(errors || {}).forEach((key: string) => {
+      form.setError(key, { message: errors[key] })
+    });
+  }, [errors, form])
+
+  return (
+    <FormProvider {...form}>
+      {children}
+    </FormProvider>
+  );
 }

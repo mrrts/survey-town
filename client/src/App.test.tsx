@@ -96,7 +96,9 @@ describe('App', () => {
     expect(login()).toBeFalsy();
     expect(query('.spinner-wrapper')).toBeInTheDocument();
 
-    wait(1001);
+    await wait(1000);
+
+    expect(login()).toBeInTheDocument();
 
     await history.navigate('/register');
 

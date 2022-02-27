@@ -21,7 +21,7 @@ export const MultipleSelectResults: FC<IMultipleSelectResults> = ({ surveyItemId
       choices,
       (acc: Record<string, number>, choice: string) => {
         const numberSelections = filter(responseSelections, (selection: string) => selection === choice).length;
-        const percentage = totalResponses === 0 ? 0 : Math.floor(numberSelections / totalResponses * 100)
+        const percentage = totalResponses === 0 ? 0 : Math.floor(numberSelections / totalResponses * 100);
         return {
           ...acc,
           [choice]: percentage
@@ -33,13 +33,11 @@ export const MultipleSelectResults: FC<IMultipleSelectResults> = ({ surveyItemId
 
   return (
     <div className='multiple-select-results'>
-      {keys(choicePercentages).map((choice: string) => (
-        <>
-          <p>
-            {choice}
-            <ProgressBar now={choicePercentages[choice]} label={`${choicePercentages[choice]}%`} />
-          </p>
-        </>
+      {keys(choicePercentages).map((choice: string, i: number) => (
+        <div key={`${i}-${choice}`} className='my-2 choice-container'>
+          <span className='choice-text'>{choice}</span>
+          <ProgressBar now={choicePercentages[choice]} label={`${choicePercentages[choice]}%`} />
+        </div>
       ))}
     </div>
   );

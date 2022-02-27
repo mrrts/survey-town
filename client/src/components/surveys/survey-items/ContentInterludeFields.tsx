@@ -14,7 +14,7 @@ export const ContentInterludeFields: FC<IContentInterludeFieldsProps> = ({ surve
 
   return (
     <>
-      <Form.Group>
+      <Form.Group controlId='content'>
         <Form.Label>Content</Form.Label>
         <Controller
           name='content'

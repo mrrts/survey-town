@@ -33,13 +33,11 @@ export const MultipleChoiceResults: FC<IMultipleChoiceResults> = ({ surveyItemId
 
   return (
     <div className='multiple-choice-results'>
-      {keys(choicePercentages).map((choice: string) => (
-        <>
-          <p>
-            {choice}
-            <ProgressBar now={choicePercentages[choice]} label={`${choicePercentages[choice]}%`} />
-          </p>
-        </>
+      {keys(choicePercentages).map((choice: string, i: number) => (
+        <div key={`${i}-${choice}`} className='my-2 choice-container'>
+          <span className='choice-text'>{choice}</span>
+          <ProgressBar now={choicePercentages[choice]} label={`${choicePercentages[choice]}%`} />
+        </div>
       ))}
     </div>
   );
