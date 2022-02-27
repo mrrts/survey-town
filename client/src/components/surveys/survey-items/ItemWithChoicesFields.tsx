@@ -32,14 +32,15 @@ export const ItemWithChoicesFields: FC<IItemWithChoicesFieldsProps> = ({
     remove(index);
   }, [remove]);
 
-  // need to do this for fields to initialize and populate with current values
   useEffect(() => {
+    // need to do this for fields to initialize and populate with current values.
+    // there must be some async mismatch with FlipMove vs. RHForm vs. useSurveyItem
     reset({ choices: surveyItem.choices })
   }, [reset, surveyItem?.choices])
 
   return (
-    <>
-      <Form.Group>
+    <div className='item-with-choices-fields'>
+      <Form.Group controlId='prompt'>
         <Form.Label>Question / Prompt</Form.Label>
         <Controller
           name='prompt'
@@ -54,30 +55,33 @@ export const ItemWithChoicesFields: FC<IItemWithChoicesFieldsProps> = ({
         <p className='text-danger'>{errors?.prompt?.message}</p>
       </Form.Group>
       <Form.Group className='add-choices-group'>
-        <Form.Label>Choices</Form.Label>
-        <FlipMove typeName={null}>
-          {fields.map((field, i) => {
-            return (
-              <div key={field.id} className='choice-container'>
-                <Button
-                  variant='link'
-                  className='delete-choice-button'
-                  size='sm'
-                  aria-label='delete this choice'
-                  onClick={() => handleDeleteClick(i)}
-                >
-                  <FontAwesomeIcon className='delete-choice-icon' icon={faTimes} />
-                </Button>
-                <Form.Control
-                  { ...register(`choices[${i}]`) }
-                  placeholder={`Choice ${i + 1}`}
-                  defaultValue={surveyItem?.choices?.[i]}
-                />
-                <p className='text-danger'>{errors?.choices?.[i]?.message}</p>
-              </div>
-            );
-          })}
-        </FlipMove>
+        <Form.Label htmlFor='choices'>Choices</Form.Label>
+        <div id='choices'>
+          <FlipMove typeName={null}>
+            {fields.map((field, i) => {
+              return (
+                <div key={field.id} className='choice-container'>
+                  <Button
+                    variant='link'
+                    className='delete-choice-button'
+                    size='sm'
+                    aria-label={`delete choice ${i + 1}`}
+                    onClick={() => handleDeleteClick(i)}
+                  >
+                    <FontAwesomeIcon className='delete-choice-icon' icon={faTimes} />
+                  </Button>
+                  <Form.Control
+                    { ...register(`choices[${i}]`) }
+                    id={`choices-${i}`}
+                    placeholder={`Choice ${i + 1}`}
+                    defaultValue={surveyItem?.choices?.[i]}
+                  />
+                  <p className='text-danger'>{errors?.choices?.[i]?.message}</p>
+                </div>
+              );
+            })}
+          </FlipMove>
+        </div>
         <div className='add-choice-container'>
           <Button className='my-2' variant='primary' size='sm' onClick={handleAddClick}>
             <FontAwesomeIcon icon={faPlus} />
@@ -85,6 +89,6 @@ export const ItemWithChoicesFields: FC<IItemWithChoicesFieldsProps> = ({
           </Button>
         </div>
       </Form.Group>
-    </>
+    </div>
   );
 }

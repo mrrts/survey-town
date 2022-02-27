@@ -196,8 +196,12 @@ export class SurveysService {
   async removeAllResponsesForUserAndSurvey(surveyId: string, userId: string) {
     const survey = await this.surveyRepository.findOne(surveyId);
 
-    this.validateObjectAndUser(survey, userId);
+    // don't validate ownership... user took survey but didn't necessarily author it
 
+    if (!survey) {
+      throw new NotFoundException();
+    }
+    
     return this.responseRepository.removeAllForUserAndSurvey(surveyId, userId);
   }
 

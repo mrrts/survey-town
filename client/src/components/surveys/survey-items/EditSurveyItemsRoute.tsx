@@ -37,12 +37,7 @@ export const EditSurveyItemsRoute: FC<IEditSurveyItemsRouteProps> = ({ surveyId 
 
   const handleOptionClick = useCallback((itemType: SurveyItemType) => {
     if (!surveyId) { return; }
-    const dto: ICreateSurveyItemDto = {
-      itemType,
-      content: 'Default content',
-      choices: ['Choice 1', 'Choice 2'],
-      prompt: 'Default question?'
-    };
+    const dto: ICreateSurveyItemDto = SurveyItemTypeData[itemType].createItemDto;
     dispatch(createSurveyItem({ surveyId, dto }));
   }, [surveyId, dispatch]);
 
@@ -58,19 +53,19 @@ export const EditSurveyItemsRoute: FC<IEditSurveyItemsRouteProps> = ({ surveyId 
   return (
     <div className='edit-survey-items-route animate__animated animate__fadeIn'>
       <p>
-        <Link to='/surveys' className='btn btn-link btn-sm'>
+        <Link to='/surveys' className='btn btn-link btn-sm surveys-link'>
           <FontAwesomeIcon icon={faArrowLeft} />
           Back to surveys list
         </Link>
       </p>
       <div className='edit-survey-items-header card'>
         <h2><span className='sr-only'>Edit survey</span> {survey?.title}</h2>
-        <div>
+        <div className='description'>
           <span className='sr-only'>Survey Description:</span>
           <div dangerouslySetInnerHTML={{ __html: survey?.description }} />
         </div>
         <p>
-          <Button className='mt-2' size='sm' variant='link' onClick={handleEditTitleClick}>
+          <Button className='mt-2 edit-title-btn' size='sm' variant='link' onClick={handleEditTitleClick}>
             <FontAwesomeIcon icon={faPencilAlt} />
             Edit title &amp; description
           </Button>

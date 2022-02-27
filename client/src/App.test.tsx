@@ -64,6 +64,7 @@ describe('App', () => {
     expect(home()).toBeInTheDocument();
 
     await history.navigate('/surveys');
+    await wait(1000);
 
     expect(home()).toBeFalsy();
     expect(surveys()).toBeInTheDocument();

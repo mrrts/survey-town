@@ -13,6 +13,7 @@ import { SurveyResponseType } from "../entities/survey-response.model";
 import { FreeResponseResults } from "../components/surveys/results/FreeResponseResults";
 import { MultipleChoiceResults } from "../components/surveys/results/MultipleChoiceResults";
 import { MultipleSelectResults } from "../components/surveys/results/MultipleSelectResults";
+import { ICreateSurveyItemDto } from "../entities/dtos/create-survey-item.dto";
 
 export interface ISurveyItemData {
   icon: IconDefinition;
@@ -25,6 +26,7 @@ export interface ISurveyItemData {
   takeSurveyComponent: React.FunctionComponent<any>;
   responseType?: SurveyResponseType | null;
   resultsComponent: React.FunctionComponent<any>;
+  createItemDto: ICreateSurveyItemDto;
 }
 
 export const SurveyItemTypeData: Record<SurveyItemType, ISurveyItemData> = {
@@ -40,6 +42,7 @@ export const SurveyItemTypeData: Record<SurveyItemType, ISurveyItemData> = {
     fieldsComponent: ContentInterludeFields,
     takeSurveyComponent: TakeContentInterlude,
     resultsComponent: () => null,
+    createItemDto: { itemType: SurveyItemType.CONTENT_INTERLUDE, content: 'Default content' }
   },
   [SurveyItemType.FREE_RESPONSE]: {
     icon: faCommentAlt,
@@ -56,6 +59,7 @@ export const SurveyItemTypeData: Record<SurveyItemType, ISurveyItemData> = {
     takeSurveyComponent: TakeFreeResponse,
     responseType: SurveyResponseType.FREE_RESPONSE_RESPONSE,
     resultsComponent: FreeResponseResults,
+    createItemDto: { itemType: SurveyItemType.FREE_RESPONSE, prompt: 'Default question?' }
   },
   [SurveyItemType.MULTIPLE_CHOICE]: {
     icon: faDotCircle,
@@ -73,6 +77,7 @@ export const SurveyItemTypeData: Record<SurveyItemType, ISurveyItemData> = {
     takeSurveyComponent: TakeMultipleChoice,
     responseType: SurveyResponseType.MULTIPLE_CHOICE_RESPONSE,
     resultsComponent: MultipleChoiceResults,
+    createItemDto: { itemType: SurveyItemType.MULTIPLE_CHOICE, prompt: 'Default question?', choices: ['Choice 1', 'Choice 2']}
   },
   [SurveyItemType.MULTIPLE_SELECT]: {
     icon: faCheckSquare,
@@ -90,5 +95,6 @@ export const SurveyItemTypeData: Record<SurveyItemType, ISurveyItemData> = {
     takeSurveyComponent: TakeMultipleSelect,
     responseType: SurveyResponseType.MULTIPLE_SELECT_RESPONSE,
     resultsComponent: MultipleSelectResults,
+    createItemDto: { itemType: SurveyItemType.MULTIPLE_SELECT, prompt: 'Default question?', choices: ['Choice 1', 'Choice 2']}
   }
 };

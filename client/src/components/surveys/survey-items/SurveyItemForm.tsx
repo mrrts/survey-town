@@ -64,11 +64,11 @@ export const SurveyItemForm: FC<ISurveyItemFormProps> = ({ surveyId, surveyItemI
         />
       </FormProvider>
       <div className='survey-item-actions'>
-        <Button className='me-2' variant='link' size='sm' onClick={handleDeleteItemClick}>
+        <Button className='me-2 delete-item-btn' variant='link' size='sm' onClick={handleDeleteItemClick}>
           <FontAwesomeIcon icon={faTrash} />
           {isConfirmingDelete ? 'Confirm?' : 'Delete Item'}
         </Button>
-        <Button variant='success' type='submit' size='sm' disabled={!isDirty}>
+        <Button className='save-item-btn' variant='success' type='submit' size='sm' disabled={!isDirty}>
           <FontAwesomeIcon icon={faCheckCircle} />
           Save
         </Button>

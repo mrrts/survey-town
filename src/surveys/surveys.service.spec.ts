@@ -354,7 +354,14 @@ describe('SurveysService', () => {
   it('removes all responses for user and survey', async () => {
     await service.removeAllResponsesForUserAndSurvey(mockSurvey.uuid, mockSurvey.author);
     expect(mockSurveyRepo.findOne).toHaveBeenCalledWith(mockSurvey.uuid);
-    expect(service.validateObjectAndUser).toHaveBeenCalledWith(mockSurvey, mockSurvey.author);
     expect(mockResponseRepo.removeAllForUserAndSurvey).toHaveBeenCalledWith(mockSurvey.uuid, mockSurvey.author);
+  });
+
+  it('removes all responses for user and survey - throws when survey not found', async () => {
+    mockSurveyRepo.findOne.mockReturnValue(null);
+
+    await expect(
+      () => service.removeAllResponsesForUserAndSurvey(mockSurvey.uuid, mockSurvey.author)
+    ).rejects.toThrowError(new NotFoundException());
   });
 });

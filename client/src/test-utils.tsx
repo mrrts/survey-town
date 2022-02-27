@@ -63,7 +63,7 @@ export const wait = async (ms: number): Promise<void> => {
 }
 
 // log rendered screen DOM to test runner shell
-export const debug = () => screen.debug();
+export const debug = (el?: Element) => screen.debug(el);
 
 // shorthand utilities
 export const query = (selector: string) => document.querySelector(selector);
@@ -81,17 +81,20 @@ export const click = (element: Element|null) => {
   });
 }
 
-export const FormContextConsumerWrapper: FC<any> = ({ children, errors }) => {
+// Use this as a component wrapper when testing components that use the useFormContext hook
+export const FormContextConsumerWrapper: FC<any> = ({ children, errors, overrides = {}}) => {
   const form = useForm();
   
   useEffect(() => {
     keys(errors || {}).forEach((key: string) => {
       form.setError(key, { message: errors[key] })
     });
-  }, [errors, form])
+  }, [errors, form]);
+
+  const finalForm = { ...form, ...overrides };
 
   return (
-    <FormProvider {...form}>
+    <FormProvider {...finalForm}>
       {children}
     </FormProvider>
   );

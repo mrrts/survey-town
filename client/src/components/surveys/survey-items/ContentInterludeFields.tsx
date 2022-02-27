@@ -13,7 +13,7 @@ export const ContentInterludeFields: FC<IContentInterludeFieldsProps> = ({ surve
   const { formState: { errors }, control} = useFormContext();
 
   return (
-    <>
+    <div className='content-interlude-fields'>
       <Form.Group controlId='content'>
         <Form.Label>Content</Form.Label>
         <Controller
@@ -30,6 +30,6 @@ export const ContentInterludeFields: FC<IContentInterludeFieldsProps> = ({ surve
           {errors?.content?.message}
         </p>
       </Form.Group>
-    </>
+    </div>
   );
 }
