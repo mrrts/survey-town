@@ -19,9 +19,10 @@ export const TakeFreeResponse: FC<ITakeFreeResponseProps> = ({ surveyItemId }) =
 
   return (
     <div className='take-free-response-container animate__animated animate__fadeIn'>
-      <p dangerouslySetInnerHTML={{ __html: surveyItem?.prompt as string }} />
+      <div className='prompt' dangerouslySetInnerHTML={{ __html: surveyItem?.prompt as string }} />
 
-      <Form.Group>
+      <Form.Group controlId='freeResponse'>
+        <Form.Label className='sr-only'>Your Response</Form.Label>
         <Controller
           name='freeResponse'
           control={control}

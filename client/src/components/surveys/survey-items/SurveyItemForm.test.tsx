@@ -12,7 +12,6 @@ describe('SurveyItemForm', () => {
   const form = () => query('.survey-item-form');
   
   beforeEach(() => {
-    jest.useFakeTimers();
     console.warn = jest.fn(); // suppress react-hook-form src's warnings in test console
     initialState = {
       surveys: {
@@ -40,7 +39,6 @@ describe('SurveyItemForm', () => {
   });
 
   afterEach(() => {
-    jest.useRealTimers();
     console.warn = originalConsoleWarn;
   });
 
@@ -89,6 +87,7 @@ describe('SurveyItemForm', () => {
     click(deleteBtn());
 
     expect(deleteBtn()).toHaveTextContent('Confirm?');
+    expect(mockStore.dispatch).not.toHaveBeenCalled();
 
     click(deleteBtn());
 

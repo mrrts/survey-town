@@ -19,6 +19,8 @@ export interface ISurveyGeneralFormModalProps {
 
 }
 
+// dual-use form. There is conditional logic depending on whether we're
+// creating a new survey or updating an existing one
 export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
   const modal = useModal(ModalKeys.SURVEY_GENERAL);
   const surveyId = modal.data?.surveyId;
@@ -41,12 +43,14 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
       const values = getValues();
 
       if (!survey) {
+        // We are creating a new survey
         const dto: CreateSurveyDto = new CreateSurveyDto({
           title: values.title,
           description: values.description
         });
         dispatch(createSurvey({ dto }));
       } else {
+        // We are updating an existing survey
         const dto: UpdateSurveyDto = new UpdateSurveyDto({
           title: values.title,
           description: values.description

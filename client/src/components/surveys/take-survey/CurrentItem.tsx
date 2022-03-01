@@ -96,6 +96,7 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
 
   const handleResultsClick = () => {
     takeSurveyModal.closeModal();
+    // clicked item is a link, so navigation also occurs
   }
 
   useEffect(() => {

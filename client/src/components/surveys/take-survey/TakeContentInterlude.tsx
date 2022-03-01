@@ -9,9 +9,10 @@ export const TakeContentInterlude: FC<ITakeContentInterludeProps> = ({ surveyIte
   const { surveyItem } = useSurveyItem(surveyItemId);
   return (
     <div className='take-content-interlude-container animate__animated animate__fadeIn'>
-      <div className='content-interlude-content'>
-        <p dangerouslySetInnerHTML={{ __html: surveyItem?.content as string }} />
-      </div>
+      <div 
+        className='content-interlude-content'
+        dangerouslySetInnerHTML={{ __html: surveyItem?.content as string }}
+      />
     </div>
   );
 }

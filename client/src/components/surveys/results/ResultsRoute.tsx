@@ -6,7 +6,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useRequest } from '../../../util/hooks/useRequest.hook';
 import { Spinner } from '../../common/Spinner';
 import { useAppDispatch } from '../../../store';
-import { clearResponsesForSurvey, fetchResponsesForSurvey, fetchSurveys } from '../../../store/surveys/slice';
+import { clearResponsesForSurvey, fetchResponsesForSurvey } from '../../../store/surveys/slice';
 import { ISurveyItem } from '../../../entities/survey-item.model';
 import { ItemResults } from './ItemResults';
 

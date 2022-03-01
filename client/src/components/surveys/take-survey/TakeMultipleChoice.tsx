@@ -19,19 +19,23 @@ export const TakeMultipleChoice: FC<ITakeMultipleChoiceProps> = ({ surveyItemId 
 
   return (
     <div className='take-multiple-choice-container animate__animated animate__fadeIn'>
-      <p dangerouslySetInnerHTML={{ __html: surveyItem?.prompt as string }} />
+      <div className='prompt' dangerouslySetInnerHTML={{ __html: surveyItem?.prompt as string }} />
 
-      {surveyItem.choices?.map((choice: string, i: number) => {
-        return (
-          <Form.Check
-            { ...register('selection') }
-            key={`${i}-${choice}`}
-            type='radio'
-            value={choice}
-            label={trim(choice)}
-          />
-        );
-      })}
+      <Form.Group controlId='selection'>
+        <Form.Label className='sr-only'>Make your selection</Form.Label>
+        {surveyItem.choices?.map((choice: string, i: number) => {
+          return (
+            <Form.Check
+              { ...register('selection') }
+              key={`${i}-${choice}`}
+              id={`${i}-${choice}`}
+              type='radio'
+              value={choice}
+              label={trim(choice)}
+            />
+          );
+        })}
+      </Form.Group>
       <p className='text-danger'>{errors.selection?.message}</p>
     </div>
   );
