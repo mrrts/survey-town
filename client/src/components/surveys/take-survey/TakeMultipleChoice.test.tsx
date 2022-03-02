@@ -1,10 +1,10 @@
 import { TakeMultipleChoice } from "./TakeMultipleChoice";
-import { query, queryAll, customRender, debug, FormContextConsumerWrapper } from '../../../test-utils';
+import { query, queryAll, customRender, debug, FormContextConsumerWrapper, CustomRenderResult } from '../../../test-utils';
 import { SurveyItemType } from "../../../constants/SurveyItemType.enum";
 
 describe('TakeMultipleChoice', () => {
   let initialState: any;
-  let defaultRender: () => any;
+  let defaultRender: () => CustomRenderResult;
 
   beforeEach(() => {
     initialState = {

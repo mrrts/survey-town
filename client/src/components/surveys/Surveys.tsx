@@ -47,8 +47,6 @@ export const Surveys: FC<ISurveysProps> = ({ children }) => {
           );
         })}
       </FlipMove>
-
-      {children}
     </div>
   );
 };

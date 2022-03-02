@@ -1,10 +1,10 @@
 import { SurveyItemType } from "../../../constants/SurveyItemType.enum";
-import { click, customRender, debug, FormContextConsumerWrapper, query, queryAll, wait } from "../../../test-utils";
+import { click, customRender, CustomRenderResult, debug, FormContextConsumerWrapper, query, queryAll, wait } from "../../../test-utils";
 import { ItemWithChoicesFields } from "./ItemWithChoicesFields";
 
 describe('ItemWithChoicesFields', () => {
   let initialState: any;
-  let defaultRender: () => any;
+  let defaultRender: () => CustomRenderResult;
   const originalConsoleWarn = console.warn;
 
   beforeEach(() => {

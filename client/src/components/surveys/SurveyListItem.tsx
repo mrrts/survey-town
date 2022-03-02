@@ -16,6 +16,7 @@ export interface ISurveyListItemProps {
   surveyId: string;
 }
 
+// forwardRef is required for FlipMove, which wraps the list items, to work properly
 export const SurveyListItem: FC<ISurveyListItemProps> = forwardRef(({ surveyId }, ref: React.ForwardedRef<HTMLDivElement>) => {
   const { survey, authorHandle, numberOfResponses, isOwner } = useSurvey(surveyId);
   const takeSurveyModal = useModal(ModalKeys.TAKE_SURVEY);
@@ -60,11 +61,11 @@ export const SurveyListItem: FC<ISurveyListItemProps> = forwardRef(({ surveyId }
               {numberOfResponses} response{numberOfResponses === 1 ? '' : 's'}
             </Badge>
           </Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">
+          <Card.Subtitle className="mb-2 text-muted authored-by">
             by {authorHandle}, {createdAgoPhrase}
           </Card.Subtitle>
           
-          <Card.Text as='div'>
+          <Card.Text as='div' className='description'>
             <h4 className='sr-only'>Description</h4>
             <div dangerouslySetInnerHTML={{ __html: survey?.description }} />
           </Card.Text>
@@ -76,7 +77,7 @@ export const SurveyListItem: FC<ISurveyListItemProps> = forwardRef(({ surveyId }
                   <FontAwesomeIcon icon={faPencilAlt} />
                   <span>Edit Survey</span>
                 </Link>
-                <Button variant='link' size='sm' onClick={handleDeleteClick}>
+                <Button className='delete-survey-button' variant='link' size='sm' onClick={handleDeleteClick}>
                   <FontAwesomeIcon icon={faTrash} />
                   {isConfirmingDelete ?  'Confirm?' : 'Delete'}
                 </Button>

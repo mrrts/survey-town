@@ -10,8 +10,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { keys } from 'lodash';
 
 export const testUser: IUser = {
-  uuid: 'test-user-uuid',
-  handle: 'Test_User_1',
+  uuid: 'user1',
+  handle: 'Handle_1',
   emailAddress: 'testuser@test.com',
   roles: ['USER'],
 } as IUser;
@@ -24,6 +24,8 @@ export const defaultTestAppState: AppState = {
     user: testUser
   }
 }
+
+export type CustomRenderResult = ReturnType<typeof customRender>;
 
 // wrapper to render an element with a store and location context
 export const customRender = (

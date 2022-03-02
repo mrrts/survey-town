@@ -1,11 +1,11 @@
 import { SurveyItemType } from "../../../constants/SurveyItemType.enum";
 import { SurveyItemTypeData } from "../../../constants/SurveyItemTypeData";
-import { customRender, query, queryAll } from "../../../test-utils";
+import { customRender, CustomRenderResult, query, queryAll } from "../../../test-utils";
 import { ItemsList } from "./ItemsList";
 
 describe('ItemsList', () => {
   let initialState: any;
-  let defaultRender: () => any;
+  let defaultRender: () => CustomRenderResult;
   const originalConsoleWarn = console.warn;
 
   beforeEach(() => {

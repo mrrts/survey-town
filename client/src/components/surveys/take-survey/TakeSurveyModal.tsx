@@ -27,7 +27,7 @@ export const TakeSurveyModal: FC<ITakeSurveyModalProps> = () => {
         <TakeSurvey surveyId={modal.data?.surveyId} />
       </Modal.Body>
       <Modal.Footer>
-        <Button variant='secondary' onClick={handleCloseClick}>
+        <Button className='close-modal-button' variant='secondary' onClick={handleCloseClick}>
           Close
         </Button>
       </Modal.Footer>

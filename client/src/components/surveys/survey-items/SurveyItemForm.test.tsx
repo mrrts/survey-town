@@ -1,12 +1,12 @@
 import { SurveyItemType } from "../../../constants/SurveyItemType.enum";
 import { destroySurveyItem } from "../../../store/surveys/slice";
-import { click, customRender, FormContextConsumerWrapper, query, wait } from "../../../test-utils";
+import { click, customRender, CustomRenderResult, FormContextConsumerWrapper, query, wait } from "../../../test-utils";
 import { SurveyItemForm } from "./SurveyItemForm";
 
 
 describe('SurveyItemForm', () => {
   let initialState: any;
-  let defaultRender: () => any;
+  let defaultRender: () => CustomRenderResult;
   const originalConsoleWarn = console.warn;
   
   const form = () => query('.survey-item-form');

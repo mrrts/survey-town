@@ -1,11 +1,11 @@
 import { FormProvider } from "react-hook-form";
 import { SurveyItemType } from "../../../constants/SurveyItemType.enum";
-import { customRender, debug, FormContextConsumerWrapper, query } from "../../../test-utils";
+import { customRender, CustomRenderResult, debug, FormContextConsumerWrapper, query } from "../../../test-utils";
 import { ContentInterludeFields } from "./ContentInterludeFields";
 
 describe('ContentInterludeFields', () => {
   let initialState: any;
-  let defaultRender: () => any;
+  let defaultRender: () => CustomRenderResult;
   let originalConsoleWarn = console.warn;
 
   beforeEach(() => {

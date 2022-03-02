@@ -1,10 +1,10 @@
 import { SurveyItemType } from "../../../constants/SurveyItemType.enum";
-import { customRender, debug, FormContextConsumerWrapper, query } from "../../../test-utils";
+import { customRender, CustomRenderResult, debug, FormContextConsumerWrapper, query } from "../../../test-utils";
 import { FreeResponseFields } from "./FreeResponseFields";
 
 describe('FreeResponseFields', () => {
   let initialState: any;
-  let defaultRender: () => any;
+  let defaultRender: () => CustomRenderResult;
   let originalConsoleWarn = console.warn;
 
   beforeEach(() => {

@@ -1,11 +1,11 @@
 import { SurveyItemType } from "../../../constants/SurveyItemType.enum";
 import { fetchOwnResponsesForSurvey, setCurrentTakingSurveyItem } from "../../../store/surveys/slice";
-import { customRender, debug, query, wait } from "../../../test-utils";
+import { customRender, CustomRenderResult, debug, query, wait } from "../../../test-utils";
 import { TakeSurvey } from "./TakeSurvey";
 
 describe('TakeSurvey', () => {
   let initialState: any;
-  let defaultRender: () => any;
+  let defaultRender: () => CustomRenderResult;
 
   beforeEach(() => {
     initialState = {

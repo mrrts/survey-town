@@ -1,13 +1,12 @@
-import { RenderResult } from "@testing-library/react";
 import { SurveyItemType } from "../../../constants/SurveyItemType.enum";
 import { RequestStatus } from "../../../store/requests/slice";
 import { clearResponsesForSurvey, fetchResponsesForSurvey } from "../../../store/surveys/slice";
-import { customRender, query, queryAll } from "../../../test-utils";
+import { customRender, CustomRenderResult, query, queryAll } from "../../../test-utils";
 import { ResultsRoute } from "./ResultsRoute";
 
 describe('ResultsRoute', () => {
   let initialState: any;
-  let defaultRender: () => any;
+  let defaultRender: () => CustomRenderResult;
 
   beforeEach(() => {
     initialState = {

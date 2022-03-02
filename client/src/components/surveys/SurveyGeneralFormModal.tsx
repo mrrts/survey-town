@@ -79,7 +79,7 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
           <Modal.Title>{survey ? 'Edit' : 'New'} Survey</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Group>
+          <Form.Group controlId='title'>
             <Form.Label>Title*</Form.Label>
             <Form.Control
               { ...register('title') }
@@ -89,7 +89,7 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
             ></Form.Control>
             <Form.Text className='text-danger'>{errors.title?.message}</Form.Text>
           </Form.Group>
-          <Form.Group>
+          <Form.Group controlId='description'>
             <Form.Label>Description</Form.Label>
             <Controller
               name='description'
@@ -105,7 +105,7 @@ export const SurveyGeneralFormModal: FC<ISurveyGeneralFormModalProps> = () => {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseClick}>
+          <Button className='close-button' variant="secondary" onClick={handleCloseClick}>
             Close
           </Button>
           <Button type='submit' variant="success" disabled={!valid}>

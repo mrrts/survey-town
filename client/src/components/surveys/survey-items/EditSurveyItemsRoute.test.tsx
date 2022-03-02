@@ -3,12 +3,12 @@ import { ModalKeys } from "../../../constants/ModalKeys.enum";
 import { SurveyItemType } from "../../../constants/SurveyItemType.enum";
 import { SurveyItemTypeData } from "../../../constants/SurveyItemTypeData";
 import { setModalData, setModalOpen } from "../../../store/modals/slice";
-import { click, customRender, debug, query, queryAll, testUser, wait } from "../../../test-utils";
+import { click, customRender, CustomRenderResult, debug, query, queryAll, testUser, wait } from "../../../test-utils";
 import { EditSurveyItemsRoute } from "./EditSurveyItemsRoute";
 
 describe('EditSurveyItemsRoute', () => {
   let initialState: any;
-  let defaultRender: () => any;
+  let defaultRender: () => CustomRenderResult;
 
   beforeEach(() => {
     initialState = {

@@ -1,10 +1,10 @@
 import { SurveyItemType } from "../../../constants/SurveyItemType.enum";
-import { customRender, query } from "../../../test-utils";
+import { customRender, CustomRenderResult, query } from "../../../test-utils";
 import { TakeContentInterlude } from "./TakeContentInterlude";
 
 describe('TakeContentInterlude', () => {
   let initialState: any;
-  let defaultRender: () => any;
+  let defaultRender: () => CustomRenderResult;
 
   beforeEach(() => {
     initialState = {
