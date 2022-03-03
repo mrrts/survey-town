@@ -4,7 +4,7 @@ import { ProtectedRoute } from './components/common/ProtectedRoute';
 import { Surveys } from './components/surveys/Surveys';
 import { Login } from './components/auth/Login';
 import { AppNavbar } from './components/AppNavbar';
-import { useAppDispatch } from './store';
+import { useAppDispatch, useAppSelector } from './store';
 import { restoreSession } from './store/auth/slice';
 import Container from 'react-bootstrap/Container';
 import { Register } from './components/auth/Register';
@@ -15,11 +15,16 @@ import { TakeSurveyModal } from './components/surveys/take-survey/TakeSurveyModa
 import { Home } from './components/Home';
 import { ResultsRoute } from './components/surveys/results/ResultsRoute';
 import { OnRouteChange } from './components/common/OnRouteChange';
+import cn from 'classnames';
+import { getIsDarkMode } from './store/ui/selectors';
+import { useDarkMode } from './util/hooks/useDarkMode';
 
 function App() {
   const dispatch = useAppDispatch();
   const appContainerRef = useRef<HTMLDivElement>();
   const env = process.env.NODE_ENV;
+  useDarkMode();
+  const isDarkMode = useAppSelector(getIsDarkMode);
 
   const handleRouteChange = (location: WindowLocation) => {
     // jsdom in test env throws typeError that scrollTo is not a function
@@ -31,7 +36,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className='app-container' ref={appContainerRef as any}>
+    <div className={cn('app-container', { 'dark-mode': isDarkMode })} ref={appContainerRef as any}>
       <h1 className='sr-only'>Survey Town</h1>
       <header className='app-navbar'>
         <AppNavbar />

@@ -48,7 +48,7 @@ export const Login: FC<ILoginProps> = () => {
   }
 
   return (
-    <div className='login animate__animated animate__fadeIn'>
+    <div className='login card animate__animated animate__fadeIn'>
       <h2>Login</h2>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group className="mb-3" controlId="emailAddress">

@@ -6,6 +6,31 @@
 $borderRadius: 1.2em;
 $lightGray: #f7f7f7;
 $cardBoxShadow: 0 4px 16px 0 rgb(70 70 69 / 16%), 0 16px 24px 0 rgb(70 70 69 / 16%);
+$primary: var(--bs-primary);
+
+body.dark-mode {
+  .modal-content {
+    border: 4px solid $primary;
+    background: $gray-800;
+    color: #fff;
+
+    .card {
+      background: $gray-900;
+      border: 2px solid #fff;
+    }
+
+    .btn-link, .text-muted {
+      color: #fff;
+    }
+  
+    .form-control, .rich-text-editor {
+      background: #555;
+      color: #fff;
+    }
+  }
+
+  
+}
 
 .app-container {
   height: 100vh;
@@ -14,6 +39,62 @@ $cardBoxShadow: 0 4px 16px 0 rgb(70 70 69 / 16%), 0 16px 24px 0 rgb(70 70 69 / 1
   overflow: scroll;
   padding-top: 60px;
   position: relative;
+  transition: all .3s ease-in-out;
+  color: #222;
+
+  &.dark-mode {
+    background: $gray-700;
+    color: #fff;
+
+    .spinner-wrapper .spinner-icon {
+      color: #fff;
+    }
+
+    .card {
+      background: $gray-900;
+    }
+
+    .navbar {
+      background: $gray-800;
+      color: #fff;
+      .btn, a, button {
+        color: #fff;
+        &:hover {
+          color: #fff;
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .text-muted, .btn-link {
+      color: #fff !important;
+    }
+
+    .btn:focus {
+      outline: 2px solid #fff;
+    }
+
+    .rich-text-editor {
+      background: #555;
+    }
+
+    .dropdown-menu {
+      background: $gray-700;
+      border: 2px solid #fff;
+
+      button {
+        color: #fff;
+        &:hover {
+          background: $gray-900;
+        }
+      }
+    }
+
+    .form-control {
+      background: #555;
+      color: #fff;
+    }
+  }
 }
 
 .home-container {
@@ -47,9 +128,6 @@ $cardBoxShadow: 0 4px 16px 0 rgb(70 70 69 / 16%), 0 16px 24px 0 rgb(70 70 69 / 1
     width: 225%;
     left: -350px;
     max-height: 60vh;
-    .path {
-      fill: rgba($primary, .5);
-    }
   }
 
   @include media-breakpoint-up(md) {
@@ -86,6 +164,20 @@ $cardBoxShadow: 0 4px 16px 0 rgb(70 70 69 / 16%), 0 16px 24px 0 rgb(70 70 69 / 1
         font-size: 1em;
         color: $primary;
         margin: 0 20px 0 0;
+      }
+    }
+    .dark-mode-switch-container {
+      display: flex;
+      align-items: center;
+      padding-top: 2px;
+      padding-right: .5em;
+      .react-switch-bg {
+        & > div {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #222;
+        }
       }
     }
     .user-icon {
@@ -132,7 +224,7 @@ $cardBoxShadow: 0 4px 16px 0 rgb(70 70 69 / 16%), 0 16px 24px 0 rgb(70 70 69 / 1
 
 .surveys {
   position: relative;
-  
+
   .surveys-header {
     display: flex;
     justify-content: space-between;

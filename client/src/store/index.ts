@@ -13,6 +13,7 @@ import { requestsReducer, defaultRequestsState } from "./requests/slice";
 import { surveysReducer, defaultSurveysState } from "./surveys/slice";
 import { usersReducer, defaultUsersState } from "./users/slice";
 import { modalsReducer, defaultModalsState } from "./modals/slice";
+import { defaultUiState, uiReducer } from "./ui/slice";
 
 const loggerMiddleware = createLogger({ collapsed: true });
 const epicMiddleware = createEpicMiddleware();
@@ -30,15 +31,17 @@ export const rootReducer = {
   requests: requestsReducer,
   surveys: surveysReducer,
   users: usersReducer,
-  modals: modalsReducer
+  modals: modalsReducer,
+  ui: uiReducer
 };
 
-export const defaultAppState: any = {
+export const defaultAppState = {
   auth: defaultAuthState,
   requests: defaultRequestsState,
   surveys: defaultSurveysState,
   users: defaultUsersState,
   modals: defaultModalsState,
+  ui: defaultUiState
 };
 
 export const store = configureStore({

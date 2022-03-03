@@ -47,7 +47,7 @@ export const Register: FC<IRegisterProps> = () => {
   }
   
   return (
-    <div className='register'>
+    <div className='register card'>
       <h2>Sign Up</h2>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group controlId='emailAddress'>
