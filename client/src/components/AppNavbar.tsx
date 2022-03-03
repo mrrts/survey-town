@@ -25,7 +25,7 @@ export const AppNavbar: FC<IAppNavbarProps> = () => {
     <div className='navbar-wrapper'>
       <Navbar className='navbar' fixed='top' collapseOnSelect expand="lg">
         <Container>
-          <Navbar.Brand as='button' onClick={() => navigate('/')} className='brand'>
+          <Navbar.Brand as='a' href='/' className='brand'>
             <FontAwesomeIcon icon={faPoll} className='brand-icon' />
             Survey Town
           </Navbar.Brand>
@@ -47,6 +47,7 @@ export const AppNavbar: FC<IAppNavbarProps> = () => {
                     >
                       <NavDropdown.Item
                         as='button'
+                        className='logout-button'
                         onClick={() => dispatch(logoutUser())}
                       >
                         Logout
