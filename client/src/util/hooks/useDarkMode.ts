@@ -19,10 +19,11 @@ export const useDarkMode = () => {
   // outside React app container
   useEffect(() => {
     if (isDarkMode) {
-      document.body.classList.add('dark-mode')
+      document.body.classList.add('dark-mode');
     } else {
-      document.body.classList.remove('dark-mode')
+      document.body.classList.remove('dark-mode');
     }
+    localStorage.setItem('darkMode', isDarkMode ? '1' : '0');
   }, [isDarkMode]);
 
   return null;

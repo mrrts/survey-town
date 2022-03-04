@@ -28,7 +28,6 @@ export const AppNavbar: FC<IAppNavbarProps> = () => {
 
   const handleDarkModeChange = useCallback((checked: boolean) => {
     dispatch(setDarkMode({ darkMode: !!checked }));
-    localStorage.setItem('darkMode', checked ? '1' : '0');
   }, [dispatch]);
 
   return (
@@ -49,6 +48,7 @@ export const AppNavbar: FC<IAppNavbarProps> = () => {
             <Nav className='justify-content-end'>
               <Nav.Item className='dark-mode-switch-container'>
                 <Switch
+                  className='dark-mode-switch'
                   checked={isDarkMode}
                   onChange={handleDarkModeChange}
                   checkedIcon={<FontAwesomeIcon icon={faMoon} />}

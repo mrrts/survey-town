@@ -1,6 +1,8 @@
 import { AppNavbar } from "./AppNavbar";
-import { click, customRender, CustomRenderResult, debug, query, testUser, wait } from '../test-utils';
+import { click, customRender, CustomRenderResult, debug, query, queryAll, testUser, wait } from '../test-utils';
 import { logoutUser } from "../store/auth/slice";
+import { getIsDarkMode } from "../store/ui/selectors";
+import { setDarkMode } from "../store/ui/slice";
 
 describe('AppNavbar', () => {
   let initialState: any;
@@ -91,5 +93,44 @@ describe('AppNavbar', () => {
 
     expect(query('.login-button')).toHaveTextContent('Login');
     expect(query('.login-button')?.querySelector('.mock-fa-icon')).toHaveAttribute('data-icon', 'sign-in-alt');
+  });
+
+  it('has a darkMode toggle', () => {
+    const { mockStore } = defaultRender();
+
+    expect(getIsDarkMode(mockStore.getState())).toBe(false);
+    
+    const toggleSwitch = () => query('.dark-mode-switch');
+
+    const input = () => toggleSwitch()?.querySelector('input');
+
+    const icons = () => toggleSwitch()?.querySelectorAll('.mock-fa-icon');
+
+    expect(toggleSwitch()).toBeInTheDocument();
+    expect(input()).toHaveAttribute('aria-label', 'dark mode is off');
+    expect(input()).toHaveAttribute('aria-checked', 'false');
+    expect(input()).toHaveAttribute('role', 'switch');
+    expect(input()).toHaveAttribute('type', 'checkbox');
+
+    expect(icons()).toHaveLength(2);
+    expect(icons()?.[0]).toHaveAttribute('data-icon', 'moon');
+    expect(icons()?.[1]).toHaveAttribute('data-icon', 'sun');
+    expect(icons()?.[0]).not.toBeVisible();
+    expect(icons()?.[1]).toBeVisible();
+
+    expect(mockStore.dispatch).not.toHaveBeenCalledWith(setDarkMode({ darkMode: true }));
+
+    click(input() as Element);
+
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setDarkMode({ darkMode: true }));
+    expect(input()).toHaveAttribute('aria-label', 'dark mode is on');
+    expect(input()).toHaveAttribute('aria-checked', 'true');
+
+    expect(icons()?.[0]).toBeVisible();
+    expect(icons()?.[1]).not.toBeVisible();
+
+    click(input() as Element);
+
+    expect(mockStore.dispatch).toHaveBeenCalledWith(setDarkMode({ darkMode: false }));
   });
 });
