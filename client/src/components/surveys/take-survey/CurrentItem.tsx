@@ -16,6 +16,7 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import { Link } from '@reach/router';
 import { useModal } from '../../../util/hooks/useModal.hook';
 import { ModalKeys } from '../../../constants/ModalKeys.enum';
+import { useTransition, animated } from 'react-spring';
 
 interface ICurrentItemProps {
   surveyId: string;
@@ -63,6 +64,12 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
   const itemTakeSchema = itemTypeData?.takeSchema;
 
   const buttonShouldDisable = !isValid || !!submitRequest?.isPending
+
+  const transitions = useTransition(currentItemId, {
+    from: { transform: 'translate3d(100%, 0, 0)'},
+    enter: { transform: 'translate3d(0, 0, 0)'},
+    leave: { transform: 'translate3d(-100%, 0, 0)'},
+  })
 
   const onItemSubmit = (data: any) => {
     setItemResponseData(currentItemId as string, {
@@ -151,10 +158,16 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
       <Card className='take-current-item-card'>
         <FormProvider { ...form }>
           <Form onSubmit={form.handleSubmit(onItemSubmit)}>
-            <TakeSurveyItemComponent
-              key={surveyItem?.uuid}
-              surveyItemId={surveyItem?.uuid}
-            />
+            {transitions((styles, item) => {
+              return item && (
+                <div style={styles as any} key={currentItemId}>
+                  <TakeSurveyItemComponent
+                    key={surveyItem?.uuid}
+                    surveyItemId={surveyItem?.uuid}
+                  />
+                </div>
+              );
+            })}
             {isDirty && (<p className='text-danger'>{validationError}</p>)}
             <div className='take-survey-item-actions'>
               {!!prevItem && (

@@ -1,0 +1,40 @@
+.take-survey-container {
+  .survey-already-taken-container {
+    text-align: center;
+  }
+
+  .results-link {
+    width: 100%;
+  }
+  
+  .take-current-item-card {
+    padding: 2em;
+    overflow-x: hidden;
+    box-shadow: none;
+    &:hover {
+      box-shadow: none;
+      transform: none;
+    }
+  }
+  .take-survey-item-actions {
+    margin-top: 2em;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.card.item-results {
+  padding: 2em;
+  border-radius: $borderRadius;
+  box-shadow: none;
+  transition: all .3s ease-in-out;
+  &:hover {
+    box-shadow: $cardBoxShadow;
+    transform: translateY(-2px);
+  }
+
+  .free-response-results {
+    max-height: 400px;
+    overflow-y: scroll;
+  }
+}

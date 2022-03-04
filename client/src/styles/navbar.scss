@@ -1,0 +1,33 @@
+.navbar-wrapper {
+  background: #fff;
+  .navbar {
+    background: #fff;
+    .brand {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      .brand-icon {
+        font-size: 1em;
+        color: $primary;
+        margin: 0 20px 0 0;
+      }
+    }
+    .dark-mode-switch-container {
+      display: flex;
+      align-items: center;
+      padding-top: 2px;
+      padding-right: .5em;
+      .react-switch-bg {
+        & > div {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #222;
+        }
+      }
+    }
+    .user-icon {
+      margin-left: .5em;
+    }
+  }
+}

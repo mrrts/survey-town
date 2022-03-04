@@ -15,6 +15,8 @@ export const useDarkMode = () => {
     } 
   }, [dispatch]);
 
+  // update body class for sake of modals, which are mounted
+  // outside React app container
   useEffect(() => {
     if (isDarkMode) {
       document.body.classList.add('dark-mode')

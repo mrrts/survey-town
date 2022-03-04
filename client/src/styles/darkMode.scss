@@ -1,0 +1,88 @@
+body.dark-mode {
+  .modal-content {
+    border: 4px solid $primary;
+    background: $gray-900;
+    color: #fff;
+
+    .card {
+      background: $gray-800;
+      border: 2px solid #fff;
+    }
+
+    .btn-link, .text-muted {
+      color: #fff;
+    }
+  
+    .form-control, .rich-text-editor {
+      background: #555;
+      color: #fff;
+    }
+
+    a:focus, .btn:focus, .form-control:focus, .form-check input:focus {
+      outline: 2px solid #fff;
+    }
+
+    .spinner-wrapper .spinner-icon {
+      color: #fff;
+    }
+  }
+}
+
+.app-container {
+  &.dark-mode {
+    background: $gray-700;
+    color: #fff;
+
+    .spinner-wrapper .spinner-icon {
+      color: #fff;
+    }
+
+    .card {
+      background: $gray-800;
+      &:hover {
+        box-shadow: $cardBoxShadowDark;
+      }
+    }
+
+    .navbar {
+      background: $gray-800;
+      color: #fff;
+      .btn, a, button {
+        color: #fff;
+        &:hover {
+          color: #fff;
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .text-muted, .btn-link {
+      color: #fff !important;
+    }
+
+    a:focus, .btn:focus, .form-control:focus, .form-check input:focus {
+      outline: 2px solid #fff;
+    }
+
+    .rich-text-editor {
+      background: #555;
+    }
+
+    .dropdown-menu {
+      background: $gray-700;
+      border: 2px solid #fff;
+
+      button {
+        color: #fff;
+        &:hover {
+          background: $gray-900;
+        }
+      }
+    }
+
+    .form-control {
+      background: #555;
+      color: #fff;
+    }
+  }
+}

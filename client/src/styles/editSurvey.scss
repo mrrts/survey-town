@@ -1,0 +1,61 @@
+.edit-survey-items-route {
+  .dropdown-menu {
+    box-shadow: $cardBoxShadow;
+  }
+
+  .edit-survey-items-header {
+    text-align: center;
+    border-radius: $borderRadius;
+    border: 5px solid $primary;
+    padding: 15px;
+  }
+
+  .survey-items-list {
+    list-style-type: none;
+    padding: 0;
+    .survey-items-list-item {
+      margin: 25px auto;
+      padding: 15px;
+      border-radius: $borderRadius;
+      .survey-item-header {
+        font-size: 1.5em;
+        .survey-item-icon {
+          color: $primary;
+          margin: 0 .5em 0 0;
+        }
+      }
+      .survey-item-form {
+        .add-choices-group {
+          .choice-container {
+            display: flex;
+            justify-content: flext-start;
+            margin-bottom: .3em;
+            .delete-choice-button {
+              height: 2em;
+              width: 2em;
+              color: $danger;
+              margin: 5px .5em 0 0;
+            }
+          }
+        }
+        .survey-item-actions {
+          display: flex;
+          justify-content: flex-end;
+        }
+      }
+    }
+  }
+  .add-item-container {
+    display: flex;
+    .add-item-label {
+      margin: 0 2em 0 0;
+      .add-item-icon {
+        margin-right: 1em;
+      }
+    }
+    .add-item-select {
+      width: 500px;
+      max-width: 800px;
+    }
+  }
+}

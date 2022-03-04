@@ -1,0 +1,36 @@
+.surveys {
+  position: relative;
+
+  .surveys-header {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0 30px;
+  }
+
+  .survey-list-item {
+    .survey-card {
+      width: 100%;
+      max-width: 100%;
+      margin: 25px auto;
+      border-radius: $borderRadius;
+      .survey-list-item-title {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.3em;
+        .responses-badge {
+          max-height: 2em;
+        }
+      }
+  
+      .survey-card-actions {
+        margin: 25px 0 0 0;
+        .btn {
+          margin: 0 .5em .5em 0;
+        }
+        .take-survey-button {
+        }
+      }
+    }
+  }
+}
+
