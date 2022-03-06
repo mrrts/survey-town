@@ -2,7 +2,7 @@ import { useMemo } from "react"
 import { useAppSelector } from "../../store";
 import { getUser } from "../../store/auth/selectors";
 import { getSurveyById, getSurveyItemsBySurveyId } from "../../store/surveys/selectors";
-import { getUserHandles } from "../../store/users/slice";
+import { getUserHandles } from "../../store/users/selectors";
 
 export const useSurvey = (surveyId: string) => {
   const surveySelector = useMemo(() => getSurveyById(surveyId), [surveyId]);

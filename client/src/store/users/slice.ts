@@ -1,7 +1,6 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IUser } from "../../entities/user.model";
 import { keyBy } from 'lodash';
-import { AppState } from "..";
 
 export interface IUsersState {
   handles: Record<string, Partial<IUser>>;
@@ -33,12 +32,3 @@ export const {
 } = slice.actions;
 
 export const usersReducer = slice.reducer;
-
-// Selectors
-
-export const getUsersState = (state: AppState) => state.users;
-
-export const getUserHandles = createSelector(
-  getUsersState,
-  (usersState: IUsersState) => usersState.handles
-);

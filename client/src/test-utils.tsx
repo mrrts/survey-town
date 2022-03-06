@@ -103,7 +103,8 @@ export const FormContextConsumerWrapper: FC<any> = ({ children, errors, override
   );
 }
 
-export const nockScope = nock(process.env.REACT_APP_BASE_API_URL as string)
+// The base object for mocking requests with nock
+export const nockScope: nock.Scope = nock(process.env.REACT_APP_BASE_API_URL as string)
   .defaultReplyHeaders({
     'access-control-allow-origin': '*',
     'access-control-allow-credentials': 'true' 

@@ -8,7 +8,6 @@ import { Link } from '@reach/router';
 import { useAppDispatch, useAppSelector } from '../store';
 import { logoutUser } from '../store/auth/slice';
 import { getUser } from '../store/auth/selectors';
-import { useDarkMode } from '../util/hooks/useDarkMode';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 import { Spinner } from './common/Spinner';

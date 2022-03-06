@@ -16,7 +16,7 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import { Link } from '@reach/router';
 import { useModal } from '../../../util/hooks/useModal.hook';
 import { ModalKeys } from '../../../constants/ModalKeys.enum';
-import { useTransition, animated } from 'react-spring';
+import { useTransition } from 'react-spring';
 
 interface ICurrentItemProps {
   surveyId: string;
