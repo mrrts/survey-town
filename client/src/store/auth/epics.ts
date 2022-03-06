@@ -3,7 +3,7 @@ import { Action } from 'redux';
 import { AppState } from "..";
 import { ofType } from "redux-observable";
 import { loginUser, logoutUser, registerUser, restoreSession, setUser, unsetUser } from './slice';
-import { getSelf, login, logout, register } from './api';
+import * as api from './api';
 import { PayloadAction, getType } from "@reduxjs/toolkit";
 import { LoginDto } from "../../entities/dtos/login.dto";
 import { requestError, requestStart, requestSuccess } from "../requests/slice";
@@ -21,7 +21,7 @@ export const loginEpic = (action$: Observable<Action>, state$: Observable<AppSta
       const key = 'login';
       return concat(
         of(requestStart({ key })),
-        from(login(action.payload.dto)).pipe(
+        from(api.login(action.payload.dto)).pipe(
           switchMap((user: User|null) => {
             return concat(
               of(requestSuccess({ key })),
@@ -47,7 +47,7 @@ export const logoutEpic = (action$: Observable<Action>, state$: Observable<AppSt
       const key = 'logout';
       return concat(
         of(requestStart({ key })),
-        from(logout()).pipe(
+        from(api.logout()).pipe(
           switchMap((resp: any) => {
             return concat(
               of(requestSuccess({ key })),
@@ -72,7 +72,7 @@ export const restoreSessionEpic = (action$: Observable<Action>, state$: Observab
       const key = 'restore_session';
       return concat(
         of(requestStart({ key })),
-        from(getSelf()).pipe(
+        from(api.getSelf()).pipe(
           switchMap((user: User|null) => {
             return concat(
               of(requestSuccess({ key })),
@@ -96,7 +96,7 @@ export const restoreSessionEpic = (action$: Observable<Action>, state$: Observab
         const key = 'register';
         return concat(
           of(requestStart({ key })),
-          from(register(action.payload.dto)).pipe(
+          from(api.register(action.payload.dto)).pipe(
             switchMap((user: User|null) => {
               return concat(
                 of(requestSuccess({ key })),

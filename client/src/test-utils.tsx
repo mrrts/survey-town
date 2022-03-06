@@ -8,6 +8,7 @@ import { defaultAuthState } from './store/auth/slice';
 import { IUser } from './entities/user.model';
 import { FormProvider, useForm } from 'react-hook-form';
 import { keys } from 'lodash';
+import nock from 'nock';
 
 export const testUser: IUser = {
   uuid: 'user1',
@@ -101,3 +102,9 @@ export const FormContextConsumerWrapper: FC<any> = ({ children, errors, override
     </FormProvider>
   );
 }
+
+export const nockScope = nock(process.env.REACT_APP_BASE_API_URL as string)
+  .defaultReplyHeaders({
+    'access-control-allow-origin': '*',
+    'access-control-allow-credentials': 'true' 
+  }); 
