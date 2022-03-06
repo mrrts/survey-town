@@ -40,7 +40,7 @@ describe('Register', () => {
     expect(handleLabel()).toHaveTextContent('*User Nickname (public)');
     expect(handleInput()).toBeInTheDocument();
     expect(handleInput()).toHaveAttribute('placeholder', 'ex. SurveyLover123');
-    expect(handleInput()?.nextSibling).toHaveTextContent('6-20 characters &em; letters, numbers, and underscores only');
+    expect(handleInput()?.nextSibling).toHaveTextContent('6-20 characters — letters, numbers, and underscores only');
 
     expect(pwLabel()).toBeInTheDocument();
     expect(pwLabel()).toHaveTextContent('*Password');

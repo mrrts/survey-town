@@ -69,7 +69,7 @@ export const Register: FC<IRegisterProps> = () => {
             isInvalid={!!errors?.handle}
             { ...register('handle')}
           ></Form.Control>
-          <Form.Text className='text-muted'>6-20 characters &em; letters, numbers, and underscores only</Form.Text>
+          <Form.Text className='text-muted'>6-20 characters &#8212; letters, numbers, and underscores only</Form.Text>
           <p><Form.Text className='text-danger'>{errors.handle?.message}</Form.Text></p>
         </Form.Group>
         <Form.Group controlId='plaintextPassword'>
