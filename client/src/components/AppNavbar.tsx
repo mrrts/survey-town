@@ -31,7 +31,7 @@ export const AppNavbar: FC<IAppNavbarProps> = () => {
 
   return (
     <div className='navbar-wrapper'>
-      <Navbar className='navbar' fixed='top' variant={isDarkMode ? 'dark' : 'light'} collapseOnSelect expand="lg">
+      <Navbar className='navbar' variant={isDarkMode ? 'dark' : 'light'} collapseOnSelect expand="lg">
         <Container>
           <Navbar.Brand as='a' href='/' className='brand'>
             <FontAwesomeIcon icon={faPoll} className='brand-icon' />
