@@ -19,6 +19,7 @@ export const ContentInterludeFields: FC<IContentInterludeFieldsProps> = ({ surve
         <Controller
           name='content'
           control={control}
+          defaultValue={surveyItem?.content}
           render={({ field }) => (
             <RichTextEditor
               { ...field }

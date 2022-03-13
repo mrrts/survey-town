@@ -19,6 +19,7 @@ export const FreeResponseFields: FC<IFreeResponseFieldsProps> = ({ surveyItemId 
         <Controller
           name='prompt'
           control={control}
+          defaultValue={surveyItem?.prompt}
           render={({ field }) => (
             <RichTextEditor
               { ...field }

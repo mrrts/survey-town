@@ -1,7 +1,7 @@
-import React, { FC, useState, useCallback, forwardRef } from 'react';
+import React, { FC, useState, useCallback, forwardRef, useEffect, RefObject, ForwardRefRenderFunction } from 'react';
 import ReactRTE, { EditorValue, ToolbarConfig } from 'react-rte';
 
-export const RichTextEditor: FC<any> = forwardRef(({ onChange, ...props }, ref) => {
+export const RichTextEditor: FC<any> = forwardRef(({ onChange, defaultValue, ...props }, ref: any) => {
   const toolbarConfig: ToolbarConfig = {
     display: ['INLINE_STYLE_BUTTONS', 'BLOCK_TYPE_BUTTONS', 'LINK_BUTTONS'],
     INLINE_STYLE_BUTTONS: [
@@ -15,16 +15,16 @@ export const RichTextEditor: FC<any> = forwardRef(({ onChange, ...props }, ref) 
       { label: 'OL', style: 'ordered-list-item' }
     ]
   };
-  
+
   const [editorValue, setEditorValue] = useState<EditorValue>(
-    ReactRTE.createValueFromString(props.defaultValue || '', 'html')
+    ReactRTE.createValueFromString(defaultValue || '', 'html')
   );
 
   const handleChange = useCallback((value: EditorValue) => {
     setEditorValue(value);
     onChange(value.toString('html'));
   }, [setEditorValue, onChange]);
-  
+
   return (
     <ReactRTE
       toolbarConfig={toolbarConfig}

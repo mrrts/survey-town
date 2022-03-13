@@ -38,6 +38,10 @@ export const ItemWithChoicesFields: FC<IItemWithChoicesFieldsProps> = ({
     reset({ choices: surveyItem.choices })
   }, [reset, surveyItem?.choices])
 
+  if (!surveyItem) {
+    return null;
+  }
+
   return (
     <div className='item-with-choices-fields'>
       <Form.Group controlId='prompt'>
@@ -45,6 +49,7 @@ export const ItemWithChoicesFields: FC<IItemWithChoicesFieldsProps> = ({
         <Controller
           name='prompt'
           control={control}
+          defaultValue={surveyItem?.prompt}
           render={({ field }) => (
             <RichTextEditor
               { ...field }
