@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback, forwardRef, useEffect, RefObject, ForwardRefRenderFunction } from 'react';
+import React, { FC, useState, useCallback, forwardRef } from 'react';
 import ReactRTE, { EditorValue, ToolbarConfig } from 'react-rte';
 
 export const RichTextEditor: FC<any> = forwardRef(({ onChange, defaultValue, ...props }, ref: any) => {
