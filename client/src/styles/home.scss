@@ -1,5 +1,5 @@
 .home-container {
-  height: 100%;
+  height: calc(100% - 70px);
   width: 100%;
   position: absolute;
   bottom: 0;
@@ -11,7 +11,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 15vh;
+    margin-top: 2vh;
 
     h2 {
       text-align: center;
