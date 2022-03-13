@@ -171,15 +171,17 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
             {isDirty && (<p className='text-danger'>{validationError}</p>)}
             <div className='take-survey-item-actions'>
               {!!prevItem && (
-                <Button size='sm' variant='primary' onClick={handlePrevClick}>
+                <Button size='sm' variant='primary' className='me-1' onClick={handlePrevClick}>
                   <FontAwesomeIcon icon={faArrowLeft} />
+                  <br className='d-sm-none' />
                   Previous
                 </Button>
               )}
               {!!nextItem && (
                 <Button type='submit' size='sm' variant='primary' disabled={buttonShouldDisable}>
-                  Save and continue
                   <FontAwesomeIcon icon={faArrowRight} />
+                  <br className='d-sm-none' />
+                  Save and continue
                 </Button>
               )}
               {!nextItem && (
@@ -189,8 +191,9 @@ export const CurrentItem: FC<ICurrentItemProps> = ({ surveyId }) => {
                   disabled={buttonShouldDisable}
                   onClick={handleSurveySubmitClick}
                 >
-                  Submit &amp; View Results
                   <FontAwesomeIcon icon={faArrowRight} />
+                  <br className='d-sm-none' />
+                  Submit &amp; View Results
                 </Button>
               )}
             </div>
