@@ -1,37 +1,45 @@
-.navbar-wrapper {
-  background: #fff;
-  .navbar {
+.app-navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  
+  .navbar-wrapper {
     background: #fff;
-    .brand {
-      border: 0;
-      padding: 0;
-      background: transparent;
-      .brand-icon {
-        font-size: 1em;
-        color: $primary;
-        margin: 0 20px 0 0;
-      }
-    }
-    .dark-mode-switch-container {
-      display: flex;
-      align-items: center;
-      padding-top: 2px;
-      padding-right: .5em;
-      .react-switch-bg {
-        & > div {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          color: #222;
+    .navbar {
+      background: #fff;
+      .brand {
+        border: 0;
+        padding: 0;
+        background: transparent;
+        .brand-icon {
+          font-size: 1em;
+          color: $primary;
+          margin: 0 20px 0 0;
         }
       }
-    }
-    .user-icon {
-      margin-left: .5em;
-    }
-    .login-button {
-      margin-top: 5px;
-      max-width: 10em;
+      .dark-mode-switch-container {
+        display: flex;
+        align-items: center;
+        padding-top: 2px;
+        padding-right: .5em;
+        .react-switch-bg {
+          & > div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #222;
+          }
+        }
+      }
+      .user-icon {
+        margin-left: .5em;
+      }
+      .login-button {
+        margin-top: 5px;
+        max-width: 10em;
+      }
     }
   }
 }
