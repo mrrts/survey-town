@@ -25,7 +25,7 @@ export const Login: FC<ILoginProps> = () => {
     plaintextPassword: yup.string().required()
   }).required();
 
-  const { register, getValues, formState: { errors }, handleSubmit } = useForm({
+  const { register, getValues, formState: { errors }, handleSubmit, setValue } = useForm({
     resolver: yupResolver(schema)
   });
   const user = useAppSelector(getUser);
@@ -33,6 +33,12 @@ export const Login: FC<ILoginProps> = () => {
   const onSubmit = (data: any) => {
     const { emailAddress, plaintextPassword } = getValues();
     dispatch(loginUser({ dto: { emailAddress, plaintextPassword }}));
+  }
+
+  const handleDemoClick = () => {
+    setValue('emailAddress', process.env.REACT_APP_DEMO_EMAIL);
+    setValue('plaintextPassword', process.env.REACT_APP_DEMO_PW);
+    onSubmit({});
   }
 
   if (user) {
@@ -72,6 +78,12 @@ export const Login: FC<ILoginProps> = () => {
         <Link className='register-link btn btn-link' to='/register'>
           Sign Up
         </Link>
+
+        {process.env.REACT_APP_DEMO_EMAIL && (
+          <Button variant='link' className='btn-link' onClick={handleDemoClick}>
+            Use Demo Login
+          </Button>
+        )}
       </Form>
     </div>
   );
