@@ -2,8 +2,6 @@
 
 Survey Town is a demo portfolio app that allows users to browse, create, and take surveys. The server is built on the [Nest](https://nestjs.com) framework, featuring a Controller-Service-Repository pattern and Dependency Injection, and the client is a [React](https://reactjs.org) app, using [Redux Toolkit](https://redux-toolkit.js.org/), [Redux Observable](https://redux-observable.js.org/), and [Sass](https://sass-lang.com/). Both client and server are written entirely in [Typescript](https://www.typescriptlang.org/).
 
-[Live Demo](https://surveytown.net)
-
 ## Installation
 
 ### Server
